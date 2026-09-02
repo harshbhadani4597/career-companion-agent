@@ -1,0 +1,2 @@
+job_id,title,company,location,work_mode,duration,stipend,skills,education,description,responsibilities,eligibility,application_url
+JOB001,AI/ML Intern,TechNova,Bangalore,Hybrid,6 Months,15000,"Python, Machine Learning, Pandas, Scikit-learn","B.Tech CSE/AI/ML","Work on machine learning models and data analysis.","Build ML models; clean datasets; evaluate models","Final year B.Tech students with Python knowledge","https://example.com"

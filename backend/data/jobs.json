@@ -1,0 +1,66 @@
+[
+  {
+    "id": "JOB001",
+    "title": "Machine Learning Intern",
+    "company": "TechAI Solutions",
+    "location": "Remote",
+    "skills": [
+      "Python",
+      "Machine Learning",
+      "Scikit-learn",
+      "Pandas",
+      "NumPy",
+      "SQL"
+    ],
+    "description": "Work on machine learning models, data preprocessing, model evaluation and experimentation.",
+    "eligibility": "B.Tech/B.E. students in Computer Science, AI, ML or related fields."
+  },
+  {
+    "id": "JOB002",
+    "title": "AI/ML Intern",
+    "company": "InnovateAI",
+    "location": "Bangalore",
+    "skills": [
+      "Python",
+      "TensorFlow",
+      "PyTorch",
+      "Deep Learning",
+      "NLP",
+      "Git"
+    ],
+    "description": "Assist in developing AI and deep learning solutions for real-world applications.",
+    "eligibility": "Students with knowledge of Python and machine learning."
+  },
+  {
+    "id": "JOB003",
+    "title": "Generative AI Intern",
+    "company": "GenAI Labs",
+    "location": "Remote",
+    "skills": [
+      "Python",
+      "LLMs",
+      "Generative AI",
+      "LangChain",
+      "RAG",
+      "Prompt Engineering"
+    ],
+    "description": "Build applications using large language models, RAG pipelines and AI agents.",
+    "eligibility": "Students interested in Generative AI and LLM application development."
+  },
+  {
+    "id": "JOB004",
+    "title": "Data Science Intern",
+    "company": "DataWorks",
+    "location": "Hyderabad",
+    "skills": [
+      "Python",
+      "Pandas",
+      "NumPy",
+      "SQL",
+      "Power BI",
+      "Data Visualization"
+    ],
+    "description": "Analyze datasets, perform exploratory data analysis and create business dashboards.",
+    "eligibility": "Students with knowledge of Python, SQL and data analysis."
+  }
+]

@@ -1,0 +1,30 @@
+@"
+# Python virtual environments
+.venv/
+.venv311/
+venv/
+
+# Environment variables
+.env
+backend/.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Uploaded files
+uploads/*
+
+# Node
+node_modules/
+
+# Build
+dist/
+"@ | Set-Content .gitignore
+data/chroma_db/
+data/chroma_clean/
+data/test_chroma_db/
+
+data/chroma_db/
+data/chroma_clean/
+data/test_chroma_db/
