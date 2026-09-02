@@ -3,14 +3,13 @@ title: AI Career Companion Agent
 emoji: 🚀
 colorFrom: blue
 colorTo: indigo
-sdk: gradio
-sdk_version: 4.19.0
-app_file: app.py
+sdk: static
 pinned: false
 short_description: AI Internship Matching & RAG Career Companion
 ---
 
 # 🚀 AI Career Companion Agent
+
 
 
 
