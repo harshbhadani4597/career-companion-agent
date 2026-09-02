@@ -239,11 +239,20 @@ npm install
 # Run Vite development server
 npm run dev
 ```
-Frontend Web App will run live at: `http://localhost:5173/`
+---
+
+## 🌐 Production Deployment Guide
+
+For step-by-step instructions on deploying the live system:
+- **Backend (Render):** `pip install -r requirements.txt` & `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+- **Frontend (Vercel):** `npm run build` with `VITE_API_BASE_URL` pointing to your Render backend URL.
+
+See detailed deployment guide in [`docs/deployment.md`](docs/deployment.md).
 
 ---
 
 ## 📡 API Endpoints Reference
+
 
 | Method | Endpoint | Description |
 |---|---|---|
