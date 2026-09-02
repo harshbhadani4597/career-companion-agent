@@ -28,3 +28,5 @@ data/test_chroma_db/
 data/chroma_db/
 data/chroma_clean/
 data/test_chroma_db/
+
+data/numpy_vector_db/
