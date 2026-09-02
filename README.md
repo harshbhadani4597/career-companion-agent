@@ -1,4 +1,15 @@
+---
+title: AI Career Companion Agent
+emoji: 🚀
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+short_description: AI Internship Matching & RAG Career Companion
+---
+
 # 🚀 AI Career Companion Agent
+
 
 > **AI-Powered Internship Matching, Resume Parsing, RAG Retrieval & Interview Preparation System**  
 > **Infosys Springboard Virtual Internship 7.0 — AI Domain Project**  
