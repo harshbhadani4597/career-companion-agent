@@ -3,6 +3,22 @@ import React from "react";
 export function DashboardPage({ profile, jobMatches, skillGaps, applications, setActiveTab, darkMode }) {
   const topMatch = jobMatches.length > 0 ? jobMatches[0] : null;
 
+  const getDynamicGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) return "Good morning";
+    if (hour >= 12 && hour < 17) return "Good afternoon";
+    if (hour >= 17 && hour < 22) return "Good evening";
+    return "Good night";
+  };
+
+  const getGreetingEmoji = () => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) return "☀️";
+    if (hour >= 12 && hour < 17) return "🌤️";
+    if (hour >= 17 && hour < 22) return "🌆";
+    return "🌙";
+  };
+
   return (
     <div className="space-y-8 animate-fade-in-up">
       {/* Welcome Banner */}
@@ -19,7 +35,7 @@ export function DashboardPage({ profile, jobMatches, skillGaps, applications, se
             </span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight mt-1">
-            Good morning, {profile?.name || "Candidate"} 👋
+            {getDynamicGreeting()}, {profile?.name || "Candidate"} {getGreetingEmoji()}
           </h1>
           <p className="mt-3 text-blue-100/90 text-sm sm:text-base leading-relaxed">
             Your AI Career Companion is actively evaluating 160+ internship postings, calculating transparent match scores, and mapping actionable skill gap learning paths.
