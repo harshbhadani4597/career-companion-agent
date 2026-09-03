@@ -15,6 +15,7 @@ from routes.resume import router as resume_router
 from routes.jobs import router as jobs_router
 from routes.applications import router as applications_router
 from routes.auth import router as auth_router
+from routes.assistant import router as assistant_router
 
 app = FastAPI(
     title="AI Career Companion Agent",
@@ -33,10 +34,12 @@ app.add_middleware(
 
 # Include API routers
 app.include_router(auth_router)
+app.include_router(assistant_router)
 app.include_router(profile_router)
 app.include_router(resume_router)
 app.include_router(jobs_router)
 app.include_router(applications_router)
+
 
 
 # Static file serving for single-URL full-stack Render deployment

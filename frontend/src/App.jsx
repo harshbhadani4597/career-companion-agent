@@ -7,6 +7,7 @@ import { MatchingPage } from "./pages/MatchingPage";
 import { SkillGapPage } from "./pages/SkillGapPage";
 import { ApplicationsPage } from "./pages/ApplicationsPage";
 import { LoginPage } from "./pages/LoginPage";
+import { AIAssistantWidget } from "./components/AIAssistantWidget";
 import { createApplicationApi } from "./services/api";
 
 function App() {
@@ -170,6 +171,8 @@ function App() {
         )}
       </main>
 
+      {/* Floating Corner AI Assistant Widget */}
+      <AIAssistantWidget profile={profile} darkMode={darkMode} />
 
       <footer className={`${
         darkMode ? "bg-slate-950 border-t border-slate-800/80 text-slate-500" : "bg-slate-900 border-t border-slate-800 text-slate-400"
