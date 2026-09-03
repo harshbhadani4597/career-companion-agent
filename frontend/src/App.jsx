@@ -6,16 +6,25 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { MatchingPage } from "./pages/MatchingPage";
 import { SkillGapPage } from "./pages/SkillGapPage";
 import { ApplicationsPage } from "./pages/ApplicationsPage";
+import { LoginPage } from "./pages/LoginPage";
 import { createApplicationApi } from "./services/api";
 
 function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(() => {
+    const saved = localStorage.getItem("candidate_profile");
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem("user");
+    return saved ? JSON.parse(saved) : null;
+  });
+
   const [jobMatches, setJobMatches] = useState([]);
   const [skillGaps, setSkillGaps] = useState([]);
   const [applications, setApplications] = useState([]);
   
-  // Theme state with localStorage persistence (defaults to Dark Mode as shown in design reference)
+  // Theme state with localStorage persistence
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem("theme");
     return saved ? saved === "dark" : true;
@@ -32,8 +41,30 @@ function App() {
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
+  const handleLoginSuccess = (data) => {
+    const loggedInUser = data.user || { name: "Student", email: "student@example.com" };
+    const userProfile = data.profile || profile;
+
+    setUser(loggedInUser);
+    if (userProfile) setProfile(userProfile);
+
+    localStorage.setItem("user", JSON.stringify(loggedInUser));
+    if (userProfile) localStorage.setItem("candidate_profile", JSON.stringify(userProfile));
+
+    setActiveTab("dashboard");
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    setActiveTab("login");
+  };
+
   const handleResumeParsed = (data) => {
-    if (data.profile) setProfile(data.profile);
+    if (data.profile) {
+      setProfile(data.profile);
+      localStorage.setItem("candidate_profile", JSON.stringify(data.profile));
+    }
     if (data.job_matches) setJobMatches(data.job_matches);
     if (data.skill_gap_analysis) setSkillGaps(data.skill_gap_analysis);
     setActiveTab("dashboard");
@@ -70,9 +101,19 @@ function App() {
         setActiveTab={setActiveTab}
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}
+        user={user}
+        onLogout={handleLogout}
+        onShowLogin={() => setActiveTab("login")}
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === "login" && (
+          <LoginPage
+            onLoginSuccess={handleLoginSuccess}
+            darkMode={darkMode}
+          />
+        )}
+
         {activeTab === "dashboard" && (
           <DashboardPage
             profile={profile}
@@ -95,7 +136,10 @@ function App() {
         {activeTab === "profile" && (
           <ProfilePage
             profile={profile}
-            setProfile={setProfile}
+            setProfile={(p) => {
+              setProfile(p);
+              localStorage.setItem("candidate_profile", JSON.stringify(p));
+            }}
             darkMode={darkMode}
           />
         )}
