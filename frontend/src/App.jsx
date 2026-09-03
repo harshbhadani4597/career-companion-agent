@@ -107,66 +107,69 @@ function App() {
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === "login" && (
+        {!user ? (
           <LoginPage
             onLoginSuccess={handleLoginSuccess}
             darkMode={darkMode}
           />
-        )}
+        ) : (
+          <>
+            {activeTab === "dashboard" && (
+              <DashboardPage
+                profile={profile}
+                jobMatches={jobMatches}
+                skillGaps={skillGaps}
+                applications={applications}
+                setActiveTab={setActiveTab}
+                darkMode={darkMode}
+              />
+            )}
 
-        {activeTab === "dashboard" && (
-          <DashboardPage
-            profile={profile}
-            jobMatches={jobMatches}
-            skillGaps={skillGaps}
-            applications={applications}
-            setActiveTab={setActiveTab}
-            darkMode={darkMode}
-          />
-        )}
+            {activeTab === "resume" && (
+              <ResumePage
+                profile={profile}
+                onResumeParsed={handleResumeParsed}
+                darkMode={darkMode}
+              />
+            )}
 
-        {activeTab === "resume" && (
-          <ResumePage
-            profile={profile}
-            onResumeParsed={handleResumeParsed}
-            darkMode={darkMode}
-          />
-        )}
+            {activeTab === "profile" && (
+              <ProfilePage
+                profile={profile}
+                setProfile={(p) => {
+                  setProfile(p);
+                  localStorage.setItem("candidate_profile", JSON.stringify(p));
+                }}
+                darkMode={darkMode}
+              />
+            )}
 
-        {activeTab === "profile" && (
-          <ProfilePage
-            profile={profile}
-            setProfile={(p) => {
-              setProfile(p);
-              localStorage.setItem("candidate_profile", JSON.stringify(p));
-            }}
-            darkMode={darkMode}
-          />
-        )}
+            {activeTab === "matching" && (
+              <MatchingPage
+                jobMatches={jobMatches}
+                profile={profile}
+                onSaveApplication={handleSaveApplication}
+                darkMode={darkMode}
+              />
+            )}
 
-        {activeTab === "matching" && (
-          <MatchingPage
-            jobMatches={jobMatches}
-            profile={profile}
-            onSaveApplication={handleSaveApplication}
-            darkMode={darkMode}
-          />
-        )}
+            {activeTab === "skillgap" && (
+              <SkillGapPage
+                skillGaps={skillGaps}
+                darkMode={darkMode}
+              />
+            )}
 
-        {activeTab === "skillgap" && (
-          <SkillGapPage
-            skillGaps={skillGaps}
-            darkMode={darkMode}
-          />
-        )}
-
-        {activeTab === "applications" && (
-          <ApplicationsPage
-            applications={applications}
-            darkMode={darkMode}
-          />
+            {activeTab === "applications" && (
+              <ApplicationsPage
+                applications={applications}
+                darkMode={darkMode}
+              />
+            )}
+          </>
         )}
       </main>
+
 
       <footer className={`${
         darkMode ? "bg-slate-950 border-t border-slate-800/80 text-slate-500" : "bg-slate-900 border-t border-slate-800 text-slate-400"

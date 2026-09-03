@@ -30,23 +30,26 @@ export function Navbar({ activeTab, setActiveTab, darkMode, toggleDarkMode, user
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Navigation Tabs */}
-            <nav className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition-all ${
-                    activeTab === tab.id
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
-                      : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
-                  }`}
-                >
-                  <span>{tab.icon}</span>
-                  <span className="hidden md:inline">{tab.label}</span>
-                </button>
-              ))}
-            </nav>
+            {/* Navigation Tabs (Only visible when signed in) */}
+            {user && (
+              <nav className="flex space-x-1 sm:space-x-2 overflow-x-auto py-2">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition-all ${
+                      activeTab === tab.id
+                        ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
+                        : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
+                    }`}
+                  >
+                    <span>{tab.icon}</span>
+                    <span className="hidden md:inline">{tab.label}</span>
+                  </button>
+                ))}
+              </nav>
+            )}
+
 
             {/* Dark / Light Mode Toggle Button */}
             <button
