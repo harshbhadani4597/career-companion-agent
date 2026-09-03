@@ -1,0 +1,1755 @@
+{
+  "profiles": [
+    {
+      "filename": "Parika_ch RESUME (2).pdf",
+      "profile": {
+        "name": "Parika ch RESUME (2)",
+        "email": "",
+        "phone": "",
+        "skills": [
+          "Python",
+          "Machine Learning",
+          "Data Analysis",
+          "SQL"
+        ],
+        "education": [
+          {
+            "degree": "B.Tech",
+            "institution": "University"
+          }
+        ],
+        "experience": [],
+        "projects": [],
+        "certifications": []
+      },
+      "job_matches": [
+        {
+          "job_id": "JOB026",
+          "title": "Machine Learning Intern",
+          "company": "DataMind Analytics",
+          "location": "Chennai",
+          "work_mode": "On-site",
+          "duration": "6 Months",
+          "stipend": "\u20b920,000 / month",
+          "description": "Work as a Machine Learning Intern at DataMind Analytics. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Machine Learning.",
+          "eligibility": "B.Tech CSE/IT/Data Science with proficiency in Python, Machine Learning, SQL.",
+          "application_url": "https://internships.example.com/apply/job026",
+          "match_percentage": 83.75,
+          "matched_skills": [
+            "machine learning",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [],
+          "score_breakdown": {
+            "skill_score_50pct": 100.0,
+            "education_score_15pct": 100.0,
+            "project_score_15pct": 30.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 3 skills (machine learning, python, sql). Skill overlap score: 100.0%, Education match: 100.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB025",
+          "title": "Predictive Analytics Intern",
+          "company": "Turing Insights",
+          "location": "Noida",
+          "work_mode": "On-site",
+          "duration": "3 Months",
+          "stipend": "\u20b940,000 / month",
+          "description": "Work as a Predictive Analytics Intern at Turing Insights. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Machine Learning.",
+          "eligibility": "B.Tech CSE/IT/Data Science with proficiency in Python, Machine Learning, MLflow.",
+          "application_url": "https://internships.example.com/apply/job025",
+          "match_percentage": 71.25,
+          "matched_skills": [
+            "machine learning",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "mlflow"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 75.0,
+            "education_score_15pct": 100.0,
+            "project_score_15pct": 30.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 3 skills (machine learning, python, sql). Skill overlap score: 75.0%, Education match: 100.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB057",
+          "title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b920,000 / month",
+          "description": "Work as a Data Analyst Intern at StatPulse Solutions. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, SQL.",
+          "application_url": "https://internships.example.com/apply/job057",
+          "match_percentage": 67.84,
+          "matched_skills": [
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 66.67,
+            "education_score_15pct": 100.0,
+            "project_score_15pct": 30.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (python, sql). Skill overlap score: 66.67%, Education match: 100.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB040",
+          "title": "Predictive Analytics Intern",
+          "company": "Turing Insights",
+          "location": "Pune",
+          "work_mode": "Hybrid",
+          "duration": "6 Months",
+          "stipend": "\u20b940,000 / month",
+          "description": "Work as a Predictive Analytics Intern at Turing Insights. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Machine Learning.",
+          "eligibility": "B.Tech CSE/IT/Data Science with proficiency in Python, Machine Learning, OpenCV.",
+          "application_url": "https://internships.example.com/apply/job040",
+          "match_percentage": 63.75,
+          "matched_skills": [
+            "machine learning",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "mlflow",
+            "opencv"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 60.0,
+            "education_score_15pct": 100.0,
+            "project_score_15pct": 30.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 3 skills (machine learning, python, sql). Skill overlap score: 60.0%, Education match: 100.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB036",
+          "title": "Machine Learning Intern",
+          "company": "DataMind Analytics",
+          "location": "Pune",
+          "work_mode": "Hybrid",
+          "duration": "6 Months",
+          "stipend": "\u20b930,000 / month",
+          "description": "Work as a Machine Learning Intern at DataMind Analytics. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Machine Learning.",
+          "eligibility": "B.Tech CSE/IT/Data Science with proficiency in Python, Machine Learning, Scikit-learn.",
+          "application_url": "https://internships.example.com/apply/job036",
+          "match_percentage": 58.75,
+          "matched_skills": [
+            "machine learning",
+            "python"
+          ],
+          "missing_skills": [
+            "pandas",
+            "scikit-learn"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 50.0,
+            "education_score_15pct": 100.0,
+            "project_score_15pct": 30.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 2 skills (machine learning, python). Skill overlap score: 50.0%, Education match: 100.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB031",
+          "title": "Machine Learning Intern",
+          "company": "DataMind Analytics",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b940,000 / month",
+          "description": "Work as a Machine Learning Intern at DataMind Analytics. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Machine Learning.",
+          "eligibility": "B.Tech CSE/IT/Data Science with proficiency in Python, Machine Learning, NumPy.",
+          "application_url": "https://internships.example.com/apply/job031",
+          "match_percentage": 54.5,
+          "matched_skills": [
+            "machine learning",
+            "python"
+          ],
+          "missing_skills": [
+            "mlflow",
+            "numpy",
+            "opencv"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 100.0,
+            "project_score_15pct": 30.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (machine learning, python). Skill overlap score: 40.0%, Education match: 100.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB041",
+          "title": "Data Science Intern",
+          "company": "InsightEdge",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b940,000 / month",
+          "description": "Work as a Data Science Intern at InsightEdge. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, SQL.",
+          "application_url": "https://internships.example.com/apply/job041",
+          "match_percentage": 54.5,
+          "matched_skills": [
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "pandas",
+            "power bi",
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 100.0,
+            "project_score_15pct": 30.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (python, sql). Skill overlap score: 40.0%, Education match: 100.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB021",
+          "title": "Machine Learning Intern",
+          "company": "DataMind Analytics",
+          "location": "Noida",
+          "work_mode": "On-site",
+          "duration": "3 Months",
+          "stipend": "\u20b930,000 / month",
+          "description": "Work as a Machine Learning Intern at DataMind Analytics. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Machine Learning.",
+          "eligibility": "B.Tech CSE/IT/Data Science with proficiency in Python, Machine Learning, Scikit-learn.",
+          "application_url": "https://internships.example.com/apply/job021",
+          "match_percentage": 53.75,
+          "matched_skills": [
+            "machine learning",
+            "python"
+          ],
+          "missing_skills": [
+            "numpy",
+            "pandas",
+            "scikit-learn"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 100.0,
+            "project_score_15pct": 30.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 2 skills (machine learning, python). Skill overlap score: 40.0%, Education match: 100.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB030",
+          "title": "Predictive Analytics Intern",
+          "company": "Turing Insights",
+          "location": "Chennai",
+          "work_mode": "On-site",
+          "duration": "6 Months",
+          "stipend": "\u20b930,000 / month",
+          "description": "Work as a Predictive Analytics Intern at Turing Insights. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Machine Learning.",
+          "eligibility": "B.Tech CSE/IT/Data Science with proficiency in Python, Machine Learning, Pandas.",
+          "application_url": "https://internships.example.com/apply/job030",
+          "match_percentage": 53.75,
+          "matched_skills": [
+            "machine learning",
+            "python"
+          ],
+          "missing_skills": [
+            "numpy",
+            "opencv",
+            "pandas"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 100.0,
+            "project_score_15pct": 30.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 2 skills (machine learning, python). Skill overlap score: 40.0%, Education match: 100.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB056",
+          "title": "Data Science Intern",
+          "company": "InsightEdge",
+          "location": "Chennai",
+          "work_mode": "On-site",
+          "duration": "6 Months",
+          "stipend": "\u20b940,000 / month",
+          "description": "Work as a Data Science Intern at InsightEdge. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, Data Visualization.",
+          "application_url": "https://internships.example.com/apply/job056",
+          "match_percentage": 50.41,
+          "matched_skills": [
+            "python"
+          ],
+          "missing_skills": [
+            "data visualization",
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 33.33,
+            "education_score_15pct": 100.0,
+            "project_score_15pct": 30.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 1 skills (python). Skill overlap score: 33.33%, Education match: 100.0%, Semantic similarity: 70.0%."
+        }
+      ],
+      "skill_gap_analysis": [
+        {
+          "job_id": "JOB026",
+          "job_title": "Machine Learning Intern",
+          "company": "DataMind Analytics",
+          "match_percentage": 83.75,
+          "matched_skills": [
+            "machine learning",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [],
+          "recommendation": "You meet all technical skill requirements for Machine Learning Intern. Highlight your matching projects in your resume.",
+          "learning_path": [
+            "You possess all required skills for this internship! Focus on building an impressive project portfolio."
+          ]
+        },
+        {
+          "job_id": "JOB025",
+          "job_title": "Predictive Analytics Intern",
+          "company": "Turing Insights",
+          "match_percentage": 71.25,
+          "matched_skills": [
+            "machine learning",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "mlflow"
+          ],
+          "recommendation": "You are very close to full eligibility for Predictive Analytics Intern! Bridge the gap by focusing on: mlflow.",
+          "learning_path": [
+            "Learn mlflow: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB057",
+          "job_title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "match_percentage": 67.84,
+          "matched_skills": [
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "recommendation": "You are very close to full eligibility for Data Analyst Intern! Bridge the gap by focusing on: r.",
+          "learning_path": [
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB040",
+          "job_title": "Predictive Analytics Intern",
+          "company": "Turing Insights",
+          "match_percentage": 63.75,
+          "matched_skills": [
+            "machine learning",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "mlflow",
+            "opencv"
+          ],
+          "recommendation": "You are very close to full eligibility for Predictive Analytics Intern! Bridge the gap by focusing on: mlflow, opencv.",
+          "learning_path": [
+            "Learn mlflow: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn opencv: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB036",
+          "job_title": "Machine Learning Intern",
+          "company": "DataMind Analytics",
+          "match_percentage": 58.75,
+          "matched_skills": [
+            "machine learning",
+            "python"
+          ],
+          "missing_skills": [
+            "pandas",
+            "scikit-learn"
+          ],
+          "recommendation": "You are very close to full eligibility for Machine Learning Intern! Bridge the gap by focusing on: pandas, scikit-learn.",
+          "learning_path": [
+            "Learn pandas: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn scikit-learn: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB031",
+          "job_title": "Machine Learning Intern",
+          "company": "DataMind Analytics",
+          "match_percentage": 54.5,
+          "matched_skills": [
+            "machine learning",
+            "python"
+          ],
+          "missing_skills": [
+            "mlflow",
+            "numpy",
+            "opencv"
+          ],
+          "recommendation": "To maximize your eligibility for Machine Learning Intern, build foundational knowledge in mlflow, numpy, opencv through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn mlflow: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn numpy: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn opencv: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB041",
+          "job_title": "Data Science Intern",
+          "company": "InsightEdge",
+          "match_percentage": 54.5,
+          "matched_skills": [
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "pandas",
+            "power bi",
+            "r"
+          ],
+          "recommendation": "To maximize your eligibility for Data Science Intern, build foundational knowledge in pandas, power bi, r through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn pandas: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn power bi: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB021",
+          "job_title": "Machine Learning Intern",
+          "company": "DataMind Analytics",
+          "match_percentage": 53.75,
+          "matched_skills": [
+            "machine learning",
+            "python"
+          ],
+          "missing_skills": [
+            "numpy",
+            "pandas",
+            "scikit-learn"
+          ],
+          "recommendation": "To maximize your eligibility for Machine Learning Intern, build foundational knowledge in numpy, pandas, scikit-learn through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn numpy: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn pandas: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn scikit-learn: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB030",
+          "job_title": "Predictive Analytics Intern",
+          "company": "Turing Insights",
+          "match_percentage": 53.75,
+          "matched_skills": [
+            "machine learning",
+            "python"
+          ],
+          "missing_skills": [
+            "numpy",
+            "opencv",
+            "pandas"
+          ],
+          "recommendation": "To maximize your eligibility for Predictive Analytics Intern, build foundational knowledge in numpy, opencv, pandas through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn numpy: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn opencv: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn pandas: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB056",
+          "job_title": "Data Science Intern",
+          "company": "InsightEdge",
+          "match_percentage": 50.41,
+          "matched_skills": [
+            "python"
+          ],
+          "missing_skills": [
+            "data visualization",
+            "r"
+          ],
+          "recommendation": "You are very close to full eligibility for Data Science Intern! Bridge the gap by focusing on: data visualization, r.",
+          "learning_path": [
+            "Learn data visualization: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        }
+      ],
+      "_id": "loc_1"
+    },
+    {
+      "filename": "Shrishti_Singh_RESUME.pdf",
+      "profile": {
+        "name": "SHRISHTI SINGH",
+        "email": "shrishtis089@gmail.com",
+        "phone": "+91-8169030656",
+        "skills": [
+          "LangChain",
+          "LlamaIndex",
+          "RAG Pipelines",
+          "OpenAI API",
+          "Gemini API",
+          "Claude API",
+          "Prompt Engineering",
+          "Agentic workflows",
+          "Python",
+          "FastAPI",
+          "Flask",
+          "Pydantic",
+          "SQLAlchemy",
+          "Pandas",
+          "NumPy",
+          "Jupyter Notebooks",
+          "REST API development",
+          "Playwright",
+          "Watchdog",
+          "Telegram/WhatsApp bots",
+          "GitHub Actions CI/CD",
+          "Docker",
+          "JSON",
+          "SQL",
+          "SQLite",
+          "PostgreSQL",
+          "MongoDB",
+          "API integration",
+          "data preprocessing",
+          "Recharts analytics",
+          "React",
+          "TypeScript",
+          "TailwindCSS",
+          "PWA / Service Workers",
+          "Framer Motion",
+          "Git",
+          "GitHub",
+          "VS Code",
+          "Postman",
+          "Vercel",
+          "Railway",
+          "Render",
+          "Google Cloud",
+          "Firebase"
+        ],
+        "education": [
+          {
+            "degree": "B.Tech Computer Science Engineering",
+            "institution": "CSMU Panvel",
+            "start_date": "2023",
+            "end_date": "2027",
+            "gpa": "SGPA: 9.00 | CGPA: 7.37"
+          },
+          {
+            "degree": "Minor in Artificial Intelligence",
+            "institution": "Indian Institute of Technology (IIT), Ropar",
+            "start_date": "2025",
+            "end_date": "2026",
+            "gpa": "CGPA: 7.23"
+          }
+        ],
+        "experience": [],
+        "projects": [
+          {
+            "name": "StriveX \u2014 AI Productivity Decision Engine",
+            "description": "Built and deployed a Gemini 1.5 Flash agentic pipeline for NLP goal parsing, daily brief generation, and adaptive task coaching with multi-key rotation, TTL cache, and rule-based fallback engine. Prototyped Behavioral Intelligence Engine analyzing 30-day user behavior logs for burnout signals. Shipped 40+ REST API endpoints with JWT, bcrypt, HMAC webhooks, and rate limiting. Implemented Stripe subscription billing and Sentry monitoring. Technologies: Flask, React, Gemini API, LangChain, PostgreSQL, Docker."
+          },
+          {
+            "name": "Intern India \u2014 AI Smart Allocation Engine",
+            "description": "Automated the internship matching workflow using Playwright scrapers, Gemini resume parsing, MiniLM semantic similarity, and Hungarian algorithm allocation. Integrated Telegram and WhatsApp bot alerts for real-time candidate notifications and built a drag-and-drop Kanban tracker. Won 3rd Prize. Technologies: FastAPI, React, Gemini, Sentence-Transformers, MongoDB, Playwright."
+          },
+          {
+            "name": "Lex India \u2014 AI Legal Assistance Platform",
+            "description": "Built an NLP chatbot for legal query simplification using extractive summarization. Designed full RAG pipeline over Indian court judgment corpus with Qdrant vector similarity search retrieving precedents in under 3 seconds. Wrote PRD with accuracy thresholds and confidence scoring. Won 1st Prize. Technologies: FastAPI, React, Qdrant, RAG, NLP."
+          },
+          {
+            "name": "SABINAC \u2014 Local PC Agentic Intelligence",
+            "description": "Designing an 8-layer autonomous agent that monitors filesystem events, runs browser automation via Playwright, and executes OS-level tasks. Implemented 3-tier memory (mem0 + SQLite), prompt injection sanitization, SHA-256 audit log chain, and cost-optimized hybrid reasoning engine (rule-based cerebellum + Groq Llama 3.1 70B cortex). Technologies: Python, Groq API, Playwright, mem0, SQLite, Watchdog."
+          },
+          {
+            "name": "Katha \u2014 Cultural AI Storyteller",
+            "description": "Prototyped and deployed a full-stack AI application integrating ElevenLabs TTS for voice narration and Pollinations.ai for image generation. Built gamification system (XP, streaks, 18 achievement badges) and interactive map. Technologies: FastAPI, React, ElevenLabs TTS, Pollinations.ai, Docker."
+          }
+        ],
+        "certifications": [
+          "Google Cloud Technical Series \u2014 AI in Action (Mar 2026)",
+          "Generative AI Mastermind \u2014 Outskill",
+          "Ethical Hacking Workshop & Masterclass",
+          "Solution Challenge",
+          "AI For Bharat"
+        ]
+      },
+      "job_matches": [
+        {
+          "job_id": "JOB049",
+          "title": "Statistical Modeling Intern",
+          "company": "DataVista",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b930,000 / month",
+          "description": "Work as a Statistical Modeling Intern at DataVista. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, SQL.",
+          "application_url": "https://internships.example.com/apply/job049",
+          "match_percentage": 78.75,
+          "matched_skills": [
+            "pandas",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 75.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 90.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 3 skills (pandas, python, sql). Skill overlap score: 75.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB057",
+          "title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b920,000 / month",
+          "description": "Work as a Data Analyst Intern at StatPulse Solutions. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, SQL.",
+          "application_url": "https://internships.example.com/apply/job057",
+          "match_percentage": 76.09,
+          "matched_skills": [
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 66.67,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 100.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (python, sql). Skill overlap score: 66.67%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB041",
+          "title": "Data Science Intern",
+          "company": "InsightEdge",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b940,000 / month",
+          "description": "Work as a Data Science Intern at InsightEdge. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, SQL.",
+          "application_url": "https://internships.example.com/apply/job041",
+          "match_percentage": 69.75,
+          "matched_skills": [
+            "pandas",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "power bi",
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 60.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 80.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 3 skills (pandas, python, sql). Skill overlap score: 60.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB079",
+          "title": "Python Django Intern",
+          "company": "CodeHorizon",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b920,000 / month",
+          "description": "Work as a Python Django Intern at CodeHorizon. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Web & Full Stack Development.",
+          "eligibility": "B.Tech CSE/IT/BCA/MCA with proficiency in JavaScript, TypeScript, React.",
+          "application_url": "https://internships.example.com/apply/job079",
+          "match_percentage": 69.34,
+          "matched_skills": [
+            "react",
+            "typescript"
+          ],
+          "missing_skills": [
+            "javascript"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 66.67,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 55.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (react, typescript). Skill overlap score: 66.67%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB005",
+          "title": "AI Solutions Intern",
+          "company": "OmniAI Labs",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b930,000 / month",
+          "description": "Work as a AI Solutions Intern at OmniAI Labs. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Artificial Intelligence.",
+          "eligibility": "B.Tech CSE/AI/ML or M.Tech AI with proficiency in Python, PyTorch, Transformers.",
+          "application_url": "https://internships.example.com/apply/job005",
+          "match_percentage": 67.25,
+          "matched_skills": [
+            "git",
+            "prompt engineering",
+            "python"
+          ],
+          "missing_skills": [
+            "pytorch",
+            "transformers"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 60.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 63.33,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 3 skills (git, prompt engineering, python). Skill overlap score: 60.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB115",
+          "title": "Google Cloud Intern",
+          "company": "Nimbus Systems",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b930,000 / month",
+          "description": "Work as a Google Cloud Intern at Nimbus Systems. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Cloud & DevOps.",
+          "eligibility": "B.Tech CSE/IT/ECE with proficiency in AWS, Google Cloud, Python.",
+          "application_url": "https://internships.example.com/apply/job115",
+          "match_percentage": 60.25,
+          "matched_skills": [
+            "google cloud",
+            "python"
+          ],
+          "missing_skills": [
+            "aws",
+            "bash"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 50.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 50.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (google cloud, python). Skill overlap score: 50.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB013",
+          "title": "Generative AI Intern",
+          "company": "DeepVision Systems",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b920,000 / month",
+          "description": "Work as a Generative AI Intern at DeepVision Systems. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Artificial Intelligence.",
+          "eligibility": "B.Tech CSE/AI/ML or M.Tech AI with proficiency in Python, PyTorch, RAG.",
+          "application_url": "https://internships.example.com/apply/job013",
+          "match_percentage": 59.75,
+          "matched_skills": [
+            "prompt engineering",
+            "python"
+          ],
+          "missing_skills": [
+            "pytorch",
+            "rag",
+            "transformers"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 80.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (prompt engineering, python). Skill overlap score: 40.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB001",
+          "title": "AI Engineering Intern",
+          "company": "Brainwave AI",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b920,000 / month",
+          "description": "Work as a AI Engineering Intern at Brainwave AI. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Artificial Intelligence.",
+          "eligibility": "B.Tech CSE/AI/ML or M.Tech AI with proficiency in Python, PyTorch, TensorFlow.",
+          "application_url": "https://internships.example.com/apply/job001",
+          "match_percentage": 57.25,
+          "matched_skills": [
+            "langchain",
+            "python"
+          ],
+          "missing_skills": [
+            "llms",
+            "pytorch",
+            "tensorflow"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 63.33,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (langchain, python). Skill overlap score: 40.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB119",
+          "title": "Google Cloud Intern",
+          "company": "KubernetesHub",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b940,000 / month",
+          "description": "Work as a Google Cloud Intern at KubernetesHub. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Cloud & DevOps.",
+          "eligibility": "B.Tech CSE/IT/ECE with proficiency in AWS, Google Cloud, Docker.",
+          "application_url": "https://internships.example.com/apply/job119",
+          "match_percentage": 54.75,
+          "matched_skills": [
+            "docker",
+            "google cloud"
+          ],
+          "missing_skills": [
+            "aws",
+            "kubernetes",
+            "linux"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 46.67,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (docker, google cloud). Skill overlap score: 40.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB023",
+          "title": "Computer Vision Intern",
+          "company": "Visionary Tech",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b920,000 / month",
+          "description": "Work as a Computer Vision Intern at Visionary Tech. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Machine Learning.",
+          "eligibility": "B.Tech CSE/IT/Data Science with proficiency in Python, Machine Learning, NumPy.",
+          "application_url": "https://internships.example.com/apply/job023",
+          "match_percentage": 54.75,
+          "matched_skills": [
+            "numpy",
+            "python"
+          ],
+          "missing_skills": [
+            "machine learning",
+            "mlflow",
+            "opencv"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 46.67,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (numpy, python). Skill overlap score: 40.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        }
+      ],
+      "skill_gap_analysis": [
+        {
+          "job_id": "JOB049",
+          "job_title": "Statistical Modeling Intern",
+          "company": "DataVista",
+          "match_percentage": 78.75,
+          "matched_skills": [
+            "pandas",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "recommendation": "You are very close to full eligibility for Statistical Modeling Intern! Bridge the gap by focusing on: r.",
+          "learning_path": [
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB057",
+          "job_title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "match_percentage": 76.09,
+          "matched_skills": [
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "recommendation": "You are very close to full eligibility for Data Analyst Intern! Bridge the gap by focusing on: r.",
+          "learning_path": [
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB041",
+          "job_title": "Data Science Intern",
+          "company": "InsightEdge",
+          "match_percentage": 69.75,
+          "matched_skills": [
+            "pandas",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "power bi",
+            "r"
+          ],
+          "recommendation": "You are very close to full eligibility for Data Science Intern! Bridge the gap by focusing on: power bi, r.",
+          "learning_path": [
+            "Learn power bi: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB079",
+          "job_title": "Python Django Intern",
+          "company": "CodeHorizon",
+          "match_percentage": 69.34,
+          "matched_skills": [
+            "react",
+            "typescript"
+          ],
+          "missing_skills": [
+            "javascript"
+          ],
+          "recommendation": "You are very close to full eligibility for Python Django Intern! Bridge the gap by focusing on: javascript.",
+          "learning_path": [
+            "Learn javascript: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB005",
+          "job_title": "AI Solutions Intern",
+          "company": "OmniAI Labs",
+          "match_percentage": 67.25,
+          "matched_skills": [
+            "git",
+            "prompt engineering",
+            "python"
+          ],
+          "missing_skills": [
+            "pytorch",
+            "transformers"
+          ],
+          "recommendation": "You are very close to full eligibility for AI Solutions Intern! Bridge the gap by focusing on: pytorch, transformers.",
+          "learning_path": [
+            "Learn pytorch: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn transformers: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB115",
+          "job_title": "Google Cloud Intern",
+          "company": "Nimbus Systems",
+          "match_percentage": 60.25,
+          "matched_skills": [
+            "google cloud",
+            "python"
+          ],
+          "missing_skills": [
+            "aws",
+            "bash"
+          ],
+          "recommendation": "You are very close to full eligibility for Google Cloud Intern! Bridge the gap by focusing on: aws, bash.",
+          "learning_path": [
+            "Learn aws: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn bash: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB013",
+          "job_title": "Generative AI Intern",
+          "company": "DeepVision Systems",
+          "match_percentage": 59.75,
+          "matched_skills": [
+            "prompt engineering",
+            "python"
+          ],
+          "missing_skills": [
+            "pytorch",
+            "rag",
+            "transformers"
+          ],
+          "recommendation": "To maximize your eligibility for Generative AI Intern, build foundational knowledge in pytorch, rag, transformers through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn pytorch: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn rag: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn transformers: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB001",
+          "job_title": "AI Engineering Intern",
+          "company": "Brainwave AI",
+          "match_percentage": 57.25,
+          "matched_skills": [
+            "langchain",
+            "python"
+          ],
+          "missing_skills": [
+            "llms",
+            "pytorch",
+            "tensorflow"
+          ],
+          "recommendation": "To maximize your eligibility for AI Engineering Intern, build foundational knowledge in llms, pytorch, tensorflow through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn llms: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn pytorch: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn tensorflow: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB119",
+          "job_title": "Google Cloud Intern",
+          "company": "KubernetesHub",
+          "match_percentage": 54.75,
+          "matched_skills": [
+            "docker",
+            "google cloud"
+          ],
+          "missing_skills": [
+            "aws",
+            "kubernetes",
+            "linux"
+          ],
+          "recommendation": "To maximize your eligibility for Google Cloud Intern, build foundational knowledge in aws, kubernetes, linux through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn aws: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn kubernetes: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn linux: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB023",
+          "job_title": "Computer Vision Intern",
+          "company": "Visionary Tech",
+          "match_percentage": 54.75,
+          "matched_skills": [
+            "numpy",
+            "python"
+          ],
+          "missing_skills": [
+            "machine learning",
+            "mlflow",
+            "opencv"
+          ],
+          "recommendation": "To maximize your eligibility for Computer Vision Intern, build foundational knowledge in machine learning, mlflow, opencv through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn machine learning: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn mlflow: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn opencv: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        }
+      ],
+      "_id": "loc_2"
+    },
+    {
+      "filename": "Harsh Rajpal Resume.pdf",
+      "profile": {
+        "name": "HARSH RAJPAL",
+        "email": "",
+        "phone": "+91-7015469345",
+        "skills": [
+          "Java",
+          "C",
+          "Python",
+          "Data Visualization",
+          "DBMS",
+          "JavaScript",
+          "SQL",
+          "HTML",
+          "CSS",
+          "SAP",
+          "React",
+          "Autopsy",
+          "Spring Boot",
+          "Kubernetes",
+          "Wireshark",
+          "Power BI",
+          "Leadership",
+          "Eagerness to learn",
+          "Focus",
+          "Problem-solving"
+        ],
+        "education": [
+          {
+            "degree": "Bachelors' of Computer Science and Engineering (Specialization in Information Security)",
+            "institution": "VIT, Vellore",
+            "start_date": "",
+            "end_date": "2024",
+            "gpa": "8.89"
+          }
+        ],
+        "experience": [
+          {
+            "company": "Pepsico GCC",
+            "role": "DEVELOPER/ANALYST",
+            "start_date": "Aug 2024",
+            "end_date": "Present",
+            "description": [
+              "Led the automation of delivery data flow to the transportation team, enhancing operational efficiency and projected annual savings exceeding 1M USD.",
+              "Worked on a weekly update functionality that sends weekly office to all employees using Spring Boot.",
+              "Worked on an invoice conversion functionality that converts external invoices to our system-supported invoice using ABAP.",
+              "Working and developing a notification service from scratch using AWS SQS, SES, SNS and SAP, effectively supporting over 100,000 delivery partners with reliable SMS and email delivery."
+            ]
+          },
+          {
+            "company": "Lets Grow More",
+            "role": "Web Development Intern",
+            "start_date": "Sep 2021",
+            "end_date": "Oct 2021",
+            "description": [
+              "Learnt and applied HTML, CSS, JavaScript, and React to develop multiple web pages during the internship period."
+            ]
+          }
+        ],
+        "projects": [
+          {
+            "name": "Analysis of phone users",
+            "description": "Conducted an extensive data analysis on a cell phone user market\u2019s data of 1,000,000 users available on Kaggle using MySQL."
+          },
+          {
+            "name": "Resume Builder",
+            "description": "An application that gives 10 options to make a resume from various available formats using the information stored in MongoDB."
+          },
+          {
+            "name": "Women Status in India",
+            "description": "Built a dashboard using Power BI and Tableau to analyze and understand the status of women in India and underlying factors like education, age, etc., by applying various data visualization methods and running SQL queries."
+          },
+          {
+            "name": "Assisted Vision",
+            "description": "A web application designed to facilitate the learning process for physically challenged learners. It aims to provide a simple and accessible method for physically disabled students to interact with and learn by loading and storing the files in the local database."
+          },
+          {
+            "name": "Traffic Police Hand Sign Detection",
+            "description": "An application to detect 12 hand signs shown by traffic police using machine learning algorithms built using Python and the MoveNet model."
+          },
+          {
+            "name": "Library Management System",
+            "description": "Worked on making a library management system in an engineering college using SQL and learned new concepts by working on a live project."
+          }
+        ],
+        "certifications": [
+          "Journey to Cloud: By IBM",
+          "Security, Compliance and Identity Fundamentals: By Microsoft",
+          "Software Engineering Virtual Experience: By Goldman Sachs",
+          "Project Management Skills for Leader: By LinkedIn"
+        ]
+      },
+      "job_matches": [
+        {
+          "job_id": "JOB057",
+          "title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b920,000 / month",
+          "description": "Work as a Data Analyst Intern at StatPulse Solutions. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, SQL.",
+          "application_url": "https://internships.example.com/apply/job057",
+          "match_percentage": 76.09,
+          "matched_skills": [
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 66.67,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 100.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (python, sql). Skill overlap score: 66.67%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB047",
+          "title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "location": "Noida",
+          "work_mode": "On-site",
+          "duration": "3 Months",
+          "stipend": "\u20b940,000 / month",
+          "description": "Work as a Data Analyst Intern at StatPulse Solutions. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, Data Visualization.",
+          "application_url": "https://internships.example.com/apply/job047",
+          "match_percentage": 75.34,
+          "matched_skills": [
+            "data visualization",
+            "python"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 66.67,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 100.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 2 skills (data visualization, python). Skill overlap score: 66.67%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB056",
+          "title": "Data Science Intern",
+          "company": "InsightEdge",
+          "location": "Chennai",
+          "work_mode": "On-site",
+          "duration": "6 Months",
+          "stipend": "\u20b940,000 / month",
+          "description": "Work as a Data Science Intern at InsightEdge. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, Data Visualization.",
+          "application_url": "https://internships.example.com/apply/job056",
+          "match_percentage": 75.34,
+          "matched_skills": [
+            "data visualization",
+            "python"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 66.67,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 100.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 2 skills (data visualization, python). Skill overlap score: 66.67%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB041",
+          "title": "Data Science Intern",
+          "company": "InsightEdge",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b940,000 / month",
+          "description": "Work as a Data Science Intern at InsightEdge. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, SQL.",
+          "application_url": "https://internships.example.com/apply/job041",
+          "match_percentage": 72.25,
+          "matched_skills": [
+            "power bi",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "pandas",
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 60.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 96.67,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 3 skills (power bi, python, sql). Skill overlap score: 60.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB046",
+          "title": "Data Science Intern",
+          "company": "InsightEdge",
+          "location": "Pune",
+          "work_mode": "Hybrid",
+          "duration": "6 Months",
+          "stipend": "\u20b930,000 / month",
+          "description": "Work as a Data Science Intern at InsightEdge. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, Excel.",
+          "application_url": "https://internships.example.com/apply/job046",
+          "match_percentage": 65.5,
+          "matched_skills": [
+            "data visualization",
+            "python"
+          ],
+          "missing_skills": [
+            "excel",
+            "r"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 50.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 90.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 2 skills (data visualization, python). Skill overlap score: 50.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB096",
+          "title": "Core Software Engineering Intern",
+          "company": "SystemsCore Tech",
+          "location": "Chennai",
+          "work_mode": "On-site",
+          "duration": "6 Months",
+          "stipend": "\u20b930,000 / month",
+          "description": "Work as a Core Software Engineering Intern at SystemsCore Tech. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Software Development (Java/C++).",
+          "eligibility": "B.Tech CSE/ECE/IT with proficiency in Java, Spring Boot, C++.",
+          "application_url": "https://internships.example.com/apply/job096",
+          "match_percentage": 62.5,
+          "matched_skills": [
+            "java",
+            "spring boot"
+          ],
+          "missing_skills": [
+            "c++",
+            "data structures"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 50.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 70.0,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 2 skills (java, spring boot). Skill overlap score: 50.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB052",
+          "title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "location": "Chennai",
+          "work_mode": "On-site",
+          "duration": "6 Months",
+          "stipend": "\u20b930,000 / month",
+          "description": "Work as a Data Analyst Intern at StatPulse Solutions. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, Power BI.",
+          "application_url": "https://internships.example.com/apply/job052",
+          "match_percentage": 61.5,
+          "matched_skills": [
+            "power bi",
+            "python"
+          ],
+          "missing_skills": [
+            "r",
+            "statistics",
+            "tableau"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 96.67,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 2 skills (power bi, python). Skill overlap score: 40.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB042",
+          "title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "location": "Pune",
+          "work_mode": "Hybrid",
+          "duration": "6 Months",
+          "stipend": "\u20b920,000 / month",
+          "description": "Work as a Data Analyst Intern at StatPulse Solutions. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, Pandas.",
+          "application_url": "https://internships.example.com/apply/job042",
+          "match_percentage": 61.5,
+          "matched_skills": [
+            "power bi",
+            "python"
+          ],
+          "missing_skills": [
+            "pandas",
+            "r",
+            "tableau"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 96.67,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 2 skills (power bi, python). Skill overlap score: 40.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB051",
+          "title": "Data Science Intern",
+          "company": "InsightEdge",
+          "location": "Noida",
+          "work_mode": "On-site",
+          "duration": "3 Months",
+          "stipend": "\u20b920,000 / month",
+          "description": "Work as a Data Science Intern at InsightEdge. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Data Science & Analytics.",
+          "eligibility": "B.Tech/B.Sc Statistics/Data Science/Math with proficiency in Python, R, Pandas.",
+          "application_url": "https://internships.example.com/apply/job051",
+          "match_percentage": 61.5,
+          "matched_skills": [
+            "power bi",
+            "python"
+          ],
+          "missing_skills": [
+            "pandas",
+            "r",
+            "tableau"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 96.67,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 75.0
+          },
+          "reasoning": "Strong match of 2 skills (power bi, python). Skill overlap score: 40.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        },
+        {
+          "job_id": "JOB071",
+          "title": "Full Stack Developer Intern",
+          "company": "WebCraft Media",
+          "location": "Remote",
+          "work_mode": "Remote",
+          "duration": "3 Months",
+          "stipend": "\u20b930,000 / month",
+          "description": "Work as a Full Stack Developer Intern at WebCraft Media. You will collaborate with cross-functional teams to design, develop, test, and deploy software solutions in Web & Full Stack Development.",
+          "eligibility": "B.Tech CSE/IT/BCA/MCA with proficiency in JavaScript, TypeScript, React.",
+          "application_url": "https://internships.example.com/apply/job071",
+          "match_percentage": 57.25,
+          "matched_skills": [
+            "javascript",
+            "react"
+          ],
+          "missing_skills": [
+            "express",
+            "node.js",
+            "typescript"
+          ],
+          "score_breakdown": {
+            "skill_score_50pct": 40.0,
+            "education_score_15pct": 85.0,
+            "project_score_15pct": 63.33,
+            "semantic_score_15pct": 70.0,
+            "location_score_5pct": 90.0
+          },
+          "reasoning": "Strong match of 2 skills (javascript, react). Skill overlap score: 40.0%, Education match: 85.0%, Semantic similarity: 70.0%."
+        }
+      ],
+      "skill_gap_analysis": [
+        {
+          "job_id": "JOB057",
+          "job_title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "match_percentage": 76.09,
+          "matched_skills": [
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "recommendation": "You are very close to full eligibility for Data Analyst Intern! Bridge the gap by focusing on: r.",
+          "learning_path": [
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB047",
+          "job_title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "match_percentage": 75.34,
+          "matched_skills": [
+            "data visualization",
+            "python"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "recommendation": "You are very close to full eligibility for Data Analyst Intern! Bridge the gap by focusing on: r.",
+          "learning_path": [
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB056",
+          "job_title": "Data Science Intern",
+          "company": "InsightEdge",
+          "match_percentage": 75.34,
+          "matched_skills": [
+            "data visualization",
+            "python"
+          ],
+          "missing_skills": [
+            "r"
+          ],
+          "recommendation": "You are very close to full eligibility for Data Science Intern! Bridge the gap by focusing on: r.",
+          "learning_path": [
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB041",
+          "job_title": "Data Science Intern",
+          "company": "InsightEdge",
+          "match_percentage": 72.25,
+          "matched_skills": [
+            "power bi",
+            "python",
+            "sql"
+          ],
+          "missing_skills": [
+            "pandas",
+            "r"
+          ],
+          "recommendation": "You are very close to full eligibility for Data Science Intern! Bridge the gap by focusing on: pandas, r.",
+          "learning_path": [
+            "Learn pandas: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB046",
+          "job_title": "Data Science Intern",
+          "company": "InsightEdge",
+          "match_percentage": 65.5,
+          "matched_skills": [
+            "data visualization",
+            "python"
+          ],
+          "missing_skills": [
+            "excel",
+            "r"
+          ],
+          "recommendation": "You are very close to full eligibility for Data Science Intern! Bridge the gap by focusing on: excel, r.",
+          "learning_path": [
+            "Learn excel: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB096",
+          "job_title": "Core Software Engineering Intern",
+          "company": "SystemsCore Tech",
+          "match_percentage": 62.5,
+          "matched_skills": [
+            "java",
+            "spring boot"
+          ],
+          "missing_skills": [
+            "c++",
+            "data structures"
+          ],
+          "recommendation": "You are very close to full eligibility for Core Software Engineering Intern! Bridge the gap by focusing on: c++, data structures.",
+          "learning_path": [
+            "Learn c++: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn data structures: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB052",
+          "job_title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "match_percentage": 61.5,
+          "matched_skills": [
+            "power bi",
+            "python"
+          ],
+          "missing_skills": [
+            "r",
+            "statistics",
+            "tableau"
+          ],
+          "recommendation": "To maximize your eligibility for Data Analyst Intern, build foundational knowledge in r, statistics, tableau through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn statistics: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn tableau: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB042",
+          "job_title": "Data Analyst Intern",
+          "company": "StatPulse Solutions",
+          "match_percentage": 61.5,
+          "matched_skills": [
+            "power bi",
+            "python"
+          ],
+          "missing_skills": [
+            "pandas",
+            "r",
+            "tableau"
+          ],
+          "recommendation": "To maximize your eligibility for Data Analyst Intern, build foundational knowledge in pandas, r, tableau through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn pandas: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn tableau: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB051",
+          "job_title": "Data Science Intern",
+          "company": "InsightEdge",
+          "match_percentage": 61.5,
+          "matched_skills": [
+            "power bi",
+            "python"
+          ],
+          "missing_skills": [
+            "pandas",
+            "r",
+            "tableau"
+          ],
+          "recommendation": "To maximize your eligibility for Data Science Intern, build foundational knowledge in pandas, r, tableau through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn pandas: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn r: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn tableau: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        },
+        {
+          "job_id": "JOB071",
+          "job_title": "Full Stack Developer Intern",
+          "company": "WebCraft Media",
+          "match_percentage": 57.25,
+          "matched_skills": [
+            "javascript",
+            "react"
+          ],
+          "missing_skills": [
+            "express",
+            "node.js",
+            "typescript"
+          ],
+          "recommendation": "To maximize your eligibility for Full Stack Developer Intern, build foundational knowledge in express, node.js, typescript through practical coursework and GitHub projects.",
+          "learning_path": [
+            "Learn express: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn node.js: Practice building 1 hands-on mini project and complete foundational tutorials.",
+            "Learn typescript: Practice building 1 hands-on mini project and complete foundational tutorials."
+          ]
+        }
+      ],
+      "_id": "loc_3"
+    }
+  ],
+  "applications": [
+    {
+      "profile_id": "demo_profile_id",
+      "job_id": "JOB026",
+      "title": "Machine Learning Intern",
+      "company": "DataMind Analytics",
+      "location": "Chennai",
+      "status": "Saved",
+      "applied_at": null,
+      "notes": "Tracked from Internship Matching page",
+      "created_at": "2026-09-03T08:16:45.203669",
+      "_id": "loc_1"
+    },
+    {
+      "profile_id": "demo_profile_id",
+      "job_id": "JOB057",
+      "title": "Data Analyst Intern",
+      "company": "StatPulse Solutions",
+      "location": "Remote",
+      "status": "Saved",
+      "applied_at": null,
+      "notes": "Tracked from Internship Matching page",
+      "created_at": "2026-09-03T08:48:41.106270",
+      "_id": "loc_2"
+    },
+    {
+      "profile_id": "demo_profile_id",
+      "job_id": "JOB047",
+      "title": "Data Analyst Intern",
+      "company": "StatPulse Solutions",
+      "location": "Noida",
+      "status": "Saved",
+      "applied_at": null,
+      "notes": "Tracked from Internship Matching page",
+      "created_at": "2026-09-03T08:48:46.077598",
+      "_id": "loc_3"
+    },
+    {
+      "profile_id": "demo_profile_id",
+      "job_id": "JOB056",
+      "title": "Data Science Intern",
+      "company": "InsightEdge",
+      "location": "Chennai",
+      "status": "Saved",
+      "applied_at": null,
+      "notes": "Tracked from Internship Matching page",
+      "created_at": "2026-09-03T08:48:52.655816",
+      "_id": "loc_4"
+    },
+    {
+      "profile_id": "demo_profile_id",
+      "job_id": "JOB041",
+      "title": "Data Science Intern",
+      "company": "InsightEdge",
+      "location": "Remote",
+      "status": "Saved",
+      "applied_at": null,
+      "notes": "Tracked from Internship Matching page",
+      "created_at": "2026-09-03T08:48:56.845643",
+      "_id": "loc_5"
+    }
+  ]
+}

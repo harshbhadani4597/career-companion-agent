@@ -322,17 +322,23 @@ Benchmarked across 3 synthetic candidate profiles:
 
 ---
 
-## 📸 Screenshots
+## 📸 Application Screenshots
 
-*(Place screenshots here when presenting project demonstration)*
+### 1. Dashboard (Dark Mode)
+![Dashboard (Dark Mode)](docs/screenshots/dashboard_dark.png)
 
-| View | Screenshot Placeholder |
-|---|---|
-| **Dashboard (Dark Mode)** | ![Dashboard Screenshot](docs/screenshots/dashboard_dark.png) |
-| **Resume Upload & Parsing** | ![Resume Upload Screenshot](docs/screenshots/resume_parser.png) |
-| **Internship Matching & RAG Search** | ![Job Matching Screenshot](docs/screenshots/job_matching.png) |
-| **Skill Gap Analysis** | ![Skill Gap Screenshot](docs/screenshots/skill_gap.png) |
-| **Application Tracker** | ![Applications Screenshot](docs/screenshots/applications.png) |
+### 2. Resume Uploading & Parsing
+![Resume Uploading & Parsing](docs/screenshots/resume_upload.png)
+
+### 3. Internship Matching & RAG Search
+![Internship Matching & RAG Search](docs/screenshots/internship_matching.png)
+
+### 4. Skill Gap Analysis
+![Skill Gap Analysis](docs/screenshots/skill_gap.png)
+
+### 5. Application Tracker
+![Application Tracker](docs/screenshots/application_tracker.png)
+
 
 ---
 
