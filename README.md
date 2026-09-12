@@ -213,6 +213,19 @@ MONGODB_URI=mongodb+srv://your_username:your_password@your_cluster.mongodb.net/?
 - **Python:** v3.11 or v3.12
 - **Git**
 
+### 🚀 1-Click Launch (Run Everything)
+To launch both the **FastAPI Backend Server**, **React Web Application**, **Swagger API Docs**, and auto-open them in your browser with a single command:
+
+```bash
+# Run cross-platform launcher
+python run.py
+
+# Or on Windows double-click:
+start.bat
+```
+
+---
+
 ### 1. Clone Repository
 ```bash
 git clone https://github.com/harshbhadani4597/career-companion-agent.git
