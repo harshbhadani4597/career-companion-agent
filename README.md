@@ -10,12 +10,12 @@ short_description: AI Internship Matching & RAG Career Companion
 
 # 🚀 AI Career Companion Agent
 
-
-
-
 > **AI-Powered Internship Matching, Resume Parsing, RAG Retrieval & Interview Preparation System**  
 > **Infosys Springboard Virtual Internship 7.0 — AI Domain Project**  
-> **GitHub Repository:** [https://github.com/harshbhadani4597/career-companion-agent](https://github.com/harshbhadani4597/career-companion-agent)
+> **GitHub Repository:** [https://github.com/harshbhadani4597/career-companion-agent](https://github.com/harshbhadani4597/career-companion-agent)  
+> **📖 Interactive Swagger API Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)  
+> **💻 Frontend Web App:** [http://localhost:5173/](http://localhost:5173/)  
+> **⚡ Backend API Server:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)  
 
 ---
 
@@ -266,6 +266,7 @@ See detailed deployment guide in [`docs/deployment.md`](docs/deployment.md).
 
 ## 📡 API Endpoints Reference
 
+> 📖 **Interactive Swagger API Documentation:** Explore, test, and execute all live FastAPI endpoints interactively at **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)** (or `/docs` on your live backend deployment).
 
 | Method | Endpoint | Description |
 |---|---|---|
