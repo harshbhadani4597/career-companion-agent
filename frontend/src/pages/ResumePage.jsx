@@ -38,16 +38,16 @@ export function ResumePage({ onResumeParsed, profile, darkMode }) {
     <div className="space-y-8">
       {/* Upload Card */}
       <div className={`rounded-3xl shadow-sm border p-8 transition-all ${
-        darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-900"
+        darkMode ? "bg-[#0F172A] border-slate-800/80 text-white" : "bg-white border-slate-200 text-slate-900"
       }`}>
         <div className="max-w-2xl">
-          <h2 className="text-2xl font-bold">Upload Your Resume (PDF)</h2>
+          <h2 className="text-2xl font-bold text-white">Upload Your Resume (PDF)</h2>
           <p className={`mt-2 text-sm ${darkMode ? "text-slate-400" : "text-slate-600"}`}>
             Our AI parser powered by PyMuPDF and Google Gemini will automatically extract your technical skills, education, work experience, projects, and certifications.
           </p>
 
           <div className={`mt-6 border-2 border-dashed rounded-3xl p-8 text-center transition-colors ${
-            darkMode ? "border-slate-700 bg-slate-850 hover:border-blue-500" : "border-slate-300 bg-slate-50 hover:border-blue-500"
+            darkMode ? "border-slate-700 bg-slate-900/60 hover:border-blue-500" : "border-slate-300 bg-slate-50 hover:border-blue-500"
           }`}>
             <input
               type="file"
@@ -68,7 +68,7 @@ export function ResumePage({ onResumeParsed, profile, darkMode }) {
 
             {file && (
               <div className={`mt-4 p-3 rounded-2xl border text-sm font-medium flex items-center justify-between max-w-md mx-auto shadow-sm ${
-                darkMode ? "bg-slate-800 border-blue-900/50 text-slate-200" : "bg-white border-blue-200 text-slate-700"
+                darkMode ? "bg-slate-900 border-blue-900/50 text-slate-200" : "bg-white border-blue-200 text-slate-700"
               }`}>
                 <span className="truncate">📄 {file.name}</span>
                 <span className="text-xs text-slate-400">({(file.size / 1024).toFixed(1)} KB)</span>
@@ -105,14 +105,14 @@ export function ResumePage({ onResumeParsed, profile, darkMode }) {
       {/* Extracted Information Display */}
       {profile && (
         <div className={`rounded-3xl shadow-sm border p-8 space-y-8 transition-all ${
-          darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-900"
+          darkMode ? "bg-[#0F172A] border-slate-800/80 text-white" : "bg-white border-slate-200 text-slate-900"
         }`}>
           <div className={`flex items-center justify-between border-b pb-5 ${darkMode ? "border-slate-800" : "border-slate-100"}`}>
             <div>
               <span className="text-xs font-bold text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/40">
                 ✓ Gemini AI Extraction Verified
               </span>
-              <h3 className="text-2xl font-bold mt-2">{profile.name || "Candidate Name"}</h3>
+              <h3 className="text-2xl font-bold mt-2 text-white">{profile.name || "Candidate Name"}</h3>
               <p className={`text-sm ${darkMode ? "text-slate-400" : "text-slate-500"}`}>{profile.email} • {profile.phone}</p>
             </div>
           </div>
@@ -137,8 +137,8 @@ export function ResumePage({ onResumeParsed, profile, darkMode }) {
               <h4 className={`text-xs font-bold uppercase tracking-wider mb-3 ${darkMode ? "text-slate-400" : "text-slate-700"}`}>Education</h4>
               <div className="space-y-3">
                 {profile.education.map((edu, idx) => (
-                  <div key={idx} className={`p-4 rounded-2xl border ${darkMode ? "bg-slate-850 border-slate-800" : "bg-slate-50 border-slate-100"}`}>
-                    <p className="font-bold">{edu.degree}</p>
+                  <div key={idx} className={`p-4 rounded-2xl border ${darkMode ? "bg-slate-900 border-slate-800" : "bg-slate-50 border-slate-100"}`}>
+                    <p className="font-bold text-white">{edu.degree}</p>
                     <p className={`text-sm ${darkMode ? "text-slate-400" : "text-slate-600"}`}>{edu.institution || edu.college} {edu.branch ? `• ${edu.branch}` : ""}</p>
                   </div>
                 ))}
@@ -152,8 +152,8 @@ export function ResumePage({ onResumeParsed, profile, darkMode }) {
               <h4 className={`text-xs font-bold uppercase tracking-wider mb-3 ${darkMode ? "text-slate-400" : "text-slate-700"}`}>Key Projects</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {profile.projects.map((proj, idx) => (
-                  <div key={idx} className={`p-4 rounded-2xl border space-y-1 ${darkMode ? "bg-slate-850 border-slate-800" : "bg-slate-50 border-slate-100"}`}>
-                    <p className="font-bold">{proj.name}</p>
+                  <div key={idx} className={`p-4 rounded-2xl border space-y-1 ${darkMode ? "bg-slate-900 border-slate-800" : "bg-slate-50 border-slate-100"}`}>
+                    <p className="font-bold text-white">{proj.name}</p>
                     <p className={`text-xs leading-relaxed ${darkMode ? "text-slate-400" : "text-slate-600"}`}>{proj.description}</p>
                   </div>
                 ))}

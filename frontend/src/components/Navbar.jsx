@@ -11,12 +11,12 @@ export function Navbar({ activeTab, setActiveTab, darkMode, toggleDarkMode, user
   ];
 
   return (
-    <header className={`${darkMode ? "bg-slate-950 border-b border-slate-800" : "bg-slate-900"} text-white shadow-xl sticky top-0 z-50 transition-colors duration-300`}>
+    <header className={`${darkMode ? "bg-[#070A14] border-b border-slate-800/80" : "bg-slate-900"} text-white shadow-xl sticky top-0 z-50 transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo & Branding */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab("dashboard")}>
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-blue-500/20">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-blue-500/20">
               AI
             </div>
             <div>
@@ -50,11 +50,10 @@ export function Navbar({ activeTab, setActiveTab, darkMode, toggleDarkMode, user
               </nav>
             )}
 
-
             {/* Dark / Light Mode Toggle Button */}
             <button
               onClick={toggleDarkMode}
-              className={`p-2 sm:p-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all border ${
+              className={`p-2 sm:p-2.5 rounded-full text-xs sm:text-sm font-medium transition-all border ${
                 darkMode
                   ? "bg-slate-900 border-slate-700 text-amber-300 hover:bg-slate-800"
                   : "bg-slate-800 border-slate-700 text-amber-400 hover:bg-slate-700"
@@ -73,7 +72,7 @@ export function Navbar({ activeTab, setActiveTab, darkMode, toggleDarkMode, user
                 </div>
                 <button
                   onClick={onLogout}
-                  className="bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/40 text-xs font-bold px-3 py-1.5 rounded-xl transition-all"
+                  className="bg-red-950/80 hover:bg-red-900 text-red-200 border border-red-800/50 text-xs font-bold px-3.5 py-1.5 rounded-full transition-all"
                   title="Log Out"
                 >
                   Logout

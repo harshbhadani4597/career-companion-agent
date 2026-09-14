@@ -31,9 +31,9 @@ export function ApplicationsPage({ applications, darkMode }) {
   return (
     <div className="space-y-8">
       <div className={`rounded-3xl p-6 sm:p-8 shadow-sm border transition-all ${
-        darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-900"
+        darkMode ? "bg-[#0F172A] border-slate-800/80 text-white" : "bg-white border-slate-200 text-slate-900"
       }`}>
-        <h2 className="text-2xl font-bold">Internship Applications Tracker</h2>
+        <h2 className="text-2xl font-bold text-white">Internship Applications Tracker</h2>
         <p className={`text-sm mt-1 ${darkMode ? "text-slate-400" : "text-slate-600"}`}>
           Track saved, applied, interviewing, and selected internships in your active career pipeline.
         </p>
@@ -41,10 +41,10 @@ export function ApplicationsPage({ applications, darkMode }) {
 
       {applications?.length === 0 ? (
         <div className={`rounded-3xl p-12 text-center border space-y-3 transition-all ${
-          darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-900"
+          darkMode ? "bg-[#0F172A] border-slate-800/80 text-white" : "bg-white border-slate-200 text-slate-900"
         }`}>
           <span className="text-4xl block">📌</span>
-          <h3 className="text-lg font-bold">No applications tracked yet</h3>
+          <h3 className="text-lg font-bold text-white">No applications tracked yet</h3>
           <p className={`text-sm max-w-md mx-auto ${darkMode ? "text-slate-400" : "text-slate-500"}`}>
             Browse internship recommendations under the "Internship Matching" tab and click "+ Track / Save Application" to add them to your tracker.
           </p>
@@ -55,7 +55,7 @@ export function ApplicationsPage({ applications, darkMode }) {
             <div
               key={idx}
               className={`rounded-3xl shadow-sm border p-6 space-y-4 transition-all ${
-                darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-900"
+                darkMode ? "bg-[#0F172A] border-slate-800/80 text-white" : "bg-white border-slate-200 text-slate-900"
               }`}
             >
               <div className="flex justify-between items-start">
@@ -66,7 +66,7 @@ export function ApplicationsPage({ applications, darkMode }) {
               </div>
 
               <div>
-                <h3 className="text-lg font-bold">{app.title}</h3>
+                <h3 className="text-lg font-bold text-white">{app.title}</h3>
                 <p className={`text-sm font-semibold ${darkMode ? "text-slate-400" : "text-slate-600"}`}>{app.company}</p>
                 <p className={`text-xs mt-1 ${darkMode ? "text-slate-500" : "text-slate-400"}`}>📍 {app.location}</p>
               </div>

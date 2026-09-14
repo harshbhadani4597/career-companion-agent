@@ -58,7 +58,7 @@ export function LoginPage({ onLoginSuccess, darkMode }) {
     <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className={`max-w-md w-full rounded-3xl p-8 shadow-2xl border transition-all duration-300 transform animate-fade-in-up ${
         darkMode
-          ? "bg-slate-900/90 border-slate-800 text-white shadow-blue-900/10 hover:border-slate-700"
+          ? "bg-[#0F172A] border-slate-800/80 text-white shadow-blue-900/10 hover:border-slate-700"
           : "bg-white/90 border-slate-200 text-slate-900 shadow-slate-200/50 hover:border-slate-300"
       }`}>
         {/* Branding Header */}
@@ -76,7 +76,7 @@ export function LoginPage({ onLoginSuccess, darkMode }) {
 
         {/* Tab Switcher */}
         <div className={`mt-6 p-1 rounded-2xl flex border transition-all ${
-          darkMode ? "bg-slate-850 border-slate-800" : "bg-slate-100 border-slate-200"
+          darkMode ? "bg-slate-900 border-slate-800" : "bg-slate-100 border-slate-200"
         }`}>
           <button
             type="button"
@@ -123,7 +123,7 @@ export function LoginPage({ onLoginSuccess, darkMode }) {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Student Full Name"
                 className={`w-full border rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all ${
-                  darkMode ? "bg-slate-800 border-slate-700 text-white placeholder-slate-500 focus:border-blue-500" : "bg-white border-slate-300 text-slate-900 focus:border-blue-500"
+                  darkMode ? "bg-slate-900 border-slate-750 text-white placeholder-slate-500 focus:border-blue-500" : "bg-white border-slate-300 text-slate-900 focus:border-blue-500"
                 }`}
                 required={isRegister}
               />
@@ -142,7 +142,7 @@ export function LoginPage({ onLoginSuccess, darkMode }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="student@example.com"
               className={`w-full border rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all ${
-                darkMode ? "bg-slate-800 border-slate-700 text-white placeholder-slate-500 focus:border-blue-500" : "bg-white border-slate-300 text-slate-900 focus:border-blue-500"
+                darkMode ? "bg-slate-900 border-slate-750 text-white placeholder-slate-500 focus:border-blue-500" : "bg-white border-slate-300 text-slate-900 focus:border-blue-500"
               }`}
               required
             />
@@ -160,7 +160,7 @@ export function LoginPage({ onLoginSuccess, darkMode }) {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               className={`w-full border rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all ${
-                darkMode ? "bg-slate-800 border-slate-700 text-white placeholder-slate-500 focus:border-blue-500" : "bg-white border-slate-300 text-slate-900 focus:border-blue-500"
+                darkMode ? "bg-slate-900 border-slate-750 text-white placeholder-slate-500 focus:border-blue-500" : "bg-white border-slate-300 text-slate-900 focus:border-blue-500"
               }`}
               required
             />
@@ -198,7 +198,7 @@ export function LoginPage({ onLoginSuccess, darkMode }) {
               onClick={() => handleDemoLogin("harsh.student@example.com", "Harsh Rajpal")}
               disabled={loading}
               className={`py-2.5 px-3 rounded-2xl text-xs font-bold border transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] flex items-center justify-center gap-1.5 ${
-                darkMode ? "bg-slate-800 hover:bg-slate-750 border-slate-700 text-blue-300 hover:border-blue-500/50" : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-blue-700 hover:border-blue-400"
+                darkMode ? "bg-slate-900 hover:bg-slate-850 border-slate-750 text-blue-300 hover:border-blue-500/50" : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-blue-700 hover:border-blue-400"
               }`}
             >
               <span>🚀</span> Demo Candidate
@@ -209,7 +209,7 @@ export function LoginPage({ onLoginSuccess, darkMode }) {
               onClick={() => handleDemoLogin("guest@example.com", "Guest Candidate")}
               disabled={loading}
               className={`py-2.5 px-3 rounded-2xl text-xs font-bold border transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] flex items-center justify-center gap-1.5 ${
-                darkMode ? "bg-slate-800 hover:bg-slate-750 border-slate-700 text-emerald-300 hover:border-emerald-500/50" : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-emerald-700 hover:border-emerald-400"
+                darkMode ? "bg-slate-900 hover:bg-slate-850 border-slate-750 text-emerald-300 hover:border-emerald-500/50" : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-emerald-700 hover:border-emerald-400"
               }`}
             >
               <span>👤</span> Guest Access

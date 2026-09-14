@@ -95,7 +95,7 @@ function App() {
 
   return (
     <div className={`min-h-screen font-sans antialiased transition-colors duration-300 ${
-      darkMode ? "bg-slate-950 text-slate-100 selection:bg-blue-500 selection:text-white" : "bg-slate-100 text-slate-900 selection:bg-blue-500 selection:text-white"
+      darkMode ? "bg-[#070A14] text-slate-100 selection:bg-blue-500 selection:text-white" : "bg-slate-100 text-slate-900 selection:bg-blue-500 selection:text-white"
     }`}>
       <Navbar
         activeTab={activeTab}
@@ -175,11 +175,11 @@ function App() {
       <AIAssistantWidget profile={profile} darkMode={darkMode} />
 
       <footer className={`${
-        darkMode ? "bg-slate-950 border-t border-slate-800/80 text-slate-500" : "bg-slate-900 border-t border-slate-800 text-slate-400"
+        darkMode ? "bg-[#070A14] border-t border-slate-800/80 text-slate-500" : "bg-slate-900 border-t border-slate-800 text-slate-400"
       } py-8 mt-16 transition-colors duration-300`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs space-y-2">
           <p className="font-semibold text-slate-300">AI Career Companion Agent</p>
-          <p>Powered by Python FastAPI, Google Gemini LLM, Vector RAG & React</p>
+          <p className="text-slate-400">Powered by Python FastAPI, Google Gemini LLM, Vector RAG & React</p>
         </div>
       </footer>
     </div>

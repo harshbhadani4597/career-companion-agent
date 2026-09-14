@@ -30,10 +30,10 @@ export function MatchingPage({ jobMatches, profile, onSaveApplication, darkMode 
     <div className="space-y-8">
       {/* Header & Search Bar */}
       <div className={`rounded-3xl p-6 sm:p-8 shadow-sm border transition-all ${
-        darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-900"
+        darkMode ? "bg-[#0F172A] border-slate-800/80 text-white" : "bg-white border-slate-200 text-slate-900"
       }`}>
         <div className="max-w-3xl">
-          <h2 className="text-2xl font-bold">Internship Matching & RAG Search</h2>
+          <h2 className="text-2xl font-bold text-white">Internship Matching & RAG Search</h2>
           <p className={`text-sm mt-1 ${darkMode ? "text-slate-400" : "text-slate-600"}`}>
             Jobs ranked transparently using vector embeddings (SentenceTransformers), ChromaDB / NumPy RAG, and 5-factor candidate feature scoring.
           </p>
@@ -45,7 +45,7 @@ export function MatchingPage({ jobMatches, profile, onSaveApplication, darkMode 
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by role or domain (e.g. Machine Learning, React, AWS Cloud, Remote)..."
               className={`flex-1 border rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm ${
-                darkMode ? "bg-slate-800 border-slate-700 text-white placeholder-slate-500" : "bg-white border-slate-300 text-slate-900"
+                darkMode ? "bg-slate-900 border-slate-750 text-white placeholder-slate-500" : "bg-white border-slate-300 text-slate-900"
               }`}
             />
             <button
@@ -87,7 +87,7 @@ export function MatchingPage({ jobMatches, profile, onSaveApplication, darkMode 
           <div
             key={job.job_id}
             className={`rounded-3xl shadow-sm border p-6 sm:p-8 transition-all ${
-              darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-900"
+              darkMode ? "bg-[#0F172A] border-slate-800/80 text-white" : "bg-white border-slate-200 text-slate-900"
             }`}
           >
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -102,7 +102,7 @@ export function MatchingPage({ jobMatches, profile, onSaveApplication, darkMode 
                     📍 {job.location} ({job.work_mode})
                   </span>
                 </div>
-                <h3 className="text-xl font-bold mt-2">{job.title}</h3>
+                <h3 className="text-xl font-bold mt-2 text-white">{job.title}</h3>
                 <p className={`text-sm font-semibold ${darkMode ? "text-slate-400" : "text-slate-700"}`}>
                   {job.company} • <span className="text-emerald-400 font-bold">{job.stipend || "₹25,000 / month"}</span>
                 </p>
@@ -164,7 +164,7 @@ export function MatchingPage({ jobMatches, profile, onSaveApplication, darkMode 
             {/* Score Breakdown if present */}
             {job.score_breakdown && (
               <div className={`mt-4 p-4 rounded-2xl text-xs space-y-2 border ${
-                darkMode ? "bg-slate-800/50 border-slate-800 text-slate-400" : "bg-slate-50 border-slate-100 text-slate-600"
+                darkMode ? "bg-slate-900/60 border-slate-800 text-slate-400" : "bg-slate-50 border-slate-100 text-slate-600"
               }`}>
                 <p className="font-bold text-slate-300">5-Factor Transparent Score Breakdown:</p>
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">

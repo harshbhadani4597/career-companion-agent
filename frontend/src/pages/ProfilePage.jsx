@@ -40,7 +40,7 @@ export function ProfilePage({ profile, setProfile, darkMode }) {
     };
 
     try {
-      const res = await saveProfile(payload);
+      await saveProfile(payload);
       setProfile(payload);
       setMessage("✓ Candidate Profile saved to MongoDB Atlas!");
     } catch (err) {
@@ -52,10 +52,10 @@ export function ProfilePage({ profile, setProfile, darkMode }) {
 
   return (
     <div className={`rounded-3xl shadow-sm border p-6 sm:p-8 max-w-4xl space-y-6 transition-all ${
-      darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-900"
+      darkMode ? "bg-[#0F172A] border-slate-800/80 text-white" : "bg-white border-slate-200 text-slate-900"
     }`}>
       <div>
-        <h2 className="text-2xl font-bold">Student Profile Module</h2>
+        <h2 className="text-2xl font-bold text-white">Student Profile Module</h2>
         <p className={`text-sm mt-1 ${darkMode ? "text-slate-400" : "text-slate-600"}`}>
           Create or update your candidate profile. Information is stored in MongoDB Atlas and used for transparent multi-factor job matching.
         </p>
@@ -84,7 +84,7 @@ export function ProfilePage({ profile, setProfile, darkMode }) {
               onChange={handleChange}
               placeholder="e.g. Student Name"
               className={`w-full border rounded-2xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-                darkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-300 text-slate-900"
+                darkMode ? "bg-slate-900 border-slate-750 text-white" : "bg-white border-slate-300 text-slate-900"
               }`}
               required
             />
@@ -101,7 +101,7 @@ export function ProfilePage({ profile, setProfile, darkMode }) {
               onChange={handleChange}
               placeholder="student@example.com"
               className={`w-full border rounded-2xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-                darkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-300 text-slate-900"
+                darkMode ? "bg-slate-900 border-slate-750 text-white" : "bg-white border-slate-300 text-slate-900"
               }`}
               required
             />
@@ -118,7 +118,7 @@ export function ProfilePage({ profile, setProfile, darkMode }) {
               onChange={handleChange}
               placeholder="+91 9876543210"
               className={`w-full border rounded-2xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-                darkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-300 text-slate-900"
+                darkMode ? "bg-slate-900 border-slate-750 text-white" : "bg-white border-slate-300 text-slate-900"
               }`}
             />
           </div>
@@ -135,7 +135,7 @@ export function ProfilePage({ profile, setProfile, darkMode }) {
             onChange={handleChange}
             placeholder="Python, Machine Learning, React, MongoDB, Scikit-learn, SQL..."
             className={`w-full border rounded-2xl p-3.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-              darkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-300 text-slate-900"
+              darkMode ? "bg-slate-900 border-slate-750 text-white" : "bg-white border-slate-300 text-slate-900"
             }`}
           />
         </div>
@@ -151,7 +151,7 @@ export function ProfilePage({ profile, setProfile, darkMode }) {
             onChange={handleChange}
             placeholder="Google Data Analytics, AWS Certified Cloud Practitioner..."
             className={`w-full border rounded-2xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-              darkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-300 text-slate-900"
+              darkMode ? "bg-slate-900 border-slate-750 text-white" : "bg-white border-slate-300 text-slate-900"
             }`}
           />
         </div>
