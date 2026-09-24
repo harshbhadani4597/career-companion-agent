@@ -92,6 +92,20 @@ function loadSavedOrEmptyProfile() {
   renderProfileUI(null);
 }
 
+async function loadSampleProfile() {
+  try {
+    const res = await fetch("/api/profile/sample");
+    currentProfile = await res.json();
+    localStorage.setItem("career_companion_profile", JSON.stringify(currentProfile));
+    renderProfileUI(currentProfile);
+    populateM3JobSelectors();
+    executeMatching();
+    alert("Sample student profile loaded successfully!");
+  } catch (err) {
+    console.error("Error loading sample profile:", err);
+  }
+}
+
 function clearProfile() {
   currentProfile = null;
   matchedJobs = [];
@@ -247,11 +261,14 @@ function renderJobsGrid(jobs) {
         <div class="flex flex-wrap gap-1 mb-3">
           ${(job.technical_skills || []).slice(0, 4).map(s => `<span class="px-2 py-0.5 bg-slate-900 border border-slate-700 text-slate-300 text-[10px] rounded">${s}</span>`).join('')}
         </div>
-        <div class="flex gap-2">
-          <button onclick="selectJobForM3('${job.id}')" class="flex-1 py-1.5 bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-semibold rounded-lg transition flex items-center justify-center gap-1.5">
-            <i data-lucide="search" class="w-3.5 h-3.5"></i> Analyze
+        <div class="flex gap-1.5">
+          <button onclick="selectJobForM3('${job.id}')" class="flex-1 py-1.5 bg-cyan-700 hover:bg-cyan-600 text-white text-[11px] font-semibold rounded-lg transition flex items-center justify-center gap-1">
+            <i data-lucide="search" class="w-3.5 h-3.5"></i> Gap
           </button>
-          <button onclick="prepareInterviewForJob('${job.title}', '${job.domain}')" class="flex-1 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg transition flex items-center justify-center gap-1.5">
+          <button onclick="document.getElementById('resume-job-select').value='${job.id}'; switchTab('resume-customizer'); generateTailoredResume();" class="flex-1 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-[11px] font-semibold rounded-lg transition flex items-center justify-center gap-1">
+            <i data-lucide="file-edit" class="w-3.5 h-3.5"></i> Tailor
+          </button>
+          <button onclick="prepareInterviewForJob('${job.title}', '${job.domain}')" class="flex-1 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-[11px] font-semibold rounded-lg transition flex items-center justify-center gap-1">
             <i data-lucide="mic" class="w-3.5 h-3.5"></i> Mock
           </button>
         </div>
@@ -441,9 +458,12 @@ function renderMatchResults(matches) {
           ${m.missing_skills.map(s => `<span class="px-2 py-0.5 bg-rose-500/10 border border-rose-500/30 text-rose-300 text-[10px] font-medium rounded flex items-center gap-1"><i data-lucide="x" class="w-3 h-3"></i> ${s}</span>`).join('')}
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 flex-wrap">
           <button onclick="selectJobForM3('${job.id}')" class="px-3 py-1.5 bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-semibold rounded-lg transition flex items-center gap-1">
             <i data-lucide="search" class="w-3.5 h-3.5"></i> Skill Gap
+          </button>
+          <button onclick="document.getElementById('resume-job-select').value='${job.id}'; switchTab('resume-customizer'); generateTailoredResume();" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold rounded-lg transition flex items-center gap-1">
+            <i data-lucide="file-edit" class="w-3.5 h-3.5"></i> Tailor Resume
           </button>
           <button onclick="fetchRoadmapForMatch('${job.title}', '${m.missing_skills.join(',')}')" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg transition flex items-center gap-1">
             <i data-lucide="compass" class="w-3.5 h-3.5"></i> Roadmap
