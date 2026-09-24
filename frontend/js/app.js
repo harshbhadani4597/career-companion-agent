@@ -58,7 +58,8 @@ function switchTab(tabId) {
   // Populate M3 job selectors when switching to M3 tabs
   if (['skill-gap', 'resume-customizer', 'interview-prep', 'interview', 'roadmap'].includes(tabId)) {
     populateM3JobSelectors();
-    if (tabId === 'roadmap' && document.getElementById("roadmap-timeline")?.children.length <= 1) {
+    const timeline = document.getElementById("roadmap-timeline");
+    if (tabId === 'roadmap' && (!timeline || timeline.children.length === 0 || timeline.innerText.includes("No Target Role Selected"))) {
       generateRoadmapFromUI();
     }
   }
@@ -691,7 +692,6 @@ function onRoadmapJobSelected() {
 }
 
 async function fetchRoadmapForMatch(targetRole, missingSkillsStr) {
-  switchTab("roadmap");
   const missingSkills = missingSkillsStr ? missingSkillsStr.split(",") : [];
 
   const container = document.getElementById("roadmap-timeline");
