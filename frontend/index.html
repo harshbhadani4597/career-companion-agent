@@ -11,12 +11,97 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="css/style.css?v=3.4" />
+  <link rel="stylesheet" href="css/style.css?v=3.5" />
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
 
+  <!-- ══════════════════════════════════════════════ -->
+  <!--       FULL-SCREEN LOGIN / SIGN UP GATE          -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div id="auth-gate-screen" class="min-h-screen w-full bg-slate-950 flex flex-col justify-center items-center p-4 sm:p-6 relative overflow-hidden">
+    <!-- Ambient Background Glow Effects -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-md w-full bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative z-10 fade-in">
+      
+      <!-- Brand Header -->
+      <div class="text-center space-y-2">
+        <div class="inline-flex p-3 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-2xl shadow-xl shadow-indigo-500/30 mb-1">
+          <i data-lucide="sparkles" class="w-8 h-8 text-white"></i>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent">
+          AI Career Companion
+        </h1>
+        <p class="text-xs text-slate-400">RAG Internship Matching & Multi-Agent Interview Prep System</p>
+      </div>
+
+      <!-- Mode Selector Tabs: Sign In vs Create Account -->
+      <div class="grid grid-cols-2 p-1 bg-slate-950 border border-slate-800 rounded-xl text-xs font-semibold">
+        <button onclick="setAuthGateTab('login')" id="gate-tab-login" type="button" class="py-2.5 rounded-lg text-white bg-indigo-600 shadow-md transition flex items-center justify-center gap-1.5">
+          <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Sign In
+        </button>
+        <button onclick="setAuthGateTab('register')" id="gate-tab-register" type="button" class="py-2.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5">
+          <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Create Account
+        </button>
+      </div>
+
+      <!-- Role Selector -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1.5">Select Account Role</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" onclick="setLoginRole('candidate')" id="gate-role-candidate-btn" class="role-btn py-2 px-3 bg-indigo-600 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 border border-indigo-500">
+            <i data-lucide="user" class="w-3.5 h-3.5"></i> Candidate / Student
+          </button>
+          <button type="button" onclick="setLoginRole('recruiter')" id="gate-role-recruiter-btn" class="role-btn py-2 px-3 bg-slate-800 text-slate-400 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 border border-slate-700 hover:bg-slate-750">
+            <i data-lucide="building" class="w-3.5 h-3.5"></i> Recruiter / HR
+          </button>
+        </div>
+      </div>
+
+      <!-- Form Inputs -->
+      <form onsubmit="handleAuthGateSubmit(event)" class="space-y-4">
+        <!-- Sign Up Full Name Field (Hidden in Sign In Mode) -->
+        <div id="gate-name-group" class="hidden">
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+          <div class="relative">
+            <i data-lucide="user" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
+            <input type="text" id="gate-name" placeholder="John Candidate" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+          <div class="relative">
+            <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
+            <input type="email" id="gate-email" required placeholder="candidate@example.com" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+          <div class="relative">
+            <i data-lucide="key" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
+            <input type="password" id="gate-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <button type="submit" id="gate-submit-btn" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold rounded-lg shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+          <i data-lucide="log-in" class="w-4 h-4"></i> Sign In to Account
+        </button>
+
+        <!-- Quick Demo Sign In -->
+        <div class="pt-3 text-center border-t border-slate-800 space-y-2">
+          <button type="button" onclick="quickAuthGateDemo()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-750 border border-indigo-500/30 text-indigo-300 hover:text-white rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm">
+            <i data-lucide="zap" class="w-4 h-4 text-amber-300 animate-pulse"></i> ⚡ One-Click Candidate Sign-In (Demo)
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Header / Navbar -->
-  <header class="bg-slate-800/90 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
+  <header id="app-header" class="hidden bg-slate-800/90 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center gap-3">
         <div class="p-2 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-xl shadow-lg shadow-indigo-500/30">
@@ -92,7 +177,7 @@
   </header>
 
   <!-- Main Content Container -->
-  <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
+  <main id="app-main" class="hidden max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
 
     <!-- 1. DASHBOARD VIEW -->
     <section id="view-dashboard" class="tab-view space-y-6">
@@ -822,6 +907,6 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=3.4"></script>
+  <script src="js/app.js?v=3.5"></script>
 </body>
 </html>

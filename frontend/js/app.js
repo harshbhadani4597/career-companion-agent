@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadStatus();
   loadAllJobs();
   loadSavedOrEmptyProfile();
-  updateWelcomeBanner(currentProfile?.name);
+  checkInitialAuthSession();
 });
 
 function updateWelcomeBanner(candidateName) {
@@ -784,9 +784,34 @@ function renderRoadmap(roadmap) {
   lucide.createIcons();
 }
 
-// Authentication (unchanged)
+// ══════════════════════════════════════════════
+//  AUTHENTICATION & LANDING GATE MODULE
+// ══════════════════════════════════════════════
+
 let currentLoginRole = 'candidate';
 let currentUser = null;
+let currentAuthGateTab = 'login';
+
+function setAuthGateTab(tab) {
+  currentAuthGateTab = tab;
+  const loginBtn = document.getElementById("gate-tab-login");
+  const regBtn = document.getElementById("gate-tab-register");
+  const nameGroup = document.getElementById("gate-name-group");
+  const submitBtn = document.getElementById("gate-submit-btn");
+
+  if (tab === 'login') {
+    if (loginBtn) loginBtn.className = "py-2.5 rounded-lg text-white bg-indigo-600 shadow-md transition flex items-center justify-center gap-1.5";
+    if (regBtn) regBtn.className = "py-2.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5";
+    if (nameGroup) nameGroup.classList.add("hidden");
+    if (submitBtn) submitBtn.innerHTML = '<i data-lucide="log-in" class="w-4 h-4"></i> Sign In to Account';
+  } else {
+    if (regBtn) regBtn.className = "py-2.5 rounded-lg text-white bg-indigo-600 shadow-md transition flex items-center justify-center gap-1.5";
+    if (loginBtn) loginBtn.className = "py-2.5 rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center gap-1.5";
+    if (nameGroup) nameGroup.classList.remove("hidden");
+    if (submitBtn) submitBtn.innerHTML = '<i data-lucide="user-plus" class="w-4 h-4"></i> Create Free Account';
+  }
+  lucide.createIcons();
+}
 
 function openLoginModal() {
   const modal = document.getElementById("login-modal");
@@ -802,20 +827,55 @@ function setLoginRole(role) {
   currentLoginRole = role;
   const candBtn = document.getElementById("role-candidate-btn");
   const recBtn = document.getElementById("role-recruiter-btn");
+  const gateCandBtn = document.getElementById("gate-role-candidate-btn");
+  const gateRecBtn = document.getElementById("gate-role-recruiter-btn");
+
+  const activeClass = "role-btn py-2 px-3 bg-indigo-600 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 border border-indigo-500";
+  const inactiveClass = "role-btn py-2 px-3 bg-slate-800 text-slate-400 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 border border-slate-700 hover:bg-slate-750";
 
   if (role === 'candidate') {
-    candBtn.className = "role-btn py-2 px-3 bg-indigo-600 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 border border-indigo-500";
-    recBtn.className = "role-btn py-2 px-3 bg-slate-800 text-slate-400 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 border border-slate-700 hover:bg-slate-750";
+    if (candBtn) candBtn.className = activeClass;
+    if (recBtn) recBtn.className = inactiveClass;
+    if (gateCandBtn) gateCandBtn.className = activeClass;
+    if (gateRecBtn) gateRecBtn.className = inactiveClass;
   } else {
-    recBtn.className = "role-btn py-2 px-3 bg-indigo-600 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 border border-indigo-500";
-    candBtn.className = "role-btn py-2 px-3 bg-slate-800 text-slate-400 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 border border-slate-700 hover:bg-slate-750";
+    if (recBtn) recBtn.className = activeClass;
+    if (candBtn) candBtn.className = inactiveClass;
+    if (gateRecBtn) gateRecBtn.className = activeClass;
+    if (gateCandBtn) gateCandBtn.className = inactiveClass;
+  }
+}
+
+async function handleAuthGateSubmit(e) {
+  e.preventDefault();
+  const email = document.getElementById("gate-email")?.value || "candidate@example.com";
+  const password = document.getElementById("gate-password")?.value || "demo1234";
+  const name = document.getElementById("gate-name")?.value || "";
+
+  try {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, role: currentLoginRole, name })
+    });
+    const data = await res.json();
+    if (data.success) {
+      if (name && currentAuthGateTab === 'register') {
+        data.user.name = name;
+      }
+      currentUser = data.user;
+      localStorage.setItem("career_companion_user", JSON.stringify(currentUser));
+      revealAuthenticatedApp();
+    }
+  } catch (err) {
+    console.error("Auth gate error:", err);
   }
 }
 
 async function handleLoginSubmit(e) {
   e.preventDefault();
-  const email = document.getElementById("login-email").value;
-  const password = document.getElementById("login-password").value;
+  const email = document.getElementById("login-email")?.value;
+  const password = document.getElementById("login-password")?.value;
 
   try {
     const res = await fetch("/api/auth/login", {
@@ -826,7 +886,8 @@ async function handleLoginSubmit(e) {
     const data = await res.json();
     if (data.success) {
       currentUser = data.user;
-      updateAuthUI(currentUser);
+      localStorage.setItem("career_companion_user", JSON.stringify(currentUser));
+      revealAuthenticatedApp();
       closeLoginModal();
     }
   } catch (err) {
@@ -834,10 +895,32 @@ async function handleLoginSubmit(e) {
   }
 }
 
+function quickAuthGateDemo() {
+  const emailEl = document.getElementById("gate-email");
+  const passEl = document.getElementById("gate-password");
+  if (emailEl) emailEl.value = "candidate@example.com";
+  if (passEl) passEl.value = "demo1234";
+  handleAuthGateSubmit(new Event('submit'));
+}
+
 function quickLoginDemo() {
   document.getElementById("login-email").value = "candidate@example.com";
   document.getElementById("login-password").value = "demo1234";
   handleLoginSubmit(new Event('submit'));
+}
+
+function revealAuthenticatedApp() {
+  const gate = document.getElementById("auth-gate-screen");
+  const appHeader = document.getElementById("app-header");
+  const appMain = document.getElementById("app-main");
+
+  if (gate) gate.classList.add("hidden");
+  if (appHeader) appHeader.classList.remove("hidden");
+  if (appMain) appMain.classList.remove("hidden");
+
+  updateAuthUI(currentUser);
+  updateWelcomeBanner(currentProfile?.name || currentUser?.name);
+  switchTab("dashboard");
 }
 
 function updateAuthUI(user) {
@@ -857,7 +940,29 @@ function updateAuthUI(user) {
 
 function logoutUser() {
   currentUser = null;
+  localStorage.removeItem("career_companion_user");
+
+  const gate = document.getElementById("auth-gate-screen");
+  const appHeader = document.getElementById("app-header");
+  const appMain = document.getElementById("app-main");
+
+  if (gate) gate.classList.remove("hidden");
+  if (appHeader) appHeader.classList.add("hidden");
+  if (appMain) appMain.classList.add("hidden");
   updateAuthUI(null);
+}
+
+function checkInitialAuthSession() {
+  const savedUser = localStorage.getItem("career_companion_user");
+  if (savedUser) {
+    try {
+      currentUser = JSON.parse(savedUser);
+      revealAuthenticatedApp();
+      return;
+    } catch (e) {}
+  }
+  // Not logged in -> show login gate screen
+  logoutUser();
 }
 
 
