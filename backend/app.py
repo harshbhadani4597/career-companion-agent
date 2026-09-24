@@ -121,58 +121,69 @@ def parse_resume():
     parsed_profile = resume_agent.process(text)
     return jsonify(parsed_profile)
 
-def extract_text_from_file_storage(file_storage) -> str:
-    filename = (file_storage.filename or "").lower()
-    content = file_storage.read()
-    
-    if filename.endswith(".pdf"):
-        try:
-            import io
-            import pypdf
-            reader = pypdf.PdfReader(io.BytesIO(content))
-            extracted = "\n".join([page.extract_text() or "" for page in reader.pages if page.extract_text()])
-            if extracted.strip():
-                return extracted
-        except Exception:
-            pass
-        return content.decode("utf-8", errors="ignore")
-        
-    elif filename.endswith(".docx"):
-        try:
-            import io
-            import zipfile
-            import xml.etree.ElementTree as ET
-            with zipfile.ZipFile(io.BytesIO(content)) as z:
-                xml_content = z.read("word/document.xml")
-                tree = ET.fromstring(xml_content)
-                texts = [node.text for node in tree.iter() if node.text]
-                return " ".join(texts)
-        except Exception:
-            pass
-        return content.decode("utf-8", errors="ignore")
-        
-    return content.decode("utf-8", errors="ignore")
-
 @app.route("/api/resume/upload", methods=["POST"])
 def upload_resume():
-    if "file" not in request.files:
-        return jsonify({"error": "No file uploaded in request"}), 400
-    
-    file = request.files["file"]
-    if not file or not file.filename:
-        return jsonify({"error": "Selected file is empty or missing filename"}), 400
+    try:
+        if "file" not in request.files:
+            return jsonify({"error": "No file parameter found in upload request. Please select a file."}), 400
         
-    extracted_text = extract_text_from_file_storage(file)
-    if not extracted_text or not extracted_text.strip():
-        return jsonify({"error": "Could not extract text from uploaded file"}), 400
+        file = request.files["file"]
+        if not file or not file.filename:
+            return jsonify({"error": "Selected file is empty or missing filename."}), 400
+            
+        filename = (file.filename or "").lower()
+        content = file.read()
+        if not content:
+            return jsonify({"error": "Uploaded file is 0 bytes (empty)."}), 400
+
+        extracted_text = ""
         
-    parsed_profile = resume_agent.process(extracted_text)
-    return jsonify({
-        "success": True,
-        "filename": file.filename,
-        "extracted_text_preview": extracted_text[:200] + "...",
-        "profile": parsed_profile
-    })
+        # 1. Try PDF extraction
+        if filename.endswith(".pdf"):
+            try:
+                import io
+                import pypdf
+                reader = pypdf.PdfReader(io.BytesIO(content))
+                text_pages = [page.extract_text() or "" for page in reader.pages]
+                extracted_text = "\n".join(text_pages).strip()
+            except Exception as pdf_err:
+                print(f"PDF extraction warning: {pdf_err}")
+                extracted_text = content.decode("utf-8", errors="ignore").strip()
+
+        # 2. Try DOCX extraction
+        elif filename.endswith(".docx") or filename.endswith(".doc"):
+            try:
+                import io
+                import zipfile
+                import xml.etree.ElementTree as ET
+                with zipfile.ZipFile(io.BytesIO(content)) as z:
+                    xml_content = z.read("word/document.xml")
+                    tree = ET.fromstring(xml_content)
+                    texts = [node.text for node in tree.iter() if node.text]
+                    extracted_text = " ".join(texts).strip()
+            except Exception as docx_err:
+                print(f"DOCX extraction warning: {docx_err}")
+                extracted_text = content.decode("utf-8", errors="ignore").strip()
+
+        # 3. Default TXT/JSON/Other
+        else:
+            extracted_text = content.decode("utf-8", errors="ignore").strip()
+
+        if not extracted_text:
+            return jsonify({"error": "Could not extract readable text from this file. Try saving as plain text or PDF."}), 400
+
+        parsed_profile = resume_agent.process(extracted_text)
+        return jsonify({
+            "success": True,
+            "filename": file.filename,
+            "extracted_text_preview": extracted_text[:200] + "...",
+            "profile": parsed_profile
+        })
+
+    except Exception as err:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": f"Server processing error: {str(err)}"}), 500
 
 @app.route("/api/jobs", methods=["GET"])
 def get_jobs():

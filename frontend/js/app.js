@@ -206,7 +206,7 @@ async function uploadResumeFile() {
   const fileInput = document.getElementById("resume-file-input");
   const file = fileInput.files[0];
   if (!file) {
-    alert("Please click to select a resume file (.pdf, .docx, .txt) first.");
+    alert("Please click on the file box to select a resume file (.pdf, .docx, .txt) first.");
     return;
   }
 
@@ -224,9 +224,18 @@ async function uploadResumeFile() {
       body: formData
     });
 
-    const data = await res.json();
-    if (data.error) {
-      alert("Upload failed: " + data.error);
+    let data;
+    try {
+      data = await res.json();
+    } catch (parseErr) {
+      const rawText = await res.text();
+      console.error("Non-JSON server response:", rawText);
+      alert("Server returned error (Status " + res.status + "): " + (rawText.slice(0, 150) || "Unable to parse file"));
+      return;
+    }
+
+    if (!res.ok || data.error) {
+      alert("Upload error: " + (data.error || "Failed to process file"));
     } else {
       currentProfile = data.profile;
       localStorage.setItem("career_companion_profile", JSON.stringify(currentProfile));
@@ -238,7 +247,7 @@ async function uploadResumeFile() {
     }
   } catch (err) {
     console.error("Resume upload error:", err);
-    alert("Error uploading resume file. Please try again.");
+    alert("Upload network request failed: " + err.message);
   } finally {
     btn.innerHTML = originalBtnText;
     btn.disabled = false;
