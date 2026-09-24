@@ -140,11 +140,14 @@ def submit_mock_answer():
     return jsonify(result)
 
 
-@interview_bp.route("/api/interview/simulated-chat", methods=["POST"])
+@interview_bp.route("/api/interview/simulated-chat", methods=["POST", "OPTIONS"])
 def simulated_chat():
     """
     Interactive multi-turn AI mock interviewer turn endpoint.
     """
+    if request.method == "OPTIONS":
+        return jsonify({"status": "ok"}), 200
+
     data = request.get_json() or {}
     student_profile = data.get("student_profile")
     job = _resolve_job(data)
@@ -152,9 +155,28 @@ def simulated_chat():
     candidate_answer = data.get("candidate_answer", "")
 
     if not student_profile:
-        return jsonify({"error": "Student profile is required."}), 400
+        student_profile = {
+            "name": "Candidate",
+            "education": [{"degree": "B.Tech Computer Science"}],
+            "technical_skills": ["Python", "JavaScript", "REST APIs", "Git"],
+            "projects": [{"title": "Web Application", "tech_stack": ["React", "Flask"], "description": "Full-stack application"}]
+        }
+
+    if not job and _rag_engine:
+        all_jobs = _rag_engine.get_all_jobs()
+        job = all_jobs[0] if all_jobs else None
+
     if not job:
-        return jsonify({"error": "Job data or valid job_id is required."}), 400
+        job = {
+            "id": "JOB-101",
+            "title": "Software Developer Intern",
+            "company": "Tech Corp",
+            "domain": "Full-Stack Web Development",
+            "technical_skills": ["Python", "React", "REST APIs", "SQL"],
+            "responsibilities": ["Develop web components", "Integrate REST APIs"],
+            "min_qualification": "B.Tech CS/IT"
+        }
+
     if not _interview_agent:
         return jsonify({"error": "Interview agent is not initialized."}), 500
 

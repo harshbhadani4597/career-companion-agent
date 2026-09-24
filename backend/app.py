@@ -274,39 +274,6 @@ def evaluate_interview_answer():
     result = interview_agent.evaluate_answer(question, key_points, user_answer)
     return jsonify(result)
 
-@app.route("/api/interview/simulated-chat", methods=["POST", "OPTIONS"])
-def app_simulated_chat():
-    if request.method == "OPTIONS":
-        return jsonify({"status": "ok"}), 200
-        
-    data = request.get_json() or {}
-    student_profile = data.get("student_profile")
-    job = data.get("job")
-    job_id = data.get("job_id")
-    current_index = int(data.get("current_question_index", 0))
-    candidate_answer = data.get("candidate_answer", "")
-
-    if not job and job_id and rag_engine:
-        all_jobs = rag_engine.get_all_jobs()
-        job = next((j for j in all_jobs if j.get("id") == job_id), None)
-        if not job and all_jobs:
-            job = all_jobs[0]
-
-    if not student_profile:
-        student_profile = load_sample_profile() or {"name": "Candidate", "technical_skills": ["Python"]}
-        
-    if not job:
-        all_jobs = rag_engine.get_all_jobs()
-        job = all_jobs[0] if all_jobs else {"id": "JOB-101", "title": "Software Engineer Intern", "company": "Tech Corp", "domain": "Full-Stack Web Development"}
-
-    result = m3_interview_agent.conduct_simulated_turn(
-        student_profile=student_profile,
-        job=job,
-        candidate_answer=candidate_answer,
-        current_question_index=current_index
-    )
-    return jsonify(result)
-
 @app.route("/api/roadmap", methods=["POST"])
 def get_roadmap():
     data = request.get_json() or {}
