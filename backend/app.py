@@ -18,7 +18,9 @@ from backend.routes.interview_routes import interview_bp, init_interview_routes
 from backend.routes.career_assistant_routes import career_assistant_bp, init_career_assistant_routes
 from backend.swagger_docs import swagger_bp
 
-app = Flask(__name__, static_folder="../frontend", static_url_path="")
+from flask import Flask, request, jsonify, send_from_directory
+
+app = Flask(__name__, static_folder="../frontend", static_url_path="/app_static")
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Initialize Core Services & Multi-Agent System
@@ -63,7 +65,15 @@ def load_sample_profile():
 
 @app.route("/")
 def serve_index():
-    return app.send_static_file("index.html")
+    return send_from_directory("../frontend", "index.html")
+
+@app.route("/js/<path:filename>")
+def serve_js(filename):
+    return send_from_directory("../frontend/js", filename)
+
+@app.route("/css/<path:filename>")
+def serve_css(filename):
+    return send_from_directory("../frontend/css", filename)
 
 @app.after_request
 def add_no_cache_headers(response):
@@ -262,6 +272,39 @@ def evaluate_interview_answer():
     user_answer = data.get("user_answer", "")
 
     result = interview_agent.evaluate_answer(question, key_points, user_answer)
+    return jsonify(result)
+
+@app.route("/api/interview/simulated-chat", methods=["POST", "OPTIONS"])
+def app_simulated_chat():
+    if request.method == "OPTIONS":
+        return jsonify({"status": "ok"}), 200
+        
+    data = request.get_json() or {}
+    student_profile = data.get("student_profile")
+    job = data.get("job")
+    job_id = data.get("job_id")
+    current_index = int(data.get("current_question_index", 0))
+    candidate_answer = data.get("candidate_answer", "")
+
+    if not job and job_id and rag_engine:
+        all_jobs = rag_engine.get_all_jobs()
+        job = next((j for j in all_jobs if j.get("id") == job_id), None)
+        if not job and all_jobs:
+            job = all_jobs[0]
+
+    if not student_profile:
+        student_profile = load_sample_profile() or {"name": "Candidate", "technical_skills": ["Python"]}
+        
+    if not job:
+        all_jobs = rag_engine.get_all_jobs()
+        job = all_jobs[0] if all_jobs else {"id": "JOB-101", "title": "Software Engineer Intern", "company": "Tech Corp", "domain": "Full-Stack Web Development"}
+
+    result = m3_interview_agent.conduct_simulated_turn(
+        student_profile=student_profile,
+        job=job,
+        candidate_answer=candidate_answer,
+        current_question_index=current_index
+    )
     return jsonify(result)
 
 @app.route("/api/roadmap", methods=["POST"])
