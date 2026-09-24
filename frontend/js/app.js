@@ -56,8 +56,11 @@ function switchTab(tabId) {
   }
 
   // Populate M3 job selectors when switching to M3 tabs
-  if (['skill-gap', 'resume-customizer', 'interview-prep', 'interview'].includes(tabId)) {
+  if (['skill-gap', 'resume-customizer', 'interview-prep', 'interview', 'roadmap'].includes(tabId)) {
     populateM3JobSelectors();
+    if (tabId === 'roadmap' && document.getElementById("roadmap-timeline")?.children.length <= 1) {
+      generateRoadmapFromUI();
+    }
   }
 }
 
@@ -651,9 +654,42 @@ function renderFeedback(idx, result) {
   lucide.createIcons();
 }
 
+async function generateRoadmapFromUI() {
+  const sel = document.getElementById("roadmap-job-select");
+  const jobId = sel ? sel.value : "";
+  
+  let targetRole = "Software Developer Intern";
+  let missingSkills = ["PyTorch", "Docker", "REST APIs"];
+  
+  if (jobId) {
+    const job = getJobById(jobId);
+    if (job) {
+      targetRole = job.title;
+      const jobSkills = job.technical_skills || [];
+      const studentSkills = currentProfile ? (currentProfile.technical_skills || []).map(s => s.toLowerCase()) : [];
+      missingSkills = jobSkills.filter(s => !studentSkills.includes(s.toLowerCase()));
+      if (missingSkills.length === 0) missingSkills = jobSkills.slice(0, 3);
+    }
+  } else if (matchedJobs && matchedJobs.length > 0) {
+    targetRole = matchedJobs[0].job.title;
+    missingSkills = matchedJobs[0].missing_skills || [];
+  }
+
+  fetchRoadmapForMatch(targetRole, missingSkills.join(","));
+}
+
+function onRoadmapJobSelected() {
+  generateRoadmapFromUI();
+}
+
 async function fetchRoadmapForMatch(targetRole, missingSkillsStr) {
   switchTab("roadmap");
   const missingSkills = missingSkillsStr ? missingSkillsStr.split(",") : [];
+
+  const container = document.getElementById("roadmap-timeline");
+  if (container) {
+    container.innerHTML = '<div class="p-8 text-center"><div class="typing-indicator mx-auto"><span></span><span></span><span></span></div><p class="text-xs text-slate-400 mt-2">Building personalized 95%+ compatibility career roadmap...</p></div>';
+  }
 
   try {
     const res = await fetch("/api/roadmap", {
@@ -668,6 +704,7 @@ async function fetchRoadmapForMatch(targetRole, missingSkillsStr) {
     renderRoadmap(roadmap);
   } catch (err) {
     console.error("Roadmap error:", err);
+    if (container) container.innerHTML = '<div class="p-6 text-center text-rose-400 text-xs">Error generating career roadmap. Please try again.</div>';
   }
 }
 
@@ -675,17 +712,45 @@ function renderRoadmap(roadmap) {
   const container = document.getElementById("roadmap-timeline");
   container.innerHTML = "";
 
-  (roadmap.roadmap_steps || []).forEach(step => {
+  // Summary Card
+  const summaryDiv = document.createElement("div");
+  summaryDiv.className = "bg-slate-900/90 border border-emerald-500/30 rounded-xl p-5 mb-4 fade-in";
+  summaryDiv.innerHTML = `
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-700/60 pb-3 mb-3">
+      <div>
+        <h3 class="text-base font-bold text-white">${roadmap.role || "Target Role Roadmap"}</h3>
+        <p class="text-xs text-slate-400">Target Compatibility: <span class="text-emerald-400 font-bold">95%+ Fit</span> &bull; Focus Skills: ${roadmap.missing_skills_count || 0}</p>
+      </div>
+      <span class="px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold rounded-full flex items-center gap-1.5">
+        <i data-lucide="target" class="w-3.5 h-3.5 text-emerald-400"></i> ${roadmap.status || "Action Plan Ready"}
+      </span>
+    </div>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Complete these step-by-step learning modules to master key technical competencies and build verified projects required for high-compatibility shortlisting.
+    </p>
+  `;
+  container.appendChild(summaryDiv);
+
+  // Roadmap Steps
+  (roadmap.roadmap_steps || []).forEach((step, idx) => {
     const div = document.createElement("div");
-    div.className = "p-4 bg-slate-900 border border-slate-700 rounded-xl space-y-2 relative pl-6 border-l-4 border-l-emerald-500";
+    div.className = "p-5 bg-slate-900 border border-slate-700 rounded-xl space-y-3 relative pl-6 border-l-4 border-l-emerald-500 fade-in";
 
     div.innerHTML = `
-      <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
-        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> ${step.phase}
-      </h3>
-      <ul class="space-y-1 text-xs text-slate-300 pl-6 list-disc">
-        ${step.actions.map(act => `<li>${act}</li>`).join('')}
-      </ul>
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+          <i data-lucide="check-circle-2" class="w-4.5 h-4.5 text-emerald-400"></i> ${step.phase}
+        </h3>
+        <span class="text-[10px] text-slate-400 font-mono">Module ${idx + 1} of ${roadmap.roadmap_steps.length}</span>
+      </div>
+      <div class="space-y-2 pt-1">
+        ${step.actions.map((act, aIdx) => `
+          <div class="flex items-start gap-2.5 p-2 bg-slate-950/60 rounded-lg border border-slate-800">
+            <input type="checkbox" id="step-${idx}-${aIdx}" class="mt-0.5 rounded border-slate-700 text-emerald-600 focus:ring-0 cursor-pointer" />
+            <label for="step-${idx}-${aIdx}" class="text-xs text-slate-200 cursor-pointer leading-snug">${act}</label>
+          </div>
+        `).join('')}
+      </div>
     `;
     container.appendChild(div);
   });
@@ -776,7 +841,7 @@ function logoutUser() {
 
 // ── Helper: Populate M3 job selectors ──
 function populateM3JobSelectors() {
-  const selectors = ['skill-gap-job-select', 'resume-job-select', 'interview-prep-job-select', 'mock-sim-job-select'];
+  const selectors = ['skill-gap-job-select', 'resume-job-select', 'interview-prep-job-select', 'mock-sim-job-select', 'roadmap-job-select'];
   
   selectors.forEach(selId => {
     const sel = document.getElementById(selId);
