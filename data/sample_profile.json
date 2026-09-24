@@ -1,0 +1,93 @@
+{
+  "name": "Candidate Profile",
+  "email": "candidate@example.com",
+  "phone": "+91 9876543210",
+  "location": "India",
+  "education": [
+    {
+      "degree": "B.Tech in Computer Science & Engineering (AI & ML)",
+      "institution": "GKCIET / MAKAUT",
+      "year": "2026 (7th Sem)",
+      "score": "7.8 CGPA"
+    },
+    {
+      "degree": "Class 12 (Higher Secondary)",
+      "institution": "CH +2 High School Jhumri Telaiya (JAC)",
+      "year": "2022",
+      "score": "78.8%"
+    },
+    {
+      "degree": "Class 10 (Secondary)",
+      "institution": "Munam Public School (CBSE)",
+      "year": "2020",
+      "score": "61%"
+    }
+  ],
+  "technical_skills": [
+    "Python",
+    "React",
+    "TypeScript",
+    "Tailwind CSS",
+    "Node.js",
+    "Express",
+    "WebSockets",
+    "Gemini AI",
+    "OpenCV",
+    "MediaPipe",
+    "Flask",
+    "Docker",
+    "REST APIs",
+    "IBM Cloud",
+    "watsonx.ai",
+    "JavaScript",
+    "HTML/CSS",
+    "Git & GitHub",
+    "Machine Learning"
+  ],
+  "soft_skills": [
+    "Professional Communication",
+    "Etiquette",
+    "Teamwork",
+    "Problem Solving",
+    "Adaptability"
+  ],
+  "projects": [
+    {
+      "title": "IdleMesh - Distributed Computing Platform",
+      "tech_stack": ["React", "TypeScript", "Tailwind CSS", "Node.js", "Express", "WebSockets", "Python", "Gemini AI", "Docker", "Git & GitHub"],
+      "description": "Built a distributed computing platform that utilizes idle CPU/GPU resources from connected devices for computation, featuring real-time system resource monitoring and WebSocket communication."
+    },
+    {
+      "title": "Ghost - Invisibility Effect",
+      "tech_stack": ["Python", "OpenCV", "MediaPipe", "NumPy", "Flask", "JavaScript", "GitHub"],
+      "description": "Built a real-time computer vision project that creates an invisibility effect using background capture, person segmentation, and hand-gesture control."
+    },
+    {
+      "title": "Travel Planner Agent Using IBM Cloud",
+      "tech_stack": ["IBM Cloud", "watsonx.ai", "Python", "Flask/Streamlit", "REST APIs"],
+      "description": "Built an AI-powered travel planner agent that creates personalized itineraries based on destination, budget, duration, and user preferences."
+    }
+  ],
+  "certifications_internships": [
+    {
+      "title": "Infosys Springboard Virtual Internship 7.0 – AI Domain",
+      "details": "Completed AI Internship earning 16 certifications across 14 courses covering AI, ML, Python, and Generative AI."
+    },
+    {
+      "title": "Edunet Foundation – AI & Cloud Internship",
+      "details": "Built a Travel Planner Agent using IBM Cloud watsonx.ai during a 4-week internship with Edunet Foundation and AICTE."
+    },
+    {
+      "title": "Finishing School Program",
+      "details": "Completed a 3-day program at GKCIET Malda covering communication, professional etiquette, and career readiness."
+    }
+  ],
+  "preferred_domains": [
+    "Artificial Intelligence & Machine Learning",
+    "Full-Stack Web Development",
+    "Python Developer",
+    "Cloud & AI Agent Engineering"
+  ],
+  "preferred_locations": ["Remote", "Bangalore", "Hyderabad", "Noida", "Pune"],
+  "target_roles": ["AI/ML Intern", "Full Stack Developer Intern", "Python Developer Intern", "Software Engineering Intern"]
+}

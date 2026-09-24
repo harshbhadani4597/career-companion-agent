@@ -1,0 +1,108 @@
+/* Custom Styles & Animation Enhancements */
+.tab-btn.active {
+  color: #818cf8;
+  border-bottom-color: #6366f1;
+}
+
+/* ── Hide scrollbar on nav tabs ── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Chat scrollbar ── */
+.chat-scroll::-webkit-scrollbar { width: 6px; }
+.chat-scroll::-webkit-scrollbar-track { background: transparent; }
+.chat-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 6px; }
+.chat-scroll::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+/* ── Chat message animations ── */
+.chat-message {
+  animation: chatSlideIn 0.3s ease-out;
+}
+@keyframes chatSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Typing indicator ── */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+}
+.typing-indicator span {
+  width: 6px;
+  height: 6px;
+  background: #818cf8;
+  border-radius: 50%;
+  animation: typingBounce 1.4s infinite ease-in-out;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Gap status badges ── */
+.gap-badge-critical {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+.gap-badge-partial {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fcd34d;
+}
+.gap-badge-preferred {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+}
+.gap-badge-matched {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #6ee7b7;
+}
+
+/* ── Interview category buttons ── */
+.interview-cat-btn.active-cat {
+  background: #6366f1 !important;
+  color: white !important;
+}
+
+/* ── Priority badges ── */
+.priority-high {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.priority-medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.priority-low {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* ── Fade-in animation ── */
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Card hover glow ── */
+.card-glow:hover {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.08);
+}
+
+/* ── Markdown-style formatting for chat ── */
+.chat-md strong { color: #e2e8f0; font-weight: 600; }
+.chat-md em { color: #94a3b8; }
