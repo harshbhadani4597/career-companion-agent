@@ -65,6 +65,13 @@ def load_sample_profile():
 def serve_index():
     return app.send_static_file("index.html")
 
+@app.after_request
+def add_no_cache_headers(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
 @app.route("/api/status", methods=["GET"])
 def get_status():
     return jsonify({
