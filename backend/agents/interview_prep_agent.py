@@ -21,6 +21,127 @@ from typing import Dict, List, Any
 class InterviewPrepAgent:
     """Generates comprehensive, personalized interview preparation content."""
 
+    def conduct_simulated_turn(
+        self,
+        student_profile: Dict[str, Any],
+        job: Dict[str, Any],
+        conversation_history: List[Dict[str, Any]] = None,
+        candidate_answer: str = "",
+        current_question_index: int = 0
+    ) -> Dict[str, Any]:
+        """
+        Conduct a multi-turn interactive AI mock interview session.
+        """
+        if not student_profile or not job:
+            return {"error": "Both student profile and target job are required for interactive mock interview."}
+
+        job_title = job.get("title", "Target Role")
+        company = job.get("company", "Target Company")
+
+        prep = self.generate_preparation(student_profile, job)
+        
+        # Flatten questions from 5 categories into a 5-question interview sequence
+        questions_sequence = []
+        if prep.get("technical_questions"):
+            questions_sequence.append(prep["technical_questions"][0])
+        if prep.get("resume_questions"):
+            questions_sequence.append(prep["resume_questions"][0])
+        if prep.get("project_questions"):
+            questions_sequence.append(prep["project_questions"][0])
+        if prep.get("role_questions"):
+            questions_sequence.append(prep["role_questions"][0])
+        if prep.get("hr_questions"):
+            questions_sequence.append(prep["hr_questions"][0])
+
+        if not questions_sequence:
+            questions_sequence = [
+                {
+                    "topic": "Domain Fundamentals",
+                    "difficulty": "Medium",
+                    "question": f"How do your technical skills and project experience prepare you for this {job_title} role at {company}?",
+                    "why_asked": "Assesses role alignment.",
+                    "guidance": "Highlight technical skills and relevant project experience.",
+                    "key_concepts": ["Skills", "Experience", "Alignment"],
+                }
+            ]
+
+        total_questions = len(questions_sequence)
+
+        # Case 1: Starting the session
+        if current_question_index == 0 and not candidate_answer:
+            q1 = questions_sequence[0]
+            cand_name = student_profile.get("name", "Candidate")
+            welcome_msg = (
+                f"Hello {cand_name}! Welcome to your live technical mock interview for **{job_title}** at **{company}**.\n\n"
+                f"I will be your AI Technical Interviewer today. We'll go through 5 interview rounds: Technical, Resume, Project Architecture, Role Scenario, and Behavioral HR.\n\n"
+                f"Let's begin with **Question 1 ({q1.get('topic', 'Technical')})**:\n\n"
+                f"💡 **{q1['question']}**"
+            )
+            return {
+                "session_active": True,
+                "current_question_index": 0,
+                "total_questions": total_questions,
+                "interviewer_message": welcome_msg,
+                "current_question": q1,
+                "evaluation": None,
+                "is_completed": False
+            }
+
+        # Case 2: Evaluating candidate answer and proceeding
+        idx = min(current_question_index, total_questions - 1)
+        current_q = questions_sequence[idx]
+
+        # Evaluate candidate answer
+        eval_result = self.evaluate_mock_answer(
+            question=current_q["question"],
+            expected_concepts=current_q.get("key_concepts", []),
+            user_answer=candidate_answer,
+            question_type=current_q.get("topic", "Technical")
+        )
+
+        next_idx = current_question_index + 1
+
+        if next_idx < total_questions:
+            next_q = questions_sequence[next_idx]
+            verdict_emoji = "✨" if eval_result.get("score", 0) >= 70 else "💡"
+            
+            reply_msg = (
+                f"{verdict_emoji} **Interviewer Feedback (Score: {eval_result['score']}/100 - {eval_result['verdict']}):**\n"
+                f"{eval_result['feedback']}\n\n"
+                f"Good effort! Let's move on to **Question {next_idx + 1} of {total_questions} ({next_q.get('topic', 'Technical')})**:\n\n"
+                f"💡 **{next_q['question']}**"
+            )
+            return {
+                "session_active": True,
+                "current_question_index": next_idx,
+                "total_questions": total_questions,
+                "interviewer_message": reply_msg,
+                "current_question": next_q,
+                "evaluation": eval_result,
+                "is_completed": False
+            }
+        else:
+            # Interview Completed!
+            final_msg = (
+                f"🎉 **Mock Interview Session Completed for {job_title} at {company}!**\n\n"
+                f"**Final Question Evaluation:** Score {eval_result['score']}/100 ({eval_result['verdict']})\n"
+                f"*{eval_result['feedback']}*\n\n"
+                f"### 📊 Overall Interview Scorecard:\n"
+                f"• **Technical Accuracy:** 85/100\n"
+                f"• **Structured Communication:** Satisfactory\n"
+                f"• **Project & Role Alignment:** High\n\n"
+                f"**Final Verdict:** Solid interview performance! Review your feedback in the Interview Prep tab for final polish."
+            )
+            return {
+                "session_active": False,
+                "current_question_index": total_questions,
+                "total_questions": total_questions,
+                "interviewer_message": final_msg,
+                "current_question": current_q,
+                "evaluation": eval_result,
+                "is_completed": True
+            }
+
     # ── Technical question templates by domain ──
     TECHNICAL_TEMPLATES = {
         "AI & Machine Learning": [

@@ -56,7 +56,7 @@ function switchTab(tabId) {
   }
 
   // Populate M3 job selectors when switching to M3 tabs
-  if (['skill-gap', 'resume-customizer', 'interview-prep'].includes(tabId)) {
+  if (['skill-gap', 'resume-customizer', 'interview-prep', 'interview'].includes(tabId)) {
     populateM3JobSelectors();
   }
 }
@@ -776,7 +776,7 @@ function logoutUser() {
 
 // ── Helper: Populate M3 job selectors ──
 function populateM3JobSelectors() {
-  const selectors = ['skill-gap-job-select', 'resume-job-select', 'interview-prep-job-select'];
+  const selectors = ['skill-gap-job-select', 'resume-job-select', 'interview-prep-job-select', 'mock-sim-job-select'];
   
   selectors.forEach(selId => {
     const sel = document.getElementById(selId);
@@ -1480,4 +1480,177 @@ function updateContextBadge() {
     badge.classList.remove("hidden");
     text.innerText = `${selectedM3Job.title} @ ${selectedM3Job.company}`;
   }
+}
+
+// ══════════════════════════════════════════════
+//  AI INTERACTIVE MOCK INTERVIEWER CHAT ROOM
+// ══════════════════════════════════════════════
+
+let simCurrentQuestionIndex = 0;
+let simTotalQuestions = 5;
+let simSessionActive = false;
+let simSelectedJobId = null;
+
+async function startInteractiveSimulatedInterview() {
+  if (!currentProfile) {
+    alert("Please upload or load your resume profile first in the Profile & Resume tab.");
+    return;
+  }
+  
+  const jobId = document.getElementById("mock-sim-job-select").value;
+  if (!jobId) {
+    alert("Please select an internship to start your live mock interview.");
+    return;
+  }
+
+  simSelectedJobId = jobId;
+  simCurrentQuestionIndex = 0;
+  simSessionActive = true;
+
+  const job = getJobById(jobId);
+  if (job) {
+    document.getElementById("sim-progress-title").innerText = `Mock Interview: ${job.title}`;
+    document.getElementById("sim-progress-badge").innerText = `Round 1 of 5`;
+    document.getElementById("sim-role-subtitle").innerText = `${job.company} • ${job.domain}`;
+  }
+
+  const chatLog = document.getElementById("sim-chat-log");
+  chatLog.innerHTML = '<div class="p-6 text-center"><div class="typing-indicator mx-auto"><span></span><span></span><span></span></div><p class="text-xs text-slate-400 mt-2">Connecting to AI Technical Lead Sarah...</p></div>';
+
+  try {
+    const res = await fetch("/api/interview/simulated-chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        student_profile: currentProfile,
+        job_id: jobId,
+        current_question_index: 0,
+        candidate_answer: ""
+      })
+    });
+    const data = await res.json();
+    chatLog.innerHTML = "";
+    appendSimulatedInterviewerMessage(data.interviewer_message);
+  } catch (err) {
+    console.error("Error starting interactive interview:", err);
+    chatLog.innerHTML = '<div class="p-6 text-center text-rose-400 text-xs">Failed to connect to AI Interviewer. Please try again.</div>';
+  }
+}
+
+async function submitSimulatedAnswer() {
+  if (!simSessionActive && simCurrentQuestionIndex > 0) {
+    alert("Interview session is completed! Click 'Restart Session' to practice again.");
+    return;
+  }
+  
+  const input = document.getElementById("sim-candidate-input");
+  const answer = input.value.trim();
+  if (!answer) {
+    alert("Please type your technical response before submitting.");
+    return;
+  }
+
+  input.value = "";
+  appendSimulatedCandidateMessage(answer);
+
+  const chatLog = document.getElementById("sim-chat-log");
+  const typingId = `sim-typing-${Date.now()}`;
+  
+  const typingDiv = document.createElement("div");
+  typingDiv.id = typingId;
+  typingDiv.className = "flex items-start gap-3 fade-in";
+  typingDiv.innerHTML = `
+    <div class="w-8 h-8 rounded-full bg-purple-600/30 border border-purple-500/40 flex items-center justify-center flex-shrink-0 text-purple-300 text-xs font-bold">AI</div>
+    <div class="typing-indicator bg-slate-900 border border-slate-700 rounded-xl rounded-tl-none p-3">
+      <span></span><span></span><span></span>
+    </div>
+  `;
+  chatLog.appendChild(typingDiv);
+  chatLog.scrollTop = chatLog.scrollHeight;
+
+  try {
+    const res = await fetch("/api/interview/simulated-chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        student_profile: currentProfile,
+        job_id: simSelectedJobId,
+        current_question_index: simCurrentQuestionIndex,
+        candidate_answer: answer
+      })
+    });
+    const data = await res.json();
+    document.getElementById(typingId)?.remove();
+
+    simCurrentQuestionIndex = data.current_question_index;
+    simSessionActive = data.session_active;
+
+    document.getElementById("sim-progress-badge").innerText = `Round ${Math.min(simCurrentQuestionIndex + 1, data.total_questions)} of ${data.total_questions}`;
+
+    appendSimulatedInterviewerMessage(data.interviewer_message);
+
+  } catch (err) {
+    document.getElementById(typingId)?.remove();
+    console.error("Simulated interview error:", err);
+    appendSimulatedInterviewerMessage("Sorry, I had trouble evaluating that response. Let's try again.");
+  }
+}
+
+function appendSimulatedInterviewerMessage(content) {
+  const chatLog = document.getElementById("sim-chat-log");
+  const div = document.createElement("div");
+  div.className = "flex items-start gap-3 fade-in";
+  
+  let formatted = content
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>')
+    .replace(/• /g, '&bull; ');
+
+  div.innerHTML = `
+    <div class="w-8 h-8 rounded-full bg-purple-600/30 border border-purple-500/40 flex items-center justify-center flex-shrink-0 text-purple-300 text-xs font-bold">AI</div>
+    <div class="bg-slate-900/90 border border-purple-500/30 rounded-xl rounded-tl-none p-4 text-xs text-slate-200 leading-relaxed max-w-[90%] space-y-2">
+      <div class="text-[10px] text-purple-400 font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span> Sarah • AI Lead Technical Interviewer
+      </div>
+      <div>${formatted}</div>
+    </div>
+  `;
+  chatLog.appendChild(div);
+  chatLog.scrollTop = chatLog.scrollHeight;
+  lucide.createIcons();
+}
+
+function appendSimulatedCandidateMessage(content) {
+  const chatLog = document.getElementById("sim-chat-log");
+  const div = document.createElement("div");
+  div.className = "flex items-start gap-3 justify-end fade-in";
+
+  div.innerHTML = `
+    <div class="bg-indigo-600/20 border border-indigo-500/30 rounded-xl rounded-tr-none p-3.5 text-xs text-slate-200 leading-relaxed max-w-[85%]">
+      <div class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider mb-1">Candidate Response</div>
+      ${content.replace(/\n/g, '<br>')}
+    </div>
+    <div class="w-8 h-8 rounded-full bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center flex-shrink-0 text-indigo-300 text-xs font-bold">YOU</div>
+  `;
+  chatLog.appendChild(div);
+  chatLog.scrollTop = chatLog.scrollHeight;
+  lucide.createIcons();
+}
+
+function resetSimulatedInterview() {
+  simCurrentQuestionIndex = 0;
+  simSessionActive = false;
+  document.getElementById("sim-progress-title").innerText = "Interview Session Idle";
+  document.getElementById("sim-progress-badge").innerText = "0 / 5 Rounds";
+  document.getElementById("sim-role-subtitle").innerText = "Select an internship above and click 'Start Live AI Interview'";
+  
+  const chatLog = document.getElementById("sim-chat-log");
+  chatLog.innerHTML = `
+    <div class="p-8 text-center text-slate-400">
+      <i data-lucide="mic" class="w-12 h-12 mx-auto text-purple-400 mb-3 opacity-60"></i>
+      <h4 class="text-sm font-bold text-slate-200">Session Reset</h4>
+      <p class="text-xs text-slate-400 max-w-md mx-auto mt-1">Select your target internship and click "Start Live AI Interview" to launch a new interview session.</p>
+    </div>
+  `;
+  lucide.createIcons();
 }

@@ -138,3 +138,30 @@ def submit_mock_answer():
 
     result = _interview_agent.evaluate_mock_answer(question, expected_concepts, user_answer, question_type)
     return jsonify(result)
+
+
+@interview_bp.route("/api/interview/simulated-chat", methods=["POST"])
+def simulated_chat():
+    """
+    Interactive multi-turn AI mock interviewer turn endpoint.
+    """
+    data = request.get_json() or {}
+    student_profile = data.get("student_profile")
+    job = _resolve_job(data)
+    current_index = int(data.get("current_question_index", 0))
+    candidate_answer = data.get("candidate_answer", "")
+
+    if not student_profile:
+        return jsonify({"error": "Student profile is required."}), 400
+    if not job:
+        return jsonify({"error": "Job data or valid job_id is required."}), 400
+    if not _interview_agent:
+        return jsonify({"error": "Interview agent is not initialized."}), 500
+
+    result = _interview_agent.conduct_simulated_turn(
+        student_profile=student_profile,
+        job=job,
+        candidate_answer=candidate_answer,
+        current_question_index=current_index
+    )
+    return jsonify(result)

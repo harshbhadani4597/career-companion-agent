@@ -317,26 +317,70 @@
       </div>
     </section>
 
-    <!-- 5. MOCK INTERVIEWER VIEW (M1/M2 — kept intact) -->
+    <!-- 5. AI INTERACTIVE MOCK INTERVIEWER VIEW -->
     <section id="view-interview" class="tab-view hidden space-y-6">
-      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-6">
-        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-700 pb-4">
+      <div class="bg-gradient-to-r from-slate-800 to-purple-950/40 border border-purple-500/30 rounded-xl p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-700/60 pb-4">
           <div>
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
-              <i data-lucide="mic" class="w-5 h-5 text-purple-400"></i> AI Interactive Mock Interviewer
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="mic" class="w-6 h-6 text-purple-400"></i> AI Interactive Mock Interviewer
             </h2>
-            <p class="text-xs text-slate-400">Simulates real interview questions tailored to candidate target roles and missing skills.</p>
+            <p class="text-xs text-slate-300 mt-1">Live multi-turn interview simulator asking real job-relevant questions tailored to your chosen internship & missing skills.</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-400">Role Focus:</span>
-            <span id="interview-target-role" class="px-3 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-300 font-semibold rounded-full text-xs">
-              AI/ML & Full-Stack Developer
+            <span class="text-xs text-slate-400 font-medium">Interviewer:</span>
+            <span class="px-3 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-300 font-semibold rounded-full text-xs flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span> Sarah (Senior Tech Interviewer)
             </span>
           </div>
         </div>
 
-        <div id="interview-qa-container" class="space-y-6 mt-6">
-          <!-- Active Interview Questions rendered here -->
+        <!-- Job Selector & Session Controls -->
+        <div class="flex flex-wrap items-end gap-4 pt-2">
+          <div class="flex-1 min-w-[280px]">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Select Target Internship for Interview</label>
+            <select id="mock-sim-job-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-purple-500 focus:outline-none">
+              <option value="">-- Select internship --</option>
+            </select>
+          </div>
+          <button onclick="startInteractiveSimulatedInterview()" id="btn-start-sim-interview" class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs rounded-lg shadow-lg shadow-purple-600/30 flex items-center gap-2 transition">
+            <i data-lucide="play" class="w-4 h-4"></i> Start Live AI Interview
+          </button>
+          <button onclick="resetSimulatedInterview()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Restart Session
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Interviewer Chat Room Container -->
+      <div id="simulated-interview-container" class="bg-slate-800/80 border border-slate-700 rounded-xl p-6 space-y-4">
+        <!-- Progress Bar & Status -->
+        <div class="flex items-center justify-between border-b border-slate-700 pb-3 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-200" id="sim-progress-title">Interview Session Idle</span>
+            <span class="px-2 py-0.5 bg-slate-700 text-slate-300 rounded text-[10px] font-semibold" id="sim-progress-badge">0 / 5 Rounds</span>
+          </div>
+          <div class="text-slate-400 text-[11px]" id="sim-role-subtitle">Select an internship above and click "Start Live AI Interview"</div>
+        </div>
+
+        <!-- Chat History Area -->
+        <div id="sim-chat-log" class="bg-slate-900/90 border border-slate-700/80 rounded-xl p-4 space-y-4 min-h-[380px] max-h-[550px] overflow-y-auto chat-scroll">
+          <div class="p-8 text-center text-slate-400">
+            <i data-lucide="mic" class="w-12 h-12 mx-auto text-purple-400 mb-3 opacity-60"></i>
+            <h4 class="text-sm font-bold text-slate-200">Ready to Start Your Interview?</h4>
+            <p class="text-xs text-slate-400 max-w-md mx-auto mt-1">Select your target internship and click "Start Live AI Interview". The AI Interviewer will evaluate your answers in real time and guide you through 5 realistic interview rounds!</p>
+          </div>
+        </div>
+
+        <!-- Candidate Input Area -->
+        <div class="space-y-2 pt-2">
+          <label class="block text-xs font-semibold text-slate-300">Your Candidate Response to AI Interviewer:</label>
+          <div class="flex gap-2">
+            <textarea id="sim-candidate-input" rows="3" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs text-slate-200 focus:border-purple-500 focus:outline-none" placeholder="Type your technical answer here (explain your approach, architecture, tools used)..."></textarea>
+            <button onclick="submitSimulatedAnswer()" id="btn-submit-sim-answer" class="px-6 bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs rounded-lg shadow-md transition flex items-center justify-center gap-2 flex-shrink-0">
+              <i data-lucide="send" class="w-4 h-4"></i> Submit Answer
+            </button>
+          </div>
         </div>
       </div>
     </section>
