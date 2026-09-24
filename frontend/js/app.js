@@ -24,7 +24,24 @@ document.addEventListener("DOMContentLoaded", () => {
   loadStatus();
   loadAllJobs();
   loadSavedOrEmptyProfile();
+  updateWelcomeBanner(currentProfile?.name);
 });
+
+function updateWelcomeBanner(candidateName) {
+  const greetingEl = document.getElementById("welcome-greeting");
+  const nameEl = document.getElementById("welcome-candidate-name");
+  
+  const hour = new Date().getHours();
+  let greeting = "Good morning";
+  if (hour >= 12 && hour < 17) {
+    greeting = "Good afternoon";
+  } else if (hour >= 17) {
+    greeting = "Good evening";
+  }
+
+  if (greetingEl) greetingEl.innerText = greeting;
+  if (nameEl) nameEl.innerText = candidateName || "Candidate";
+}
 
 // ══════════════════════════════════════════════
 //  TAB NAVIGATION (supports M1/M2 + M3 tabs)
@@ -132,6 +149,7 @@ function clearProfile() {
 }
 
 function renderProfileUI(profile) {
+  updateWelcomeBanner(profile?.name);
   const nameDisplay = document.getElementById("stat-candidate-name");
   const subDisplay = document.getElementById("stat-candidate-subtitle");
   const topMatchDisplay = document.getElementById("stat-top-match");

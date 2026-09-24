@@ -11,7 +11,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="css/style.css?v=3.3" />
+  <link rel="stylesheet" href="css/style.css?v=3.4" />
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
 
@@ -96,6 +96,24 @@
 
     <!-- 1. DASHBOARD VIEW -->
     <section id="view-dashboard" class="tab-view space-y-6">
+
+      <!-- Welcome Hero Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 space-y-2.5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full text-xs font-semibold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Live Monitoring & RAG Active</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">
+            <span id="welcome-greeting">Good morning</span>, <span id="welcome-candidate-name" class="text-indigo-200">Candidate</span> 👋
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
+            Your AI Career Companion is actively evaluating 165+ internship postings, calculating transparent match scores, and mapping actionable skill gap learning paths.
+          </p>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-5 flex items-center gap-4">
           <div class="p-3 bg-blue-500/10 text-blue-400 rounded-lg"><i data-lucide="database" class="w-6 h-6"></i></div>
@@ -804,6 +822,6 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=3.3"></script>
+  <script src="js/app.js?v=3.4"></script>
 </body>
 </html>
