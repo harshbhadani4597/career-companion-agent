@@ -11,7 +11,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="css/style.css?v=3.0" />
+  <link rel="stylesheet" href="css/style.css?v=3.1" />
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
 
@@ -127,6 +127,114 @@
             <p class="text-xs text-slate-400 font-medium">Multi-Agent RAG Engine</p>
             <h3 class="text-xl font-bold text-white">8 Active Agents</h3>
             <p class="text-[11px] text-amber-300 mt-0.5">M1/M2 + M3 Agents Active</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Milestone 3 Core Autonomous Agents Hub -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-xl p-5 shadow-lg space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-700/60 pb-3">
+          <div>
+            <span class="px-2.5 py-0.5 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-[11px] font-bold rounded-full uppercase tracking-wider">Milestone 3 Suite</span>
+            <h2 class="text-base font-extrabold text-white mt-1 flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-5 h-5 text-indigo-400"></i> Autonomous Career & Application Agents
+            </h2>
+            <p class="text-xs text-slate-300">Skill gap analysis, custom resume & cover letter generation, interactive mock interviewing, and conversational support.</p>
+          </div>
+          <span class="px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold rounded-lg flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> M3.1 to M3.4 Live & Active
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          <!-- Card 1: Skill Gap Agent -->
+          <div class="p-4 bg-slate-900/90 border border-slate-700 hover:border-cyan-500/50 rounded-xl flex flex-col justify-between gap-3 transition group">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-2 py-0.5 rounded">M3.1 AGENT</span>
+                <i data-lucide="search" class="w-4 h-4 text-cyan-400"></i>
+              </div>
+              <h3 class="text-sm font-bold text-white group-hover:text-cyan-300 transition">Skill Gap Analysis</h3>
+              <p class="text-xs text-slate-400 mt-1 line-clamp-2">Compares student profile against target internship role to detect missing technical and soft skills.</p>
+            </div>
+            <button onclick="switchTab('skill-gap')" class="w-full py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 shadow-md shadow-cyan-600/20">
+              <i data-lucide="search" class="w-3.5 h-3.5"></i> Run Skill Gap Analysis
+            </button>
+          </div>
+
+          <!-- Card 2: Resume & Cover Letter Agent -->
+          <div class="p-4 bg-slate-900/90 border border-slate-700 hover:border-emerald-500/50 rounded-xl flex flex-col justify-between gap-3 transition group">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded">M3.2 AGENT</span>
+                <i data-lucide="file-edit" class="w-4 h-4 text-emerald-400"></i>
+              </div>
+              <h3 class="text-sm font-bold text-white group-hover:text-emerald-300 transition">Resume & Cover Letter</h3>
+              <p class="text-xs text-slate-400 mt-1 line-clamp-2">Generates tailored resumes and position-specific cover letters aligned strictly with verified candidate experience.</p>
+            </div>
+            <button onclick="switchTab('resume-customizer')" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/20">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Custom Resume & Letter
+            </button>
+          </div>
+
+          <!-- Card 3: Interview Prep Agent -->
+          <div class="p-4 bg-slate-900/90 border border-slate-700 hover:border-purple-500/50 rounded-xl flex flex-col justify-between gap-3 transition group">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold font-mono text-purple-400 bg-purple-500/10 border border-purple-500/30 px-2 py-0.5 rounded">M3.3 AGENT</span>
+                <i data-lucide="graduation-cap" class="w-4 h-4 text-purple-400"></i>
+              </div>
+              <h3 class="text-sm font-bold text-white group-hover:text-purple-300 transition">Interview Preparation</h3>
+              <p class="text-xs text-slate-400 mt-1 line-clamp-2">Generates role-specific behavioral & technical questions, sample STAR answers, and prep strategies.</p>
+            </div>
+            <button onclick="switchTab('interview-prep')" class="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 shadow-md shadow-purple-600/20">
+              <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i> Prepare Interview Questions
+            </button>
+          </div>
+
+          <!-- Card 4: Live AI Mock Interviewer -->
+          <div class="p-4 bg-slate-900/90 border border-slate-700 hover:border-rose-500/50 rounded-xl flex flex-col justify-between gap-3 transition group">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold font-mono text-rose-400 bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 rounded">M3.3 INTERACTIVE</span>
+                <i data-lucide="mic" class="w-4 h-4 text-rose-400"></i>
+              </div>
+              <h3 class="text-sm font-bold text-white group-hover:text-rose-300 transition">AI Interactive Mock Interviewer</h3>
+              <p class="text-xs text-slate-400 mt-1 line-clamp-2">Simulates a real technical interview with Sarah (AI Lead Technical Interviewer) with live evaluation & scorecards.</p>
+            </div>
+            <button onclick="switchTab('interview')" class="w-full py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 shadow-md shadow-rose-600/20">
+              <i data-lucide="mic" class="w-3.5 h-3.5"></i> Start Real AI Interview
+            </button>
+          </div>
+
+          <!-- Card 5: Skill Gap & 95%+ Career Roadmap -->
+          <div class="p-4 bg-slate-900/90 border border-slate-700 hover:border-teal-500/50 rounded-xl flex flex-col justify-between gap-3 transition group">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold font-mono text-teal-400 bg-teal-500/10 border border-teal-500/30 px-2 py-0.5 rounded">M3.1 & M3.4 ROADMAP</span>
+                <i data-lucide="compass" class="w-4 h-4 text-teal-400"></i>
+              </div>
+              <h3 class="text-sm font-bold text-white group-hover:text-teal-300 transition">95%+ Career Roadmap</h3>
+              <p class="text-xs text-slate-400 mt-1 line-clamp-2">Actionable step-by-step learning modules and verified project checkpoints to achieve 95%+ role compatibility.</p>
+            </div>
+            <button onclick="switchTab('roadmap')" class="w-full py-2 bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 shadow-md shadow-teal-600/20">
+              <i data-lucide="compass" class="w-3.5 h-3.5"></i> View 95%+ Roadmap
+            </button>
+          </div>
+
+          <!-- Card 6: Conversational Career Assistant -->
+          <div class="p-4 bg-slate-900/90 border border-slate-700 hover:border-indigo-500/50 rounded-xl flex flex-col justify-between gap-3 transition group">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/30 px-2 py-0.5 rounded">M3.4 CHATBOT</span>
+                <i data-lucide="bot" class="w-4 h-4 text-indigo-400"></i>
+              </div>
+              <h3 class="text-sm font-bold text-white group-hover:text-indigo-300 transition">Conversational Career Assistant</h3>
+              <p class="text-xs text-slate-400 mt-1 line-clamp-2">Ongoing AI guidance, application decision support, and real-time candidate query assistance.</p>
+            </div>
+            <button onclick="switchTab('career-assistant')" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/20">
+              <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Open AI Career Chat
+            </button>
           </div>
         </div>
       </div>
@@ -683,6 +791,6 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=3.0"></script>
+  <script src="js/app.js?v=3.1"></script>
 </body>
 </html>
