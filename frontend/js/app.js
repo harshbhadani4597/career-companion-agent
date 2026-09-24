@@ -192,6 +192,60 @@ function renderProfileUI(profile) {
   lucide.createIcons();
 }
 
+function handleFileSelected(event) {
+  const file = event.target.files[0];
+  const label = document.getElementById("file-drop-label");
+  if (file) {
+    label.innerText = `Selected: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+  } else {
+    label.innerText = "Click to select or drag & drop resume file";
+  }
+}
+
+async function uploadResumeFile() {
+  const fileInput = document.getElementById("resume-file-input");
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please click to select a resume file (.pdf, .docx, .txt) first.");
+    return;
+  }
+
+  const btn = document.getElementById("btn-upload-file");
+  const originalBtnText = btn.innerHTML;
+  btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Uploading & Extracting File...';
+  btn.disabled = true;
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/resume/upload", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+    if (data.error) {
+      alert("Upload failed: " + data.error);
+    } else {
+      currentProfile = data.profile;
+      localStorage.setItem("career_companion_profile", JSON.stringify(currentProfile));
+      renderProfileUI(currentProfile);
+      populateM3JobSelectors();
+      alert(`Resume file "${data.filename}" uploaded and parsed successfully!`);
+      switchTab("profile");
+      executeMatching();
+    }
+  } catch (err) {
+    console.error("Resume upload error:", err);
+    alert("Error uploading resume file. Please try again.");
+  } finally {
+    btn.innerHTML = originalBtnText;
+    btn.disabled = false;
+    lucide.createIcons();
+  }
+}
+
 async function parseResumeInput() {
   const text = document.getElementById("resume-text-input").value;
   if (!text) {

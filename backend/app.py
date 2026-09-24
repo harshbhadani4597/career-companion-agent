@@ -121,6 +121,59 @@ def parse_resume():
     parsed_profile = resume_agent.process(text)
     return jsonify(parsed_profile)
 
+def extract_text_from_file_storage(file_storage) -> str:
+    filename = (file_storage.filename or "").lower()
+    content = file_storage.read()
+    
+    if filename.endswith(".pdf"):
+        try:
+            import io
+            import pypdf
+            reader = pypdf.PdfReader(io.BytesIO(content))
+            extracted = "\n".join([page.extract_text() or "" for page in reader.pages if page.extract_text()])
+            if extracted.strip():
+                return extracted
+        except Exception:
+            pass
+        return content.decode("utf-8", errors="ignore")
+        
+    elif filename.endswith(".docx"):
+        try:
+            import io
+            import zipfile
+            import xml.etree.ElementTree as ET
+            with zipfile.ZipFile(io.BytesIO(content)) as z:
+                xml_content = z.read("word/document.xml")
+                tree = ET.fromstring(xml_content)
+                texts = [node.text for node in tree.iter() if node.text]
+                return " ".join(texts)
+        except Exception:
+            pass
+        return content.decode("utf-8", errors="ignore")
+        
+    return content.decode("utf-8", errors="ignore")
+
+@app.route("/api/resume/upload", methods=["POST"])
+def upload_resume():
+    if "file" not in request.files:
+        return jsonify({"error": "No file uploaded in request"}), 400
+    
+    file = request.files["file"]
+    if not file or not file.filename:
+        return jsonify({"error": "Selected file is empty or missing filename"}), 400
+        
+    extracted_text = extract_text_from_file_storage(file)
+    if not extracted_text or not extracted_text.strip():
+        return jsonify({"error": "Could not extract text from uploaded file"}), 400
+        
+    parsed_profile = resume_agent.process(extracted_text)
+    return jsonify({
+        "success": True,
+        "filename": file.filename,
+        "extracted_text_preview": extracted_text[:200] + "...",
+        "profile": parsed_profile
+    })
+
 @app.route("/api/jobs", methods=["GET"])
 def get_jobs():
     query = request.args.get("query", "")
