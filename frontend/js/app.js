@@ -654,6 +654,11 @@ function renderFeedback(idx, result) {
   lucide.createIcons();
 }
 
+function getJobById(jobId) {
+  if (!allJobs || allJobs.length === 0) return null;
+  return allJobs.find(j => j.id === jobId) || null;
+}
+
 async function generateRoadmapFromUI() {
   const sel = document.getElementById("roadmap-job-select");
   const jobId = sel ? sel.value : "";
@@ -673,6 +678,9 @@ async function generateRoadmapFromUI() {
   } else if (matchedJobs && matchedJobs.length > 0) {
     targetRole = matchedJobs[0].job.title;
     missingSkills = matchedJobs[0].missing_skills || [];
+  } else if (allJobs && allJobs.length > 0) {
+    targetRole = allJobs[0].title;
+    missingSkills = allJobs[0].technical_skills ? allJobs[0].technical_skills.slice(0, 3) : ["Python", "Git", "REST APIs"];
   }
 
   fetchRoadmapForMatch(targetRole, missingSkills.join(","));
@@ -1603,6 +1611,7 @@ async function startInteractiveSimulatedInterview() {
 }
 
 async function submitSimulatedAnswer() {
+  stopInterviewVoiceInput();
   if (!simSessionActive && simCurrentQuestionIndex > 0) {
     alert("Interview session is completed! Click 'Restart Session' to practice again.");
     return;
@@ -1611,7 +1620,7 @@ async function submitSimulatedAnswer() {
   const input = document.getElementById("sim-candidate-input");
   const answer = input.value.trim();
   if (!answer) {
-    alert("Please type your technical response before submitting.");
+    alert("Please type or speak your technical response before submitting.");
     return;
   }
 
@@ -1703,6 +1712,7 @@ function appendSimulatedCandidateMessage(content) {
 }
 
 function resetSimulatedInterview() {
+  stopInterviewVoiceInput();
   simCurrentQuestionIndex = 0;
   simSessionActive = false;
   document.getElementById("sim-progress-title").innerText = "Interview Session Idle";
@@ -1718,4 +1728,159 @@ function resetSimulatedInterview() {
     </div>
   `;
   lucide.createIcons();
+}
+
+// ══════════════════════════════════════════════
+//  SPEECH RECOGNITION / VOICE INPUT MODULE
+// ══════════════════════════════════════════════
+
+let speechRecognition = null;
+let isInterviewListening = false;
+let assistantRecognition = null;
+let isAssistantListening = false;
+
+function getSpeechRecognitionInstance() {
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) return null;
+  const instance = new SpeechRec();
+  instance.continuous = true;
+  instance.interimResults = true;
+  instance.lang = 'en-US';
+  return instance;
+}
+
+function toggleVoiceInput() {
+  const btn = document.getElementById("btn-mic-sim-input");
+  const label = document.getElementById("mic-btn-label");
+  const indicator = document.getElementById("mic-status-indicator");
+  const textarea = document.getElementById("sim-candidate-input");
+
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) {
+    alert("Speech recognition is not supported in this browser. Please try Google Chrome or MS Edge, or type your answer.");
+    return;
+  }
+
+  if (isInterviewListening) {
+    stopInterviewVoiceInput();
+    return;
+  }
+
+  try {
+    speechRecognition = getSpeechRecognitionInstance();
+    if (!speechRecognition) return;
+
+    let finalTranscript = textarea ? textarea.value : "";
+    if (finalTranscript && !finalTranscript.endsWith(" ")) {
+      finalTranscript += " ";
+    }
+
+    speechRecognition.onresult = (event) => {
+      let interimTranscript = "";
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript + " ";
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+      if (textarea) {
+        textarea.value = finalTranscript + interimTranscript;
+      }
+    };
+
+    speechRecognition.onerror = (err) => {
+      console.warn("Speech recognition error:", err.error);
+      if (err.error === 'not-allowed') {
+        alert("Microphone access denied. Please allow microphone permissions in your browser settings.");
+      }
+      stopInterviewVoiceInput();
+    };
+
+    speechRecognition.onend = () => {
+      if (!isInterviewListening) {
+        if (btn) btn.className = "px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5";
+        if (label) label.innerText = "Mic";
+        if (indicator) indicator.classList.add("hidden");
+      }
+    };
+
+    speechRecognition.start();
+    isInterviewListening = true;
+    if (btn) btn.className = "px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5 animate-pulse shadow-lg shadow-rose-600/30";
+    if (label) label.innerText = "Recording...";
+    if (indicator) indicator.classList.remove("hidden");
+    lucide.createIcons();
+
+  } catch (err) {
+    console.error("Speech recognition startup error:", err);
+    alert("Could not start microphone voice input: " + err.message);
+  }
+}
+
+function stopInterviewVoiceInput() {
+  if (speechRecognition) {
+    try { speechRecognition.stop(); } catch (e) {}
+  }
+  isInterviewListening = false;
+  const btn = document.getElementById("btn-mic-sim-input");
+  const label = document.getElementById("mic-btn-label");
+  const indicator = document.getElementById("mic-status-indicator");
+  if (btn) btn.className = "px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold text-xs rounded-lg transition flex items-center justify-center gap-1.5";
+  if (label) label.innerText = "Mic";
+  if (indicator) indicator.classList.add("hidden");
+}
+
+function toggleAssistantVoiceInput() {
+  const btn = document.getElementById("btn-assistant-mic");
+  const input = document.getElementById("chat-input");
+
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) {
+    alert("Speech recognition is not supported in this browser. Please try Google Chrome or MS Edge.");
+    return;
+  }
+
+  if (isAssistantListening) {
+    if (assistantRecognition) try { assistantRecognition.stop(); } catch (e) {}
+    isAssistantListening = false;
+    if (btn) btn.className = "px-4 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold rounded-lg transition flex items-center gap-1.5";
+    return;
+  }
+
+  try {
+    assistantRecognition = getSpeechRecognitionInstance();
+    if (!assistantRecognition) return;
+
+    let finalTranscript = input ? input.value : "";
+    if (finalTranscript && !finalTranscript.endsWith(" ")) finalTranscript += " ";
+
+    assistantRecognition.onresult = (event) => {
+      let interimTranscript = "";
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript + " ";
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+      if (input) input.value = finalTranscript + interimTranscript;
+    };
+
+    assistantRecognition.onerror = (err) => {
+      isAssistantListening = false;
+      if (btn) btn.className = "px-4 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold rounded-lg transition flex items-center gap-1.5";
+    };
+
+    assistantRecognition.onend = () => {
+      isAssistantListening = false;
+      if (btn) btn.className = "px-4 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold rounded-lg transition flex items-center gap-1.5";
+    };
+
+    assistantRecognition.start();
+    isAssistantListening = true;
+    if (btn) btn.className = "px-4 py-3 bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold rounded-lg transition flex items-center gap-1.5 animate-pulse shadow-lg shadow-rose-600/30";
+  } catch (err) {
+    console.error("Assistant speech error:", err);
+  }
 }
