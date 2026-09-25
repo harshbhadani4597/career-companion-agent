@@ -390,6 +390,7 @@ class InterviewPrepAgent:
                 "completeness": "Incomplete",
                 "communication": "Too brief",
                 "verdict": "Needs Significant Improvement",
+                "feedback": "Answer was too brief. Please provide a more detailed technical response covering key concepts.",
                 "what_was_good": ["Attempted to answer the question"],
                 "what_could_improve": [
                     "Provide a more detailed response",
@@ -462,6 +463,8 @@ class InterviewPrepAgent:
         else:
             verdict = "Needs Improvement"
 
+        feedback_summary = f"Good points: {', '.join(what_was_good)}. Areas to refine: {', '.join(what_could_improve)}."
+
         return {
             "score": overall_score,
             "relevance": "High" if relevance_score >= 0.6 else ("Medium" if relevance_score >= 0.3 else "Low"),
@@ -470,6 +473,7 @@ class InterviewPrepAgent:
             "completeness": f"{len(covered)}/{len(expected_concepts)} key concepts covered",
             "communication": "Good" if word_count >= 50 else "Brief",
             "verdict": verdict,
+            "feedback": feedback_summary,
             "what_was_good": what_was_good,
             "what_could_improve": what_could_improve,
             "suggested_structure": self._get_answer_structure(question_type),
