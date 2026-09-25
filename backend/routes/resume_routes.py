@@ -86,3 +86,35 @@ def generate_cover_letter():
 
     result = _resume_agent.generate_cover_letter(student_profile, job)
     return jsonify(result)
+
+
+@resume_bp.route("/api/resume/ats-optimize", methods=["POST"])
+def ats_optimize_resume():
+    """
+    Generate an ATS-optimized resume with score and keyword feedback.
+
+    Request body:
+        {
+            "student_profile": { ... },
+            "job_id": "JOB-101",
+            "include_skill_gap": true
+        }
+    """
+    data = request.get_json() or {}
+    student_profile = data.get("student_profile")
+    job = _resolve_job(data)
+
+    if not student_profile:
+        return jsonify({"error": "Student profile is required."}), 400
+    if not job:
+        return jsonify({"error": "Job data or valid job_id is required."}), 400
+    if not _resume_agent:
+        return jsonify({"error": "Resume agent is not initialized."}), 500
+
+    skill_gap = None
+    if data.get("include_skill_gap", False) and _skill_gap_agent:
+        skill_gap = _skill_gap_agent.analyze(student_profile, job)
+
+    result = _resume_agent.optimize_ats_resume(student_profile, job, skill_gap)
+    return jsonify(result)
+

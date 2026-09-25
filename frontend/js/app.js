@@ -1284,6 +1284,72 @@ function copyCoverLetter() {
   navigator.clipboard.writeText(text).then(() => alert("Cover letter copied to clipboard!"));
 }
 
+async function runAtsOptimization() {
+  if (!currentProfile) {
+    alert("Please upload your resume first.");
+    return;
+  }
+  const jobId = document.getElementById("resume-job-select").value;
+  if (!jobId) {
+    alert("Please select an internship to optimize for ATS.");
+    return;
+  }
+
+  document.getElementById("resume-empty-state").classList.add("hidden");
+  const outputContainer = document.getElementById("ats-output-container");
+  outputContainer.classList.remove("hidden");
+
+  const scoreText = document.getElementById("ats-score-text");
+  scoreText.innerText = "Analyzing ATS Match...";
+
+  try {
+    const res = await fetch("/api/resume/ats-optimize", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        student_profile: currentProfile,
+        job_id: jobId,
+        include_skill_gap: true
+      })
+    });
+    const result = await res.json();
+    
+    // Render ATS Score
+    const score = result.ats_compatibility_score || 85;
+    scoreText.innerText = `${score}% ATS Score (${result.ats_verdict || 'Good Match'})`;
+
+    // Render Matched Keywords
+    const matchedContainer = document.getElementById("ats-matched-keywords");
+    matchedContainer.innerHTML = (result.matched_keywords || []).map(k => 
+      `<span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-semibold rounded-md">${k}</span>`
+    ).join('') || '<span class="text-xs text-slate-400">None detected</span>';
+
+    // Render Missing Keywords
+    const missingContainer = document.getElementById("ats-missing-keywords");
+    missingContainer.innerHTML = (result.missing_keywords || []).map(k => 
+      `<span class="px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold rounded-md">${k}</span>`
+    ).join('') || '<span class="text-xs text-emerald-400 font-semibold">100% Target Keywords Present!</span>';
+
+    // Render Recommendations
+    const recList = document.getElementById("ats-recommendations-list");
+    recList.innerHTML = (result.ats_recommendations || []).map(r => `<li>${r}</li>`).join('');
+
+    // Render Output text
+    document.getElementById("ats-resume-output-text").value = result.ats_resume_text || "";
+    lucide.createIcons();
+
+  } catch (err) {
+    console.error("ATS Optimization error:", err);
+    alert("Error running ATS optimization. Please try again.");
+  }
+}
+
+function copyAtsResumeText() {
+  const text = document.getElementById("ats-resume-output-text").value;
+  navigator.clipboard.writeText(text).then(() => alert("ATS-optimized resume text copied to clipboard!"));
+}
+
+
 
 // ══════════════════════════════════════════════
 //  M3.3 — INTERVIEW PREPARATION
@@ -1307,6 +1373,9 @@ async function generateInterviewPrep() {
   const content = document.getElementById("interview-prep-content");
   content.innerHTML = '<div class="p-8 text-center"><div class="typing-indicator mx-auto"><span></span><span></span><span></span></div><p class="text-xs text-slate-400 mt-2">Generating interview preparation...</p></div>';
 
+  const diffSelect = document.getElementById("interview-prep-difficulty-select");
+  const difficultyLevel = diffSelect ? diffSelect.value : "Medium";
+
   try {
     const res = await fetch("/api/interview/prepare", {
       method: "POST",
@@ -1314,7 +1383,8 @@ async function generateInterviewPrep() {
       body: JSON.stringify({
         student_profile: currentProfile,
         job_id: jobId,
-        include_skill_gap: true
+        include_skill_gap: true,
+        difficulty_level: difficultyLevel
       })
     });
     currentInterviewPrep = await res.json();
@@ -1713,6 +1783,9 @@ async function startInteractiveSimulatedInterview() {
   const chatLog = document.getElementById("sim-chat-log");
   chatLog.innerHTML = '<div class="p-6 text-center"><div class="typing-indicator mx-auto"><span></span><span></span><span></span></div><p class="text-xs text-slate-400 mt-2">Connecting to AI Technical Lead Sarah...</p></div>';
 
+  const diffSelect = document.getElementById("mock-sim-difficulty-select");
+  const difficultyLevel = diffSelect ? diffSelect.value : "Medium";
+
   try {
     const res = await fetch("/api/interview/simulated-chat", {
       method: "POST",
@@ -1721,7 +1794,8 @@ async function startInteractiveSimulatedInterview() {
         student_profile: currentProfile,
         job_id: jobId,
         current_question_index: 0,
-        candidate_answer: ""
+        candidate_answer: "",
+        difficulty_level: difficultyLevel
       })
     });
     const data = await res.json();
@@ -1765,6 +1839,9 @@ async function submitSimulatedAnswer() {
   chatLog.appendChild(typingDiv);
   chatLog.scrollTop = chatLog.scrollHeight;
 
+  const diffSelect = document.getElementById("mock-sim-difficulty-select");
+  const difficultyLevel = diffSelect ? diffSelect.value : "Medium";
+
   try {
     const res = await fetch("/api/interview/simulated-chat", {
       method: "POST",
@@ -1773,7 +1850,8 @@ async function submitSimulatedAnswer() {
         student_profile: currentProfile,
         job_id: simSelectedJobId,
         current_question_index: simCurrentQuestionIndex,
-        candidate_answer: answer
+        candidate_answer: answer,
+        difficulty_level: difficultyLevel
       })
     });
     const data = await res.json();

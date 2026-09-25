@@ -292,12 +292,29 @@ class TestM3CareerAssistant(unittest.TestCase):
         """Test conversation history tracking."""
         self.agent.chat("Hello!", self.sample_profile, session_id="test-hist")
         history = self.agent.get_history(session_id="test-hist")
-        # Chat method doesn't auto-add to history (that's done in the route)
-        # But the context should exist
         context = self.agent._get_context("test-hist")
         self.assertIsNotNone(context)
         print(f"[Test 23] History/context tracking works")
 
+    def test_24_ats_optimization(self):
+        """Test ATS resume optimization calculation and keyword breakdown."""
+        result = self.resume_agent.optimize_ats_resume(self.sample_profile, self.rag_engine.get_all_jobs()[0])
+        print(f"[Test 24] ATS Optimization Score: {result.get('ats_compatibility_score')}% ({result.get('ats_verdict')})")
+        self.assertIn("ats_compatibility_score", result)
+        self.assertIn("matched_keywords", result)
+        self.assertIn("missing_keywords", result)
+        self.assertGreater(result["ats_compatibility_score"], 40)
+
+    def test_25_mock_difficulty_level(self):
+        """Test simulated interview turn with Easy vs Hard difficulty levels."""
+        job = self.rag_engine.get_all_jobs()[0]
+        easy_turn = self.interview_agent.conduct_simulated_turn(self.sample_profile, job, difficulty_level="Easy")
+        hard_turn = self.interview_agent.conduct_simulated_turn(self.sample_profile, job, difficulty_level="Hard")
+        print(f"[Test 25] Simulated interview difficulty levels: Easy tag present? {'Easy' in easy_turn.get('interviewer_message', '')}, Hard tag present? {'Hard' in hard_turn.get('interviewer_message', '')}")
+        self.assertIn("Easy", easy_turn.get("interviewer_message", ""))
+        self.assertIn("Hard", hard_turn.get("interviewer_message", ""))
+
 
 if __name__ == "__main__":
     unittest.main()
+

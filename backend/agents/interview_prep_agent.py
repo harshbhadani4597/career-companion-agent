@@ -27,18 +27,20 @@ class InterviewPrepAgent:
         job: Dict[str, Any],
         conversation_history: List[Dict[str, Any]] = None,
         candidate_answer: str = "",
-        current_question_index: int = 0
+        current_question_index: int = 0,
+        difficulty_level: str = "Medium"
     ) -> Dict[str, Any]:
         """
-        Conduct a multi-turn interactive AI mock interview session.
+        Conduct a multi-turn interactive AI mock interview session with customizable difficulty level.
         """
         if not student_profile or not job:
             return {"error": "Both student profile and target job are required for interactive mock interview."}
 
         job_title = job.get("title", "Target Role")
         company = job.get("company", "Target Company")
+        level_tag = (difficulty_level or "Medium").capitalize()
 
-        prep = self.generate_preparation(student_profile, job)
+        prep = self.generate_preparation(student_profile, job, difficulty_level=level_tag)
         
         # Flatten questions from 5 categories into a 5-question interview sequence
         questions_sequence = []
@@ -57,7 +59,7 @@ class InterviewPrepAgent:
             questions_sequence = [
                 {
                     "topic": "Domain Fundamentals",
-                    "difficulty": "Medium",
+                    "difficulty": level_tag,
                     "question": f"How do your technical skills and project experience prepare you for this {job_title} role at {company}?",
                     "why_asked": "Assesses role alignment.",
                     "guidance": "Highlight technical skills and relevant project experience.",
@@ -72,8 +74,8 @@ class InterviewPrepAgent:
             q1 = questions_sequence[0]
             cand_name = student_profile.get("name", "Candidate")
             welcome_msg = (
-                f"Hello {cand_name}! Welcome to your live technical mock interview for **{job_title}** at **{company}**.\n\n"
-                f"I will be your AI Technical Interviewer today. We'll go through 5 interview rounds: Technical, Resume, Project Architecture, Role Scenario, and Behavioral HR.\n\n"
+                f"Hello {cand_name}! Welcome to your live **[{level_tag} Level]** mock interview for **{job_title}** at **{company}**.\n\n"
+                f"I will be your AI Technical Interviewer today ({level_tag} difficulty). We'll go through 5 interview rounds: Technical, Resume, Project Architecture, Role Scenario, and Behavioral HR.\n\n"
                 f"Let's begin with **Question 1 ({q1.get('topic', 'Technical')})**:\n\n"
                 f"💡 **{q1['question']}**"
             )
@@ -84,7 +86,8 @@ class InterviewPrepAgent:
                 "interviewer_message": welcome_msg,
                 "current_question": q1,
                 "evaluation": None,
-                "is_completed": False
+                "is_completed": False,
+                "difficulty_level": level_tag
             }
 
         # Case 2: Evaluating candidate answer and proceeding
@@ -96,7 +99,8 @@ class InterviewPrepAgent:
             question=current_q["question"],
             expected_concepts=current_q.get("key_concepts", []),
             user_answer=candidate_answer,
-            question_type=current_q.get("topic", "Technical")
+            question_type=current_q.get("topic", "Technical"),
+            difficulty_level=level_tag
         )
 
         next_idx = current_question_index + 1
@@ -106,7 +110,7 @@ class InterviewPrepAgent:
             verdict_emoji = "✨" if eval_result.get("score", 0) >= 70 else "💡"
             
             reply_msg = (
-                f"{verdict_emoji} **Interviewer Feedback (Score: {eval_result['score']}/100 - {eval_result['verdict']}):**\n"
+                f"{verdict_emoji} **Interviewer Feedback [{level_tag} Level] (Score: {eval_result['score']}/100 - {eval_result['verdict']}):**\n"
                 f"{eval_result['feedback']}\n\n"
                 f"Good effort! Let's move on to **Question {next_idx + 1} of {total_questions} ({next_q.get('topic', 'Technical')})**:\n\n"
                 f"💡 **{next_q['question']}**"
@@ -118,16 +122,18 @@ class InterviewPrepAgent:
                 "interviewer_message": reply_msg,
                 "current_question": next_q,
                 "evaluation": eval_result,
-                "is_completed": False
+                "is_completed": False,
+                "difficulty_level": level_tag
             }
         else:
             # Interview Completed!
             final_msg = (
-                f"🎉 **Mock Interview Session Completed for {job_title} at {company}!**\n\n"
+                f"🎉 **[{level_tag} Level] Mock Interview Session Completed for {job_title} at {company}!**\n\n"
                 f"**Final Question Evaluation:** Score {eval_result['score']}/100 ({eval_result['verdict']})\n"
                 f"*{eval_result['feedback']}*\n\n"
                 f"### 📊 Overall Interview Scorecard:\n"
-                f"• **Technical Accuracy:** 85/100\n"
+                f"• **Difficulty Setting:** {level_tag}\n"
+                f"• **Technical Accuracy:** {eval_result['score']}/100\n"
                 f"• **Structured Communication:** Satisfactory\n"
                 f"• **Project & Role Alignment:** High\n\n"
                 f"**Final Verdict:** Solid interview performance! Review your feedback in the Interview Prep tab for final polish."
@@ -139,8 +145,10 @@ class InterviewPrepAgent:
                 "interviewer_message": final_msg,
                 "current_question": current_q,
                 "evaluation": eval_result,
-                "is_completed": True
+                "is_completed": True,
+                "difficulty_level": level_tag
             }
+
 
     # ── Technical question templates by domain ──
     TECHNICAL_TEMPLATES = {
@@ -303,18 +311,11 @@ class InterviewPrepAgent:
     ]
 
     def generate_preparation(self, student_profile: Dict[str, Any],
-                              job: Dict[str, Any],
-                              skill_gap: Dict[str, Any] = None) -> Dict[str, Any]:
+                             job: Dict[str, Any],
+                             skill_gap: Dict[str, Any] = None,
+                             difficulty_level: str = "Medium") -> Dict[str, Any]:
         """
-        Generate comprehensive interview preparation material.
-
-        Args:
-            student_profile: The candidate's structured profile data.
-            job: The target job posting data.
-            skill_gap: Optional skill gap analysis results.
-
-        Returns:
-            Structured preparation with 5 question categories + revision plan.
+        Generate comprehensive interview preparation material across 5 question categories.
         """
         if not student_profile or not job:
             return {"error": "Both student profile and job data are required."}
@@ -339,6 +340,11 @@ class InterviewPrepAgent:
         # 5. HR / General Questions
         hr_questions = self._select_hr_questions(job_title, job.get("company", ""))
 
+        # Tag difficulty level
+        level = (difficulty_level or "Medium").capitalize()
+        for q in technical_questions + resume_questions + project_questions + role_questions + hr_questions:
+            q["difficulty_level"] = level
+
         # 6. Revision Topics
         revision_plan = self._generate_revision_plan(student_profile, job, skill_gap)
 
@@ -346,6 +352,7 @@ class InterviewPrepAgent:
             "job_title": job_title,
             "job_company": job.get("company", ""),
             "job_domain": job_domain,
+            "difficulty_level": level,
             "total_questions": (
                 len(technical_questions) + len(resume_questions) +
                 len(project_questions) + len(role_questions) + len(hr_questions)
@@ -358,8 +365,10 @@ class InterviewPrepAgent:
             "revision_plan": revision_plan,
         }
 
+
     def evaluate_mock_answer(self, question: str, expected_concepts: List[str],
-                              user_answer: str, question_type: str = "Technical") -> Dict[str, Any]:
+                              user_answer: str, question_type: str = "Technical",
+                              difficulty_level: str = "Medium") -> Dict[str, Any]:
         """
         Evaluate a mock interview answer against expected concepts.
 

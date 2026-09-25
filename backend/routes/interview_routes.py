@@ -34,17 +34,11 @@ def _resolve_job(data):
 def prepare_interview():
     """
     Generate comprehensive interview preparation with all 5 question categories.
-
-    Request body:
-        {
-            "student_profile": { ... },
-            "job_id": "JOB-101",
-            "include_skill_gap": true
-        }
     """
     data = request.get_json() or {}
     student_profile = data.get("student_profile")
     job = _resolve_job(data)
+    difficulty_level = data.get("difficulty_level") or data.get("difficulty") or "Medium"
 
     if not student_profile:
         return jsonify({"error": "Student profile is required."}), 400
@@ -57,7 +51,7 @@ def prepare_interview():
     if data.get("include_skill_gap", False) and _skill_gap_agent:
         skill_gap = _skill_gap_agent.analyze(student_profile, job)
 
-    result = _interview_agent.generate_preparation(student_profile, job, skill_gap)
+    result = _interview_agent.generate_preparation(student_profile, job, skill_gap, difficulty_level=difficulty_level)
     return jsonify(result)
 
 
@@ -65,18 +59,12 @@ def prepare_interview():
 def start_mock_interview():
     """
     Start a mock interview session — returns the first question.
-
-    Request body:
-        {
-            "student_profile": { ... },
-            "job_id": "JOB-101",
-            "category": "technical"  // optional: technical, resume, project, role, hr
-        }
     """
     data = request.get_json() or {}
     student_profile = data.get("student_profile")
     job = _resolve_job(data)
     category = data.get("category", "technical")
+    difficulty_level = data.get("difficulty_level") or data.get("difficulty") or "Medium"
 
     if not student_profile:
         return jsonify({"error": "Student profile is required."}), 400
@@ -85,7 +73,7 @@ def start_mock_interview():
     if not _interview_agent:
         return jsonify({"error": "Interview agent is not initialized."}), 500
 
-    prep = _interview_agent.generate_preparation(student_profile, job)
+    prep = _interview_agent.generate_preparation(student_profile, job, difficulty_level=difficulty_level)
 
     # Select questions from the requested category
     category_map = {
@@ -103,6 +91,7 @@ def start_mock_interview():
 
     return jsonify({
         "session_category": category,
+        "difficulty_level": difficulty_level,
         "total_questions": len(questions),
         "current_index": 0,
         "current_question": questions[0],
@@ -114,20 +103,13 @@ def start_mock_interview():
 def submit_mock_answer():
     """
     Submit an answer for mock interview evaluation.
-
-    Request body:
-        {
-            "question": "...",
-            "expected_concepts": ["concept1", "concept2"],
-            "user_answer": "...",
-            "question_type": "Technical"
-        }
     """
     data = request.get_json() or {}
     question = data.get("question", "")
     expected_concepts = data.get("expected_concepts", [])
     user_answer = data.get("user_answer", "")
     question_type = data.get("question_type", "Technical")
+    difficulty_level = data.get("difficulty_level") or data.get("difficulty") or "Medium"
 
     if not question:
         return jsonify({"error": "Question is required."}), 400
@@ -136,7 +118,7 @@ def submit_mock_answer():
     if not _interview_agent:
         return jsonify({"error": "Interview agent is not initialized."}), 500
 
-    result = _interview_agent.evaluate_mock_answer(question, expected_concepts, user_answer, question_type)
+    result = _interview_agent.evaluate_mock_answer(question, expected_concepts, user_answer, question_type, difficulty_level=difficulty_level)
     return jsonify(result)
 
 
@@ -153,6 +135,7 @@ def simulated_chat():
     job = _resolve_job(data)
     current_index = int(data.get("current_question_index", 0))
     candidate_answer = data.get("candidate_answer", "")
+    difficulty_level = data.get("difficulty_level") or data.get("difficulty") or "Medium"
 
     if not student_profile:
         student_profile = {
@@ -184,6 +167,8 @@ def simulated_chat():
         student_profile=student_profile,
         job=job,
         candidate_answer=candidate_answer,
-        current_question_index=current_index
+        current_question_index=current_index,
+        difficulty_level=difficulty_level
     )
     return jsonify(result)
+

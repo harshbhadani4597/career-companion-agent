@@ -547,10 +547,18 @@
 
         <!-- Job Selector & Session Controls -->
         <div class="flex flex-wrap items-end gap-4 pt-2">
-          <div class="flex-1 min-w-[280px]">
+          <div class="flex-1 min-w-[240px]">
             <label class="block text-xs font-semibold text-slate-400 mb-1">Select Target Internship for Interview</label>
             <select id="mock-sim-job-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-purple-500 focus:outline-none">
               <option value="">-- Select internship --</option>
+            </select>
+          </div>
+          <div class="min-w-[150px]">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Difficulty Level</label>
+            <select id="mock-sim-difficulty-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-purple-500 focus:outline-none">
+              <option value="Easy">Easy (Entry Level)</option>
+              <option value="Medium" selected>Medium (Standard)</option>
+              <option value="Hard">Hard (Senior Level)</option>
             </select>
           </div>
           <button onclick="startInteractiveSimulatedInterview()" id="btn-start-sim-interview" class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs rounded-lg shadow-lg shadow-purple-600/30 flex items-center gap-2 transition">
@@ -693,9 +701,66 @@
           <button onclick="generateTailoredResume()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-lg shadow-lg flex items-center gap-2 transition">
             <i data-lucide="file-edit" class="w-4 h-4"></i> Generate Tailored Resume
           </button>
+          <button onclick="runAtsOptimization()" id="btn-ats-optimize" class="px-5 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-semibold text-xs rounded-lg shadow-lg flex items-center gap-2 transition">
+            <i data-lucide="zap" class="w-4 h-4 text-amber-200"></i> Tailor Resume & ATS Optimization
+          </button>
           <button onclick="generateCoverLetter()" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs rounded-lg shadow-lg flex items-center gap-2 transition">
             <i data-lucide="mail" class="w-4 h-4"></i> Generate Cover Letter
           </button>
+        </div>
+      </div>
+
+      <!-- ATS Optimization Output Container -->
+      <div id="ats-output-container" class="hidden space-y-4">
+        <div class="bg-slate-800/80 border border-amber-500/30 rounded-xl p-6 space-y-4 shadow-xl">
+          <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-5 h-5 text-amber-400"></i> ATS Compatibility & Keyword Optimization
+            </h3>
+            <div id="ats-score-badge" class="px-4 py-1.5 bg-amber-500/10 border border-amber-500/40 text-amber-300 rounded-full text-xs font-extrabold flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <span id="ats-score-text">92% ATS Score</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Matched Keywords -->
+            <div class="p-4 bg-slate-900 border border-slate-700/80 rounded-xl space-y-2">
+              <h4 class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                <i data-lucide="check-circle" class="w-4 h-4"></i> Matched Target ATS Keywords
+              </h4>
+              <div id="ats-matched-keywords" class="flex flex-wrap gap-1.5">
+                <!-- Matched keyword pills -->
+              </div>
+            </div>
+
+            <!-- Missing Keywords -->
+            <div class="p-4 bg-slate-900 border border-slate-700/80 rounded-xl space-y-2">
+              <h4 class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i> Missing Target Keywords (Quick Fixes)
+              </h4>
+              <div id="ats-missing-keywords" class="flex flex-wrap gap-1.5">
+                <!-- Missing keyword pills -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommendations list -->
+          <div class="p-4 bg-slate-900/90 border border-slate-700 rounded-xl space-y-2">
+            <h4 class="text-xs font-bold text-slate-200">ATS Formatting Recommendations:</h4>
+            <ul id="ats-recommendations-list" class="text-xs text-slate-300 list-disc pl-5 space-y-1"></ul>
+          </div>
+
+          <!-- ATS Formatted Resume -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-bold text-slate-200">ATS-Optimized Resume Text:</h4>
+              <button onclick="copyAtsResumeText()" class="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs rounded font-medium transition flex items-center gap-1">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy ATS Resume
+              </button>
+            </div>
+            <textarea id="ats-resume-output-text" rows="16" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-4 text-xs text-slate-200 font-mono focus:border-amber-500 focus:outline-none leading-relaxed"></textarea>
+          </div>
         </div>
       </div>
 
@@ -756,10 +821,18 @@
         <p class="text-xs text-slate-300 mb-4">Comprehensive interview preparation with 5 question categories and a prioritized revision plan.</p>
 
         <div class="flex flex-wrap items-end gap-4">
-          <div class="flex-1 min-w-[280px]">
+          <div class="flex-1 min-w-[240px]">
             <label class="block text-xs font-semibold text-slate-400 mb-1">Select Target Internship</label>
             <select id="interview-prep-job-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-purple-500 focus:outline-none">
               <option value="">-- Select internship --</option>
+            </select>
+          </div>
+          <div class="min-w-[150px]">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Difficulty Level</label>
+            <select id="interview-prep-difficulty-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-purple-500 focus:outline-none">
+              <option value="Easy">Easy</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Hard">Hard</option>
             </select>
           </div>
           <button onclick="generateInterviewPrep()" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs rounded-lg shadow-lg flex items-center gap-2 transition">

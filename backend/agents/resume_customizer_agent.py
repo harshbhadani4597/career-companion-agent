@@ -412,3 +412,74 @@ Sincerely,
             lines.append("")
 
         return "\n".join(lines)
+
+    def optimize_ats_resume(self, student_profile: Dict[str, Any],
+                            job: Dict[str, Any],
+                            skill_gap: Dict[str, Any] = None) -> Dict[str, Any]:
+        """
+        Generate ATS-optimized resume with compatibility score, matched/missing ATS keywords,
+        and ATS-compliant bullet formatting.
+        """
+        if not student_profile or not job:
+            return {"error": "Both student profile and job data are required."}
+
+        # Base customization first
+        tailored = self.customize_resume(student_profile, job, skill_gap)
+        if "error" in tailored:
+            return tailored
+
+        student_skills = set(s.lower() for s in student_profile.get("technical_skills", []))
+
+        # Extract project tech stack skills
+        project_skills = set()
+        for p in student_profile.get("projects", []):
+            for t in p.get("tech_stack", []):
+                project_skills.add(t.lower())
+
+        all_candidate_skills = student_skills.union(project_skills)
+
+        # Keyword matching calculation
+        job_skills = job.get("technical_skills", [])
+        matched_keywords = [s for s in job_skills if s.lower() in all_candidate_skills]
+        missing_keywords = [s for s in job_skills if s.lower() not in all_candidate_skills]
+
+        total_req_skills = len(job_skills)
+        if total_req_skills > 0:
+            raw_score = (len(matched_keywords) / total_req_skills) * 100
+        else:
+            raw_score = 85.0
+
+        # Account for project alignment bonus
+        ats_score = min(98, max(45, round(raw_score + (15 if len(matched_keywords) >= 3 else 5))))
+
+        # ATS Formatting recommendations
+        ats_recommendations = [
+            "Use standard ATS section headings: PROFESSIONAL SUMMARY, TECHNICAL SKILLS, EXPERIENCE, EDUCATION.",
+            "Avoid complex graphics, tables, or non-standard fonts that disrupt ATS parsers.",
+            f"Include high-priority target keywords in your skills section: {', '.join(matched_keywords[:6]) if matched_keywords else 'Core Skills'}.",
+        ]
+
+        if missing_keywords:
+            ats_recommendations.append(
+                f"Consider acquiring or highlighting these missing target ATS keywords: {', '.join(missing_keywords[:4])}."
+            )
+
+        # ATS Resume Bullet points
+        ats_bullets = []
+        for proj in tailored.get("tailored_projects", []):
+            verb = self.ACTION_VERBS.get("built", ["Engineered"])[0]
+            techs = ", ".join(proj.get("tech_stack", [])[:3])
+            ats_bullets.append(f"• {verb} {proj.get('title', 'System')} utilizing {techs}: {proj.get('tailored_description', '')}")
+
+        return {
+            "target_job": tailored["target_job"],
+            "ats_compatibility_score": ats_score,
+            "ats_verdict": "High ATS Match" if ats_score >= 80 else ("Moderate ATS Match" if ats_score >= 65 else "Needs Keyword Optimization"),
+            "matched_keywords": matched_keywords,
+            "missing_keywords": missing_keywords,
+            "ats_recommendations": ats_recommendations,
+            "ats_bullets": ats_bullets,
+            "ats_resume_text": tailored.get("resume_text", ""),
+            "generated_at": datetime.now().isoformat(),
+        }
+
