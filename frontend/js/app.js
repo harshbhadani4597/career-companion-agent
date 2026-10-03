@@ -553,6 +553,9 @@ function renderMatchResults(matches) {
         </div>
 
         <div class="flex items-center gap-1.5 flex-wrap">
+          <button onclick="applyToMatchedJob('${(job.company || '').replace(/'/g, "\\'")}', '${(job.title || '').replace(/'/g, "\\'")}', '${(job.description || '').replace(/'/g, "\\'")}', '${job.id}')" class="px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-extrabold rounded-lg shadow-md transition flex items-center gap-1">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i> Apply
+          </button>
           <button onclick="selectJobForM3('${job.id}')" class="px-3 py-1.5 bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-semibold rounded-lg transition flex items-center gap-1">
             <i data-lucide="search" class="w-3.5 h-3.5"></i> Skill Gap
           </button>
@@ -565,10 +568,11 @@ function renderMatchResults(matches) {
           <button onclick="prepareInterviewForJob('${job.title}', '${job.domain}', '${m.missing_skills.join(',')}')" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow-md transition flex items-center gap-1">
             <i data-lucide="mic" class="w-3.5 h-3.5"></i> Interview
           </button>
-          <button onclick="quickAddTrackerJob('${(job.company || '').replace(/'/g, "\\'")}', '${(job.title || '').replace(/'/g, "\\'")}', '${(job.description || '').replace(/'/g, "\\'")}')" class="px-3.5 py-1.5 bg-amber-700 hover:bg-amber-600 text-white text-xs font-semibold rounded-lg shadow-md transition flex items-center gap-1" title="Add to Application Tracker">
+          <button onclick="quickAddTrackerJob('${(job.company || '').replace(/'/g, "\\'")}', '${(job.title || '').replace(/'/g, "\\'")}', '${(job.description || '').replace(/'/g, "\\'")}')" class="px-3 py-1.5 bg-amber-700 hover:bg-amber-600 text-white text-xs font-semibold rounded-lg transition flex items-center gap-1" title="Add to Application Tracker">
             <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i> Track
           </button>
         </div>
+
 
       </div>
     `;
@@ -2388,6 +2392,39 @@ async function updateTrackerStatus(appId, newStatus) {
   }
 }
 
+async function applyToMatchedJob(company, title, description, jobId = '') {
+  try {
+    const payload = {
+      company: company,
+      title: title,
+      description: description,
+      status: "Applied",
+      application_date: new Date().toISOString().split("T")[0],
+      student_id: currentProfile ? (currentProfile.id || "student_default") : "student_default",
+      job_id: jobId
+    };
+
+    const res = await fetch("/api/applications", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      alert(`🎉 Application Submitted!\n\nSuccessfully applied for '${title}' at ${company}.\nStatus stage updated to 'Applied' in your Application Tracker.`);
+      if (typeof loadTrackerApplications === "function") {
+        await loadTrackerApplications();
+      }
+    } else {
+      const err = await res.json();
+      alert("Application tracking note: " + (err.error || "Application record already exists in tracker."));
+    }
+  } catch (err) {
+    console.error("Apply error:", err);
+    alert("Could not submit application: " + err.message);
+  }
+}
+
 async function deleteTrackerApplication(appId) {
   if (!confirm("Are you sure you want to delete this application record from your tracker?")) return;
 
@@ -2400,4 +2437,5 @@ async function deleteTrackerApplication(appId) {
     alert("Could not delete application: " + err.message);
   }
 }
+
 
