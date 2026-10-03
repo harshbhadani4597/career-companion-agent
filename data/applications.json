@@ -1,0 +1,97 @@
+{
+  "app_001": {
+    "id": "app_001",
+    "company": "Google",
+    "title": "Software Engineering Intern",
+    "description": "Work on scalable web applications and cloud infrastructure.",
+    "app_date": "2026-09-25",
+    "deadline": "2026-10-08",
+    "status": "Interview scheduled",
+    "interview_date": "2026-10-05 14:00",
+    "interview_status": "Scheduled",
+    "notes": "Reviewed DSA and system design basics. Prepare questions on Distributed Systems.",
+    "resume_link": "",
+    "cover_letter_link": "",
+    "student_id": "default_student",
+    "job_id": "job_001",
+    "created_at": "2026-09-25T10:00:00",
+    "updated_at": "2026-09-30T14:30:00",
+    "status_history": [
+      {
+        "status": "Applied",
+        "timestamp": "2026-09-25T10:00:00",
+        "note": "Application submitted via career portal"
+      },
+      {
+        "status": "Shortlisted",
+        "timestamp": "2026-09-28T11:20:00",
+        "note": "Recruiter reached out for initial screen"
+      },
+      {
+        "status": "Interview scheduled",
+        "timestamp": "2026-09-30T14:30:00",
+        "note": "Technical Interview 1 scheduled"
+      }
+    ]
+  },
+  "app_002": {
+    "id": "app_002",
+    "company": "Microsoft",
+    "title": "AI / ML Research Intern",
+    "description": "Research and deploy deep learning models.",
+    "app_date": "2026-09-28",
+    "deadline": "2026-10-06",
+    "status": "Applied",
+    "interview_date": "",
+    "interview_status": "Not Scheduled",
+    "notes": "Submitted custom resume emphasizing PyTorch and OpenCV projects.",
+    "resume_link": "",
+    "cover_letter_link": "",
+    "student_id": "default_student",
+    "job_id": "job_002",
+    "created_at": "2026-09-28T09:15:00",
+    "updated_at": "2026-09-28T09:15:00",
+    "status_history": [
+      {
+        "status": "Applied",
+        "timestamp": "2026-09-28T09:15:00",
+        "note": "Application submitted online"
+      }
+    ]
+  },
+  "app_003": {
+    "id": "app_003",
+    "company": "Amazon",
+    "title": "Full Stack Developer Intern",
+    "description": "Build high throughput web services using React and Node.js.",
+    "app_date": "2026-09-20",
+    "deadline": "2026-10-02",
+    "status": "Offer received",
+    "interview_date": "2026-09-29 11:00",
+    "interview_status": "Passed",
+    "notes": "Received official offer letter via email! Stipend $4000/mo.",
+    "resume_link": "",
+    "cover_letter_link": "",
+    "student_id": "default_student",
+    "job_id": "job_003",
+    "created_at": "2026-09-20T08:00:00",
+    "updated_at": "2026-10-01T16:00:00",
+    "status_history": [
+      {
+        "status": "Applied",
+        "timestamp": "2026-09-20T08:00:00",
+        "note": "Application submitted"
+      },
+      {
+        "status": "Interview scheduled",
+        "timestamp": "2026-09-25T12:00:00",
+        "note": "Final round scheduled"
+      },
+      {
+        "status": "Offer received",
+        "timestamp": "2026-10-01T16:00:00",
+        "note": "Received offer"
+      }
+    ]
+  }
+}

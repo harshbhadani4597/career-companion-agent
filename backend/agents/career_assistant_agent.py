@@ -25,9 +25,30 @@ class CareerAssistantAgent:
     INTENT_RAG_QUERY = "rag_query"
     INTENT_COMPARE = "compare_jobs"
     INTENT_GENERAL = "general_career"
+    INTENT_TRACKER_REMINDERS = "tracker_reminders"
+    INTENT_TRACKER_ADD = "tracker_add"
+    INTENT_TRACKER_UPDATE = "tracker_update"
+    INTENT_TRACKER_QUERY = "tracker_query"
 
     # Intent detection keyword patterns
     INTENT_PATTERNS = {
+        INTENT_TRACKER_REMINDERS: [
+            "deadline this week", "deadlines this week", "upcoming deadline", "upcoming deadlines",
+            "reminders", "reminder", "due soon", "what deadlines", "check reminders", "schedule this week"
+        ],
+        INTENT_TRACKER_ADD: [
+            "add to tracker", "to my tracker", "to tracker", "add job", "track this job",
+            "track my application", "add application", "save to tracker", "track internship",
+            "track job", "add job to my tracker"
+        ],
+        INTENT_TRACKER_UPDATE: [
+            "update my", "update application", "update status", "mark as applied", "status to", "update",
+            "mark as interview scheduled", "change status to", "update status to", "update application status"
+        ],
+        INTENT_TRACKER_QUERY: [
+            "show my tracker", "view my tracker", "check my tracker", "tracked applications", "my applications", "active applications",
+            "status of my applications", "applications list", "tracker status", "my tracker summary"
+        ],
         INTENT_MATCH: [
             "match", "matches", "matching", "compatible", "compatibility",
             "which internship", "which job", "find internship", "find job",
@@ -67,12 +88,14 @@ class CareerAssistantAgent:
     }
 
     def __init__(self, rag_engine=None, matching_agent=None,
-                 skill_gap_agent=None, resume_agent=None, interview_agent=None):
+                 skill_gap_agent=None, resume_agent=None, interview_agent=None,
+                 tracker_service=None):
         self.rag_engine = rag_engine
         self.matching_agent = matching_agent
         self.skill_gap_agent = skill_gap_agent
         self.resume_agent = resume_agent
         self.interview_agent = interview_agent
+        self.tracker_service = tracker_service
 
         # Conversation state (in-memory, per server session)
         self.conversations: Dict[str, Dict] = {}
@@ -106,7 +129,15 @@ class CareerAssistantAgent:
         intent = self._classify_intent(message)
 
         # Route to appropriate handler
-        if intent == self.INTENT_MATCH:
+        if intent == self.INTENT_TRACKER_REMINDERS:
+            return self._handle_tracker_reminders(message, context)
+        elif intent == self.INTENT_TRACKER_ADD:
+            return self._handle_tracker_add(message, student_profile, context)
+        elif intent == self.INTENT_TRACKER_UPDATE:
+            return self._handle_tracker_update(message, context)
+        elif intent == self.INTENT_TRACKER_QUERY:
+            return self._handle_tracker_query(message, context)
+        elif intent == self.INTENT_MATCH:
             return self._handle_match(message, student_profile, context)
         elif intent == self.INTENT_SKILL_GAP:
             return self._handle_skill_gap(message, student_profile, context)
@@ -146,6 +177,161 @@ class CareerAssistantAgent:
         return self.INTENT_GENERAL
 
     # ── Intent handlers ──
+
+    def _handle_tracker_reminders(self, message: str, context: Dict) -> Dict:
+        """Handle queries about deadlines, reminders, and schedules."""
+        if not self.tracker_service:
+            return self._build_response(
+                "Application tracking service is not configured right now.",
+                intent=self.INTENT_TRACKER_REMINDERS,
+            )
+
+        reminders = self.tracker_service.get_reminders()
+        if not reminders:
+            return self._build_response(
+                "🎉 You have **no urgent deadlines or upcoming interviews** scheduled right now!",
+                intent=self.INTENT_TRACKER_REMINDERS,
+                suggestions=["Add an internship to my tracker", "Find matching internships"]
+            )
+
+        text = "⏰ **Upcoming Reminders & Deadlines:**\n\n"
+        for r in reminders[:5]:
+            sev_icon = "🔴" if r["severity"] == "high" else ("🟡" if r["severity"] == "medium" else "🔵")
+            text += f"{sev_icon} **{r['title']}**\n   {r['message']}\n\n"
+
+        return self._build_response(
+            text,
+            intent=self.INTENT_TRACKER_REMINDERS,
+            data={"reminders": reminders},
+            suggestions=["Show all tracked applications", "Update an application status"]
+        )
+
+    def _handle_tracker_add(self, message: str, profile: Dict, context: Dict) -> Dict:
+        """Add a job to tracker from chat."""
+        if not self.tracker_service:
+            return self._build_response(
+                "Application tracking service is not configured.",
+                intent=self.INTENT_TRACKER_ADD,
+            )
+
+        selected_job = context.get("selected_job")
+        company_name = None
+        job_title = None
+
+        if selected_job:
+            company_name = selected_job.get("company")
+            job_title = selected_job.get("title")
+
+        if not company_name or not job_title:
+            msg_lower = message.lower()
+            if "to " in msg_lower:
+                parts = message.split("to ")
+                if len(parts) > 1:
+                    company_name = parts[-1].strip().capitalize()
+                    job_title = "Internship Position"
+
+        if not company_name or not job_title:
+            return self._build_response(
+                "Please select an internship from the **AI Matcher** or **Knowledge Base** first, "
+                "or specify the company and role to track (e.g. *'Add Google Software Engineer to my tracker'*).",
+                intent=self.INTENT_TRACKER_ADD,
+                suggestions=["Find matching internships"]
+            )
+
+        app_data = {
+            "company": company_name,
+            "title": job_title,
+            "job_id": selected_job.get("id", "") if selected_job else "",
+            "description": selected_job.get("description", "") if selected_job else "",
+            "status": "Planning to apply",
+            "student_id": profile.get("email", "default_student") if profile else "default_student"
+        }
+
+        created = self.tracker_service.add_application(app_data)
+        return self._build_response(
+            f"✅ Successfully added **{job_title}** at **{company_name}** to your application tracker! (Status: *Planning to apply*)",
+            intent=self.INTENT_TRACKER_ADD,
+            data={"application": created},
+            suggestions=["What deadlines do I have this week?", "View active applications"]
+        )
+
+    def _handle_tracker_update(self, message: str, context: Dict) -> Dict:
+        """Update status of a tracked application."""
+        if not self.tracker_service:
+            return self._build_response("Application tracker is not active.", intent=self.INTENT_TRACKER_UPDATE)
+
+        msg_lower = message.lower()
+        apps = self.tracker_service.list_applications()
+        if not apps:
+            return self._build_response(
+                "You don't have any tracked applications yet! Try asking me to *'Add [Company] to my tracker'* first.",
+                intent=self.INTENT_TRACKER_UPDATE,
+                suggestions=["Add an internship to my tracker"]
+            )
+
+        target_app = None
+        for a in apps:
+            if a["company"].lower() in msg_lower or a["title"].lower() in msg_lower:
+                target_app = a
+                break
+
+        if not target_app and apps:
+            target_app = apps[0]
+
+        target_status = "Applied"
+        if "interview scheduled" in msg_lower or "interview" in msg_lower:
+            target_status = "Interview scheduled"
+        elif "under review" in msg_lower or "review" in msg_lower:
+            target_status = "Application under review"
+        elif "shortlisted" in msg_lower:
+            target_status = "Shortlisted"
+        elif "offer" in msg_lower:
+            target_status = "Offer received"
+        elif "rejected" in msg_lower:
+            target_status = "Rejected"
+        elif "withdrawn" in msg_lower or "withdraw" in msg_lower:
+            target_status = "Withdrawn"
+
+        updated = self.tracker_service.update_application(target_app["id"], {"status": target_status})
+        return self._build_response(
+            f"👍 Updated status for **{updated['company']}** ({updated['title']}) to **'{target_status}'**.",
+            intent=self.INTENT_TRACKER_UPDATE,
+            data={"application": updated},
+            suggestions=["View all active applications", "Check upcoming deadlines"]
+        )
+
+    def _handle_tracker_query(self, message: str, context: Dict) -> Dict:
+        """Query tracked applications list and stats."""
+        if not self.tracker_service:
+            return self._build_response("Application tracker service is offline.", intent=self.INTENT_TRACKER_QUERY)
+
+        stats = self.tracker_service.get_dashboard_stats()
+        apps = self.tracker_service.list_applications()
+
+        if not apps:
+            return self._build_response(
+                "You currently have 0 tracked applications. Browse the **Knowledge Base** or **AI Matcher** to add one!",
+                intent=self.INTENT_TRACKER_QUERY,
+                suggestions=["Find matching internships for my profile"]
+            )
+
+        text = (
+            f"📊 **Application Tracker Summary:**\n"
+            f"• Total Applications: **{stats['total_applications']}**\n"
+            f"• Active Applications: **{stats['active_applications']}**\n"
+            f"• Interviews Scheduled: **{stats['interviews_scheduled']}**\n"
+            f"• Offers Received: **{stats['offers_received']}**\n\n"
+            f"**Recent Applications:**\n"
+        )
+        for a in apps[:5]:
+            text += f"• **{a['company']}** — {a['title']} (*{a['status']}*) — Deadline: {a.get('deadline', 'N/A')}\n"
+
+        return self._build_response(
+            text,
+            intent=self.INTENT_TRACKER_QUERY,
+            data={"stats": stats, "applications": apps[:5]},
+            suggestions=["What deadlines do I have this week?", "Update an application status"]
+        )
 
     def _handle_match(self, message: str, profile: Dict, context: Dict) -> Dict:
         """Handle job matching queries."""
