@@ -72,7 +72,7 @@ function switchTab(tabId) {
     executeMatching();
   }
 
-  // Populate M3 job selectors when switching to M3 tabs
+  // Populate M3 & M4 job selectors / load tracker when switching to tabs
   if (['skill-gap', 'resume-customizer', 'interview-prep', 'interview', 'roadmap'].includes(tabId)) {
     populateM3JobSelectors();
     const timeline = document.getElementById("roadmap-timeline");
@@ -80,7 +80,12 @@ function switchTab(tabId) {
       generateRoadmapFromUI();
     }
   }
+
+  if (tabId === 'tracker') {
+    loadTrackerApplications();
+  }
 }
+
 
 // ══════════════════════════════════════════════
 //  M1/M2 — EXISTING FUNCTIONALITY (unchanged)
@@ -2085,3 +2090,306 @@ function toggleAssistantVoiceInput() {
     console.error("Assistant speech error:", err);
   }
 }
+
+// ══════════════════════════════════════════════
+//  M4.1 — APPLICATION TRACKER FRONTEND LOGIC
+// ══════════════════════════════════════════════
+
+let trackerApplications = [];
+let trackerReminders = [];
+
+async function loadTrackerApplications() {
+  try {
+    const res = await fetch("/api/applications");
+    if (!res.ok) throw new Error("Failed to load applications");
+    const data = await res.json();
+    trackerApplications = data.applications || [];
+
+    // Load reminders
+    try {
+      const remRes = await fetch("/api/applications/reminders");
+      if (remRes.ok) {
+        const remData = await remRes.json();
+        trackerReminders = remData.reminders || [];
+      }
+    } catch (e) {
+      console.warn("Could not load reminders:", e);
+    }
+
+    renderTrackerApplicationsList();
+  } catch (err) {
+    console.error("Error loading tracker applications:", err);
+  }
+}
+
+function renderTrackerApplicationsList() {
+  const container = document.getElementById("tracker-applications-list");
+  if (!container) return;
+
+  const searchQuery = (document.getElementById("tr-filter-search")?.value || "").toLowerCase();
+  const statusFilter = document.getElementById("tr-filter-status")?.value || "ALL";
+  const sortFilter = document.getElementById("tr-filter-sort")?.value || "deadline";
+
+  // Calculate Metrics
+  const totalCount = trackerApplications.length;
+  const activeCount = trackerApplications.filter(a => ["Planning to apply", "Applied", "Application under review", "Shortlisted", "Interview scheduled"].includes(a.status)).length;
+  const interviewsCount = trackerApplications.filter(a => a.status === "Interview scheduled" || a.interview_date).length;
+  const offersCount = trackerApplications.filter(a => a.status === "Offer received").length;
+  const rejectedCount = trackerApplications.filter(a => a.status === "Rejected" || a.status === "Withdrawn").length;
+  const upcomingDeadlinesCount = trackerApplications.filter(a => a.deadline && new Date(a.deadline) >= new Date()).length;
+
+  document.getElementById("tr-stat-total").innerText = totalCount;
+  document.getElementById("tr-stat-active").innerText = activeCount;
+  document.getElementById("tr-stat-deadlines").innerText = upcomingDeadlinesCount;
+  document.getElementById("tr-stat-interviews").innerText = interviewsCount;
+  document.getElementById("tr-stat-offers").innerText = offersCount;
+  document.getElementById("tr-stat-rejected").innerText = rejectedCount;
+
+  // Render Reminders List
+  const remindersContainer = document.getElementById("tracker-reminders-list");
+  if (remindersContainer) {
+    if (trackerReminders.length === 0) {
+      remindersContainer.innerHTML = `<p class="text-slate-400 italic">No urgent deadline or interview reminders pending.</p>`;
+    } else {
+      remindersContainer.innerHTML = trackerReminders.map(rem => `
+        <div class="flex items-center justify-between p-2 bg-slate-900/80 border border-amber-500/20 rounded-lg text-xs">
+          <span class="font-medium text-amber-200">🔔 <strong>${rem.company}</strong> (${rem.title}): ${rem.message}</span>
+          <span class="text-[10px] text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded font-mono">${rem.type.toUpperCase()}</span>
+        </div>
+      `).join("");
+    }
+  }
+
+  // Filter & Sort Applications
+  let filtered = trackerApplications.filter(app => {
+    const matchesSearch = (app.company || "").toLowerCase().includes(searchQuery) ||
+                          (app.title || "").toLowerCase().includes(searchQuery);
+    const matchesStatus = statusFilter === "ALL" || app.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  filtered.sort((a, b) => {
+    if (sortFilter === "deadline") {
+      if (!a.deadline) return 1;
+      if (!b.deadline) return -1;
+      return new Date(a.deadline) - new Date(b.deadline);
+    } else if (sortFilter === "applied_date") {
+      return new Date(b.application_date || 0) - new Date(a.application_date || 0);
+    } else if (sortFilter === "company") {
+      return (a.company || "").localeCompare(b.company || "");
+    }
+    return 0;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="p-8 text-center text-slate-400 bg-slate-800/50 rounded-xl border border-slate-700 space-y-2">
+        <i data-lucide="clipboard-list" class="w-10 h-10 mx-auto text-amber-400 opacity-60"></i>
+        <p class="font-medium text-slate-300">No Applications Found</p>
+        <p class="text-xs text-slate-400">Click "Add Application to Tracker" or browse jobs in Knowledge Base to add applications.</p>
+      </div>
+    `;
+    lucide.createIcons();
+    return;
+  }
+
+  const statusColors = {
+    "Saved": "bg-slate-700 text-slate-200 border-slate-600",
+    "Planning to apply": "bg-blue-500/10 text-blue-300 border-blue-500/30",
+    "Applied": "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+    "Application under review": "bg-purple-500/10 text-purple-300 border-purple-500/30",
+    "Shortlisted": "bg-cyan-500/10 text-cyan-300 border-cyan-500/30",
+    "Interview scheduled": "bg-amber-500/10 text-amber-300 border-amber-500/30",
+    "Interview completed": "bg-teal-500/10 text-teal-300 border-teal-500/30",
+    "Offer received": "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+    "Rejected": "bg-rose-500/10 text-rose-300 border-rose-500/30",
+    "Withdrawn": "bg-slate-800 text-slate-400 border-slate-700",
+  };
+
+  container.innerHTML = filtered.map(app => {
+    const statusBadge = statusColors[app.status] || "bg-slate-700 text-slate-200 border-slate-600";
+    
+    return `
+      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-5 space-y-4 hover:border-amber-500/40 transition">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <h3 class="text-base font-bold text-white">${app.company}</h3>
+              <span class="px-2.5 py-0.5 border text-xs font-semibold rounded-full ${statusBadge}">
+                ${app.status}
+              </span>
+            </div>
+            <p class="text-xs font-semibold text-amber-300">${app.title}</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <select onchange="updateTrackerStatus('${app.id}', this.value)" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:border-amber-500 focus:outline-none">
+              ${["Saved", "Planning to apply", "Applied", "Application under review", "Shortlisted", "Interview scheduled", "Interview completed", "Offer received", "Rejected", "Withdrawn"].map(st => `
+                <option value="${st}" ${st === app.status ? 'selected' : ''}>${st}</option>
+              `).join('')}
+            </select>
+            <button onclick="editTrackerApplication('${app.id}')" class="p-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs" title="Edit Application">
+              <i data-lucide="edit-3" class="w-4 h-4"></i>
+            </button>
+            <button onclick="deleteTrackerApplication('${app.id}')" class="p-1.5 bg-slate-700 hover:bg-rose-600 text-slate-200 hover:text-white rounded-lg text-xs transition" title="Delete Application">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs bg-slate-900/60 border border-slate-700/60 rounded-lg p-3">
+          <div>
+            <span class="text-slate-400">Application Date:</span>
+            <span class="font-medium text-slate-200 block">${app.application_date || 'N/A'}</span>
+          </div>
+          <div>
+            <span class="text-slate-400">Deadline:</span>
+            <span class="font-medium text-amber-300 block">${app.deadline || 'No deadline set'}</span>
+          </div>
+          <div>
+            <span class="text-slate-400">Interview Schedule:</span>
+            <span class="font-medium text-purple-300 block">${app.interview_date || 'Not scheduled'}</span>
+          </div>
+        </div>
+
+        ${app.notes ? `
+          <div class="text-xs bg-slate-900/40 p-2.5 rounded-lg border border-slate-700/40 text-slate-300">
+            <span class="text-slate-400 font-semibold block mb-0.5">Notes & Follow-up:</span>
+            ${app.notes}
+          </div>
+        ` : ''}
+
+        <div class="flex flex-wrap items-center justify-between text-[11px] text-slate-400 border-t border-slate-700/50 pt-2.5">
+          <span>Status updated: ${app.last_updated ? new Date(app.last_updated).toLocaleString() : 'N/A'}</span>
+          <div class="flex items-center gap-3">
+            <button onclick="sendAssistantQuick('Update my ${app.company} application status to Interview scheduled')" class="text-amber-400 hover:underline flex items-center gap-1">
+              <i data-lucide="bot" class="w-3 h-3"></i> Ask Assistant
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  lucide.createIcons();
+}
+
+function openAddApplicationModal(prefillData = null) {
+  const modal = document.getElementById("tracker-modal");
+  if (!modal) return;
+
+  document.getElementById("tr-modal-id").value = prefillData?.id || "";
+  document.getElementById("tr-modal-company").value = prefillData?.company || "";
+  document.getElementById("tr-modal-title-input").value = prefillData?.title || "";
+  document.getElementById("tr-modal-status").value = prefillData?.status || "Applied";
+  document.getElementById("tr-modal-deadline").value = prefillData?.deadline || "";
+  document.getElementById("tr-modal-interview-date").value = prefillData?.interview_date || "";
+  document.getElementById("tr-modal-interview-status").value = prefillData?.interview_status || "";
+  document.getElementById("tr-modal-description").value = prefillData?.description || "";
+  document.getElementById("tr-modal-notes").value = prefillData?.notes || "";
+
+  document.getElementById("tracker-modal-title").innerHTML = prefillData?.id
+    ? `<i data-lucide="edit-3" class="w-5 h-5 text-amber-400"></i> Edit Application`
+    : `<i data-lucide="plus-circle" class="w-5 h-5 text-amber-400"></i> Add Internship Application`;
+
+  modal.classList.remove("hidden");
+  lucide.createIcons();
+}
+
+function closeTrackerModal() {
+  const modal = document.getElementById("tracker-modal");
+  if (modal) modal.classList.add("hidden");
+}
+
+async function handleTrackerModalSubmit(event) {
+  event.preventDefault();
+  const appId = document.getElementById("tr-modal-id").value;
+
+  const payload = {
+    company: document.getElementById("tr-modal-company").value,
+    title: document.getElementById("tr-modal-title-input").value,
+    status: document.getElementById("tr-modal-status").value,
+    deadline: document.getElementById("tr-modal-deadline").value,
+    interview_date: document.getElementById("tr-modal-interview-date").value,
+    interview_status: document.getElementById("tr-modal-interview-status").value,
+    description: document.getElementById("tr-modal-description").value,
+    notes: document.getElementById("tr-modal-notes").value,
+    student_id: currentProfile ? currentProfile.id : "student_default"
+  };
+
+  try {
+    let res;
+    if (appId) {
+      res = await fetch(`/api/applications/${appId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    } else {
+      res = await fetch("/api/applications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    }
+
+    if (!res.ok) {
+      const err = await res.json();
+      alert("Error saving application: " + (err.error || "Unknown error"));
+      return;
+    }
+
+    closeTrackerModal();
+    await loadTrackerApplications();
+  } catch (err) {
+    console.error("Error saving application:", err);
+    alert("Could not save application: " + err.message);
+  }
+}
+
+async function quickAddTrackerJob(company, title, description) {
+  openAddApplicationModal({
+    company: company,
+    title: title,
+    description: description,
+    status: "Applied"
+  });
+}
+
+async function editTrackerApplication(appId) {
+  const app = trackerApplications.find(a => a.id === appId);
+  if (app) openAddApplicationModal(app);
+}
+
+async function updateTrackerStatus(appId, newStatus) {
+  try {
+    const res = await fetch(`/api/applications/${appId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus })
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      alert("Failed to update status: " + (err.error || "Invalid transition"));
+      await loadTrackerApplications();
+      return;
+    }
+    await loadTrackerApplications();
+  } catch (err) {
+    console.error("Error updating status:", err);
+  }
+}
+
+async function deleteTrackerApplication(appId) {
+  if (!confirm("Are you sure you want to delete this application record from your tracker?")) return;
+
+  try {
+    const res = await fetch(`/api/applications/${appId}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Failed to delete application");
+    await loadTrackerApplications();
+  } catch (err) {
+    console.error("Error deleting application:", err);
+    alert("Could not delete application: " + err.message);
+  }
+}
+
