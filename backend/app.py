@@ -5,17 +5,20 @@ from flask_cors import CORS
 from backend.rag_engine import RAGEngine
 from backend.agents_core import ResumeParserAgent, JobMatchingAgent, InterviewPrepAgent, SkillGapAgent
 
-# ── M3 Agent Imports ──
+# ── M3 & M4 Agent Imports ──
 from backend.agents.skill_gap_agent import SkillGapAnalysisAgent
 from backend.agents.resume_customizer_agent import ResumeCustomizerAgent
 from backend.agents.interview_prep_agent import InterviewPrepAgent as M3InterviewPrepAgent
 from backend.agents.career_assistant_agent import CareerAssistantAgent
+from backend.tracker import ApplicationTracker
+from backend.reminder_service import ReminderScheduler
 
-# ── M3 Route Imports ──
+# ── M3 & M4 Route Imports ──
 from backend.routes.skill_gap_routes import skill_gap_bp, init_skill_gap_routes
 from backend.routes.resume_routes import resume_bp, init_resume_routes
 from backend.routes.interview_routes import interview_bp, init_interview_routes
 from backend.routes.career_assistant_routes import career_assistant_bp, init_career_assistant_routes
+from backend.routes.tracker_routes import tracker_bp, init_tracker_routes
 from backend.swagger_docs import swagger_bp
 
 from flask import Flask, request, jsonify, send_from_directory
@@ -30,6 +33,12 @@ matching_agent = JobMatchingAgent(rag_engine)
 interview_agent = InterviewPrepAgent()
 roadmap_agent = SkillGapAgent()
 
+# ── Initialize M4 Tracker & Reminder Service ──
+tracker_service = ApplicationTracker(storage_path="data/applications.json")
+reminder_service = ReminderScheduler(tracker=tracker_service)
+reminder_service.start()
+
+
 # ── Initialize M3 Agents ──
 m3_skill_gap_agent = SkillGapAnalysisAgent()
 m3_resume_agent = ResumeCustomizerAgent()
@@ -40,20 +49,24 @@ m3_career_agent = CareerAssistantAgent(
     skill_gap_agent=m3_skill_gap_agent,
     resume_agent=m3_resume_agent,
     interview_agent=m3_interview_agent,
+    tracker_service=tracker_service,
 )
 
-# ── Initialize M3 Routes ──
+# ── Initialize M3 & M4 Routes ──
 init_skill_gap_routes(m3_skill_gap_agent, rag_engine)
 init_resume_routes(m3_resume_agent, m3_skill_gap_agent, rag_engine)
 init_interview_routes(m3_interview_agent, m3_skill_gap_agent, rag_engine)
 init_career_assistant_routes(m3_career_agent)
+init_tracker_routes(tracker_service, reminder_service)
 
 # ── Register Blueprints ──
 app.register_blueprint(skill_gap_bp)
 app.register_blueprint(resume_bp)
 app.register_blueprint(interview_bp)
 app.register_blueprint(career_assistant_bp)
+app.register_blueprint(tracker_bp)
 app.register_blueprint(swagger_bp)
+
 
 # Helper to load sample profile
 def load_sample_profile():
