@@ -2249,20 +2249,38 @@ function renderTrackerApplicationsList() {
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs bg-slate-900/60 border border-slate-700/60 rounded-lg p-3">
-          <div>
-            <span class="text-slate-400">Application Date:</span>
-            <span class="font-medium text-slate-200 block">${app.application_date || 'N/A'}</span>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs bg-slate-900/80 border border-slate-700/80 rounded-xl p-3.5 shadow-inner">
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 rounded-lg">
+              <i data-lucide="calendar-check" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <span class="text-[11px] text-slate-400 block font-semibold">Application Date</span>
+              <span class="font-bold text-slate-100">${app.application_date || new Date().toISOString().split('T')[0]}</span>
+            </div>
           </div>
-          <div>
-            <span class="text-slate-400">Deadline:</span>
-            <span class="font-medium text-amber-300 block">${app.deadline || 'No deadline set'}</span>
+
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-lg">
+              <i data-lucide="clock" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <span class="text-[11px] text-slate-400 block font-semibold">Application Deadline</span>
+              <span class="font-bold text-amber-300">${app.deadline || 'No deadline set'}</span>
+            </div>
           </div>
-          <div>
-            <span class="text-slate-400">Interview Schedule:</span>
-            <span class="font-medium text-purple-300 block">${app.interview_date || 'Not scheduled'}</span>
+
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-lg">
+              <i data-lucide="video" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <span class="text-[11px] text-slate-400 block font-semibold">Scheduled Interview Date</span>
+              <span class="font-bold text-purple-300">${app.interview_date || 'Not scheduled'}</span>
+            </div>
           </div>
         </div>
+
 
         ${app.notes ? `
           <div class="text-xs bg-slate-900/40 p-2.5 rounded-lg border border-slate-700/40 text-slate-300">
@@ -2394,12 +2412,19 @@ async function updateTrackerStatus(appId, newStatus) {
 
 async function applyToMatchedJob(company, title, description, jobId = '') {
   try {
+    const today = new Date();
+    const deadlineDate = new Date(today);
+    deadlineDate.setDate(today.getDate() + 14); // Default 14-day application deadline
+
     const payload = {
       company: company,
       title: title,
       description: description,
       status: "Applied",
-      application_date: new Date().toISOString().split("T")[0],
+      application_date: today.toISOString().split("T")[0],
+      deadline: deadlineDate.toISOString().split("T")[0],
+      interview_date: "",
+      interview_status: "Pending recruiter review",
       student_id: currentProfile ? (currentProfile.id || "student_default") : "student_default",
       job_id: jobId
     };
@@ -2411,19 +2436,21 @@ async function applyToMatchedJob(company, title, description, jobId = '') {
     });
 
     if (res.ok) {
-      alert(`🎉 Application Submitted!\n\nSuccessfully applied for '${title}' at ${company}.\nStatus stage updated to 'Applied' in your Application Tracker.`);
-      if (typeof loadTrackerApplications === "function") {
-        await loadTrackerApplications();
-      }
+      alert(`🎉 Application Submitted!\n\nSuccessfully applied for '${title}' at ${company}.\n\n• Application Date: ${payload.application_date}\n• Application Deadline: ${payload.deadline}\n• Status Stage: Applied\n\nRedirecting to your Application Tracking & Management Dashboard...`);
+      switchTab("tracker");
+      await loadTrackerApplications();
     } else {
       const err = await res.json();
-      alert("Application tracking note: " + (err.error || "Application record already exists in tracker."));
+      alert("Application tracking note: " + (err.error || "Application record already exists in tracker. Redirecting to Application Tracker..."));
+      switchTab("tracker");
+      await loadTrackerApplications();
     }
   } catch (err) {
     console.error("Apply error:", err);
     alert("Could not submit application: " + err.message);
   }
 }
+
 
 async function deleteTrackerApplication(appId) {
   if (!confirm("Are you sure you want to delete this application record from your tracker?")) return;
