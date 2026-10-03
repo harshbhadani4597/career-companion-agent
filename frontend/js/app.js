@@ -361,7 +361,11 @@ function renderJobsGrid(jobs) {
           <button onclick="prepareInterviewForJob('${job.title}', '${job.domain}')" class="flex-1 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-[11px] font-semibold rounded-lg transition flex items-center justify-center gap-1">
             <i data-lucide="mic" class="w-3.5 h-3.5"></i> Mock
           </button>
+          <button onclick="quickAddTrackerJob('${(job.company || '').replace(/'/g, "\\'")}', '${(job.title || '').replace(/'/g, "\\'")}', '${(job.description || '').replace(/'/g, "\\'")}')" class="flex-1 py-1.5 bg-amber-700 hover:bg-amber-600 text-white text-[11px] font-semibold rounded-lg transition flex items-center justify-center gap-1" title="Add to Application Tracker">
+            <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i> Track
+          </button>
         </div>
+
       </div>
     `;
     container.appendChild(card);
@@ -561,7 +565,11 @@ function renderMatchResults(matches) {
           <button onclick="prepareInterviewForJob('${job.title}', '${job.domain}', '${m.missing_skills.join(',')}')" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow-md transition flex items-center gap-1">
             <i data-lucide="mic" class="w-3.5 h-3.5"></i> Interview
           </button>
+          <button onclick="quickAddTrackerJob('${(job.company || '').replace(/'/g, "\\'")}', '${(job.title || '').replace(/'/g, "\\'")}', '${(job.description || '').replace(/'/g, "\\'")}')" class="px-3.5 py-1.5 bg-amber-700 hover:bg-amber-600 text-white text-xs font-semibold rounded-lg shadow-md transition flex items-center gap-1" title="Add to Application Tracker">
+            <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i> Track
+          </button>
         </div>
+
       </div>
     `;
 
