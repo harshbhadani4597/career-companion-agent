@@ -30,20 +30,22 @@ from backend.routes.career_assistant_routes import career_assistant_bp, init_car
 from backend.routes.tracker_routes import tracker_bp, init_tracker_routes
 from backend.swagger_docs import swagger_bp
 
-from flask import Flask, request, jsonify, send_from_directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+DATA_DIR = os.path.join(BASE_DIR, "data")
 
-app = Flask(__name__, static_folder="../frontend", static_url_path="/app_static")
+app = Flask(__name__, static_folder=FRONTEND_DIR, static_url_path="/app_static")
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Initialize Core Services & Multi-Agent System
-rag_engine = RAGEngine(jobs_file_path="data/job_postings.json")
+rag_engine = RAGEngine(jobs_file_path=os.path.join(DATA_DIR, "job_postings.json"))
 resume_agent = ResumeParserAgent()
 matching_agent = JobMatchingAgent(rag_engine)
 interview_agent = InterviewPrepAgent()
 roadmap_agent = SkillGapAgent()
 
 # ── Initialize M4 Tracker & Reminder Service ──
-tracker_service = ApplicationTracker(storage_path="data/applications.json")
+tracker_service = ApplicationTracker(storage_path=os.path.join(DATA_DIR, "applications.json"))
 reminder_service = ReminderScheduler(tracker=tracker_service)
 reminder_service.start()
 
@@ -79,7 +81,7 @@ app.register_blueprint(swagger_bp)
 
 # Helper to load sample profile
 def load_sample_profile():
-    sample_path = "data/sample_profile.json"
+    sample_path = os.path.join(DATA_DIR, "sample_profile.json")
     if os.path.exists(sample_path):
         with open(sample_path, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -89,15 +91,19 @@ def load_sample_profile():
 @app.route("/complete-profile")
 @app.route("/dashboard")
 def serve_index():
-    return send_from_directory("../frontend", "index.html")
+    return send_from_directory(FRONTEND_DIR, "index.html")
 
 @app.route("/js/<path:filename>")
 def serve_js(filename):
-    return send_from_directory("../frontend/js", filename)
+    return send_from_directory(os.path.join(FRONTEND_DIR, "js"), filename)
 
 @app.route("/css/<path:filename>")
 def serve_css(filename):
-    return send_from_directory("../frontend/css", filename)
+    return send_from_directory(os.path.join(FRONTEND_DIR, "css"), filename)
+
+@app.route("/favicon.ico")
+def favicon():
+    return ('', 204)
 
 @app.after_request
 def add_no_cache_headers(response):
@@ -676,4 +682,5 @@ def get_roadmap():
     return jsonify(roadmap)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5173, debug=True)
+    port = int(os.environ.get("PORT", 8000))
+    app.run(host="0.0.0.0", port=port, debug=False)
