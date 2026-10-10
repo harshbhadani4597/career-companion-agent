@@ -1,86 +1,147 @@
 {
-  "name": "Candidate Profile",
-  "email": "candidate@example.com",
-  "phone": "+91 9876543210",
-  "location": "India",
+  "name": "SUSHIL KUMAR SINGH",
+  "title": "AI/ML & Generative AI Developer | Full-Stack Developer | B.Tech CSE (AI & ML)",
+  "email": "snapshot_tester_1791667930@example.com",
+  "phone": "+91 9999999999",
+  "location": "insoso",
+  "linkedin": "https://linkedin.com/in/harsh-kumar-bhadani",
+  "github": "https://github.com/harshbhadani4597",
   "education": [
     {
-      "degree": "B.Tech in Computer Science & Engineering (AI & ML)",
-      "institution": "GKCIET / MAKAUT",
-      "year": "2026 (7th Sem)",
+      "degree": "btech",
+      "institution": "iit indpeie",
+      "year": "2026",
+      "graduation": "Graduation: 2026",
       "score": "7.8 CGPA"
-    },
-    {
-      "degree": "Class 12 (Higher Secondary)",
-      "institution": "CH +2 High School Jhumri Telaiya (JAC)",
-      "year": "2022",
-      "score": "78.8%"
-    },
-    {
-      "degree": "Class 10 (Secondary)",
-      "institution": "Munam Public School (CBSE)",
-      "year": "2020",
-      "score": "61%"
     }
   ],
   "technical_skills": [
-    "Python",
     "React",
-    "TypeScript",
-    "Tailwind CSS",
+    "Python",
+    "Docker",
+    "DHDHHDDH",
     "Node.js",
-    "Express",
-    "WebSockets",
-    "Gemini AI",
+    "SQL",
+    "HTML",
+    "CSS",
+    "FastAPI",
+    "AWS",
+    "Git",
+    "C",
+    "C++",
+    "Machine Learning",
+    "Generative AI",
+    "Large Language Models (LLMs)",
+    "RAG",
+    "NLP",
+    "AI Agents",
+    "Vector Search",
+    "Data Analytics",
+    "LangChain",
+    "LangGraph",
+    "Gemini API",
+    "Scikit-learn",
     "OpenCV",
     "MediaPipe",
+    "React.js",
     "Flask",
-    "Docker",
     "REST APIs",
+    "MERN Stack",
+    "MongoDB",
+    "MongoDB Atlas",
+    "ChromaDB",
+    "NumPy",
+    "Pandas",
+    "Matplotlib",
     "IBM Cloud",
-    "watsonx.ai",
-    "JavaScript",
-    "HTML/CSS",
-    "Git & GitHub",
-    "Machine Learning"
+    "IBM watsonx.ai",
+    "GitHub",
+    "VS Code",
+    "Jupyter Notebook",
+    "Vite",
+    "Google AI Studio",
+    "Antigravity",
+    "Stitch"
   ],
-  "soft_skills": [
-    "Professional Communication",
-    "Etiquette",
-    "Teamwork",
-    "Problem Solving",
-    "Adaptability"
-  ],
-  "projects": [
+  "skills_categories": [
     {
-      "title": "IdleMesh - Distributed Computing Platform",
-      "tech_stack": ["React", "TypeScript", "Tailwind CSS", "Node.js", "Express", "WebSockets", "Python", "Gemini AI", "Docker", "Git & GitHub"],
-      "description": "Built a distributed computing platform that utilizes idle CPU/GPU resources from connected devices for computation, featuring real-time system resource monitoring and WebSocket communication."
+      "category": "Programming Languages",
+      "skills": "Python, C, C++, SQL"
     },
     {
-      "title": "Ghost - Invisibility Effect",
-      "tech_stack": ["Python", "OpenCV", "MediaPipe", "NumPy", "Flask", "JavaScript", "GitHub"],
-      "description": "Built a real-time computer vision project that creates an invisibility effect using background capture, person segmentation, and hand-gesture control."
+      "category": "AI / ML & Generative AI",
+      "skills": "Machine Learning, Generative AI, Large Language Models (LLMs), RAG, NLP, AI Agents, Vector Search, Data Analytics"
     },
     {
-      "title": "Travel Planner Agent Using IBM Cloud",
-      "tech_stack": ["IBM Cloud", "watsonx.ai", "Python", "Flask/Streamlit", "REST APIs"],
-      "description": "Built an AI-powered travel planner agent that creates personalized itineraries based on destination, budget, duration, and user preferences."
+      "category": "AI Frameworks & APIs",
+      "skills": "LangChain, LangGraph, Gemini API, Scikit-learn, OpenCV, MediaPipe"
+    },
+    {
+      "category": "Web & Backend",
+      "skills": "React.js, FastAPI, Flask, REST APIs, HTML, CSS, MERN Stack"
+    },
+    {
+      "category": "Databases & Data",
+      "skills": "MongoDB, MongoDB Atlas, ChromaDB, SQL, NumPy, Pandas, Matplotlib"
+    },
+    {
+      "category": "Cloud",
+      "skills": "IBM Cloud, IBM watsonx.ai, AWS"
+    },
+    {
+      "category": "Tools",
+      "skills": "Git, GitHub, VS Code, Jupyter Notebook, Vite, Google AI Studio, Antigravity, Stitch"
     }
   ],
+  "summary": "B.Tech Computer Science and Engineering (AI & ML) student with hands-on experience in Python, Machine Learning, Generative AI, LLMs, RAG, NLP, Computer Vision, and full-stack web development. Built AI agent applications using FastAPI, React.js, LangChain, LangGraph, Gemini API, MongoDB, and ChromaDB during AI internships with Infosys Springboard and Edunet \u00d7 IBM SkillsBuild. Seeking Software Developer and AI/ML Engineer roles to build practical, scalable, real-world applications.",
+  "projects": [
+    {
+      "title": "AI Career Companion",
+      "tech_stack": [
+        "React",
+        "FastAPI",
+        "FAISS"
+      ],
+      "description": "Multi-agent RAG internship matcher and career assistant."
+    }
+  ],
+  "experience": [
+    {
+      "role": "Infosys Springboard \u2013 Virtual Internship 7.0",
+      "meta": "Artificial Intelligence | Virtual",
+      "bullets": [
+        "Completed AI and machine learning certification modules.",
+        "Developed the AI Career Companion Agent using Python, FastAPI, React.js, Gemini API, LangChain, LangGraph, ChromaDB, MongoDB, and NLP/ML techniques."
+      ]
+    },
+    {
+      "role": "Edunet Foundation \u00d7 IBM SkillsBuild \u00d7 AICTE",
+      "meta": "Artificial Intelligence & Cloud | Virtual",
+      "bullets": [
+        "Completed a hands-on internship in Artificial Intelligence and Cloud technologies.",
+        "Developed an AI Trip Planner Agent using IBM Cloud and watsonx.ai, gaining practical experience in cloud-based generative AI."
+      ]
+    }
+  ],
+  "certifications": "Geo-data Sharing and Cyber Security \u2013 ISRO; Journey to Cloud: Envisioning Your Solution \u2013 IBM SkillsBuild; SQL (Basic) \u2013 HackerRank; Introduction to Generative AI; Innovation, Design and Entrepreneurship (IDE) Bootcamp \u2013 Edition 3 Phase 2; Build with AI Bootcamp",
   "certifications_internships": [
     {
-      "title": "Infosys Springboard Virtual Internship 7.0 – AI Domain",
+      "title": "Infosys Springboard Virtual Internship 7.0 \u2013 AI Domain",
       "details": "Completed AI Internship earning 16 certifications across 14 courses covering AI, ML, Python, and Generative AI."
     },
     {
-      "title": "Edunet Foundation – AI & Cloud Internship",
+      "title": "Edunet Foundation \u2013 AI & Cloud Internship",
       "details": "Built a Travel Planner Agent using IBM Cloud watsonx.ai during a 4-week internship with Edunet Foundation and AICTE."
     },
     {
-      "title": "Finishing School Program",
-      "details": "Completed a 3-day program at GKCIET Malda covering communication, professional etiquette, and career readiness."
+      "title": "Certifications List",
+      "details": "Geo-data Sharing and Cyber Security \u2013 ISRO; Journey to Cloud: Envisioning Your Solution \u2013 IBM SkillsBuild; SQL (Basic) \u2013 HackerRank; Introduction to Generative AI; Innovation, Design and Entrepreneurship (IDE) Bootcamp \u2013 Edition 3 Phase 2; Build with AI Bootcamp"
     }
+  ],
+  "achievements": [
+    "Selected/Provisionally Shortlisted for Yuva Sangam Phase 6 from Koderma district.",
+    "Shortlisted for Build with AI Bootcamp; participated in IDE Bootcamp Edition 3 Phase 2, NIT Patna.",
+    "1st Prize in School Science Exhibition; Senior Member, Coding Club; Member, Drama and Photography Clubs."
   ],
   "preferred_domains": [
     "Artificial Intelligence & Machine Learning",
@@ -88,6 +149,16 @@
     "Python Developer",
     "Cloud & AI Agent Engineering"
   ],
-  "preferred_locations": ["Remote", "Bangalore", "Hyderabad", "Noida", "Pune"],
-  "target_roles": ["AI/ML Intern", "Full Stack Developer Intern", "Python Developer Intern", "Software Engineering Intern"]
+  "preferred_locations": [
+    "Bengaluru / Remote"
+  ],
+  "target_roles": [
+    "Full-Stack Developer",
+    "AI/ML Engineer"
+  ],
+  "soft_skills": [
+    "Agile",
+    "Team Leadership",
+    "Problem Solving"
+  ]
 }

@@ -68,8 +68,16 @@ class SkillGapAnalysisAgent:
             return {"error": "Both student profile and job data are required."}
 
         # ── Gather student evidence ──
-        student_skills = set(s.lower() for s in student_profile.get("technical_skills", []))
-        student_soft = set(s.lower() for s in student_profile.get("soft_skills", []))
+        raw_tech = student_profile.get("technical_skills", [])
+        student_skills = set()
+        for s in raw_tech:
+            if isinstance(s, dict):
+                for sub in s.get("skills", "").split(","):
+                    if sub.strip():
+                        student_skills.add(sub.strip().lower())
+            elif isinstance(s, str):
+                student_skills.add(s.strip().lower())
+        student_soft = set(s.lower() for s in student_profile.get("soft_skills", []) if isinstance(s, str))
         student_projects = student_profile.get("projects", [])
         student_certs = student_profile.get("certifications_internships", [])
         student_education = student_profile.get("education", [])

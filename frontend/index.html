@@ -11,14 +11,361 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="css/style.css?v=3.5" />
+  <link rel="stylesheet" href="css/style.css?v=3.6" />
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+<body class="bg-[#0d0816] text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <canvas id="bg" style="position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;"></canvas>
+  <script>
+  (function initCareerNeuralConstellation(cv) {
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const speedMult = prefersReduced ? 0.25 : 1.0;
+
+    let w = 0, h = 0, dpr = 1, raf = null;
+    let lastTime = performance.now();
+    let time = 0;
+
+    const mouse = { x: -1000, y: -1000, active: false, targetRadius: 180 };
+
+    const LABELS = [
+      'AI Agent', 'RAG Matcher', 'PyTorch', 'React', 'FastAPI',
+      'NLP Vector', 'Docker', 'Skill Gap', 'Interview AI', 'ATS Optimizer',
+      'Cloud Native', 'Cybersecurity', 'DevOps', 'Data Science', 'Embeddings'
+    ];
+
+    const THEMES = [
+      { type: 'agent', color: '129, 140, 248', hex: '#818cf8', r: 4.5 },   // Indigo
+      { type: 'job', color: '34, 211, 238', hex: '#22d3ee', r: 3.5 },     // Cyan
+      { type: 'skill', color: '168, 85, 247', hex: '#a855f7', r: 3.0 },   // Purple
+      { type: 'match', color: '52, 211, 153', hex: '#34d399', r: 3.2 },   // Emerald
+      { type: 'intel', color: '251, 191, 36', hex: '#fbbf24', r: 3.8 }    // Amber
+    ];
+
+    let nodes = [];
+    let packets = [];
+    let shockwaves = [];
+
+    function createNodes() {
+      nodes = [];
+      const count = Math.min(Math.floor((w * h) / 18000), 75);
+      for (let i = 0; i < count; i++) {
+        const theme = THEMES[i % THEMES.length];
+        const hasLabel = i < LABELS.length;
+        nodes.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.45 * speedMult,
+          vy: (Math.random() - 0.5) * 0.45 * speedMult,
+          baseR: theme.r,
+          theme: theme,
+          label: hasLabel ? LABELS[i] : null,
+          pulseOffset: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function size() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = cv.clientWidth;
+      h = cv.clientHeight;
+      cv.width = Math.round(w * dpr);
+      cv.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      createNodes();
+    }
+
+    window.addEventListener('resize', size);
+
+    window.addEventListener('mousemove', function(e) {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+    });
+
+    window.addEventListener('mouseleave', function() {
+      mouse.active = false;
+      mouse.x = -1000;
+      mouse.y = -1000;
+    });
+
+    window.addEventListener('mousedown', function(e) {
+      shockwaves.push({
+        x: e.clientX,
+        y: e.clientY,
+        r: 6,
+        maxR: 210,
+        alpha: 0.85
+      });
+    });
+
+    function spawnPacket(n1, n2) {
+      if (packets.length >= 18) return;
+      packets.push({
+        source: n1,
+        target: n2,
+        progress: 0,
+        speed: (0.008 + Math.random() * 0.012) * speedMult,
+        color: n1.theme.color
+      });
+    }
+
+    function frame(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+      time += dt * speedMult;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Deep cosmic gradient background
+      const bgGrad = ctx.createLinearGradient(0, 0, w, h);
+      bgGrad.addColorStop(0, '#070512');
+      bgGrad.addColorStop(0.5, '#0b0922');
+      bgGrad.addColorStop(1, '#080517');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Ambient Luminous Aurora Glows (Slow breathing AI energy fields)
+      const g1x = w * 0.25 + Math.sin(time * 0.25) * 80;
+      const g1y = h * 0.35 + Math.cos(time * 0.2) * 60;
+      const g1 = ctx.createRadialGradient(g1x, g1y, 10, g1x, g1y, 380);
+      g1.addColorStop(0, 'rgba(99, 102, 241, 0.12)');
+      g1.addColorStop(1, 'rgba(99, 102, 241, 0)');
+      ctx.fillStyle = g1;
+      ctx.fillRect(0, 0, w, h);
+
+      const g2x = w * 0.8 - Math.cos(time * 0.22) * 90;
+      const g2y = h * 0.65 + Math.sin(time * 0.18) * 70;
+      const g2 = ctx.createRadialGradient(g2x, g2y, 10, g2x, g2y, 420);
+      g2.addColorStop(0, 'rgba(168, 85, 247, 0.10)');
+      g2.addColorStop(1, 'rgba(168, 85, 247, 0)');
+      ctx.fillStyle = g2;
+      ctx.fillRect(0, 0, w, h);
+
+      const g3x = w * 0.5 + Math.sin(time * 0.15) * 120;
+      const g3y = h * 0.85;
+      const g3 = ctx.createRadialGradient(g3x, g3y, 10, g3x, g3y, 340);
+      g3.addColorStop(0, 'rgba(34, 211, 238, 0.08)');
+      g3.addColorStop(1, 'rgba(34, 211, 238, 0)');
+      ctx.fillStyle = g3;
+      ctx.fillRect(0, 0, w, h);
+
+      // Subtle faint crosshair matrix markers (AI coordinate grid)
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.06)';
+      const gridSpacing = 160;
+      for (let gx = 40; gx < w; gx += gridSpacing) {
+        for (let gy = 40; gy < h; gy += gridSpacing) {
+          ctx.fillRect(gx - 2, gy, 5, 1);
+          ctx.fillRect(gx, gy - 2, 1, 5);
+        }
+      }
+
+      // Update Nodes & Physics
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+
+        // Mouse interactive force
+        if (mouse.active) {
+          const dx = mouse.x - n.x;
+          const dy = mouse.y - n.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < mouse.targetRadius && dist > 1) {
+            const force = (1 - dist / mouse.targetRadius) * 0.45;
+            n.vx += (dx / dist) * force * 0.08;
+            n.vy += (dy / dist) * force * 0.08;
+          }
+        }
+
+        // Natural drag & motion
+        n.vx *= 0.985;
+        n.vy *= 0.985;
+        n.x += n.vx;
+        n.y += n.vy;
+
+        // Gentle bounds bounce
+        if (n.x < 15) { n.x = 15; n.vx *= -1; }
+        if (n.x > w - 15) { n.x = w - 15; n.vx *= -1; }
+        if (n.y < 15) { n.y = 15; n.vy *= -1; }
+        if (n.y > h - 15) { n.y = h - 15; n.vy *= -1; }
+      }
+
+      // Draw Synaptic Connections & Random Pulse Trigger
+      const maxLinkDist = 135;
+      for (let i = 0; i < nodes.length; i++) {
+        const n1 = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const n2 = nodes[j];
+          const dx = n2.x - n1.x;
+          const dy = n2.y - n1.y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < maxLinkDist) {
+            const alpha = (1 - dist / maxLinkDist) * 0.30;
+            ctx.strokeStyle = 'rgba(' + n1.theme.color + ',' + alpha + ')';
+            ctx.lineWidth = 1.0;
+            ctx.beginPath();
+            ctx.moveTo(n1.x, n1.y);
+            ctx.lineTo(n2.x, n2.y);
+            ctx.stroke();
+
+            // Occasional packet dispatch along active synapse
+            if (Math.random() < 0.0006 * speedMult && dist > 35) {
+              spawnPacket(n1, n2);
+            }
+          }
+        }
+
+        // Synapse to mouse cursor
+        if (mouse.active) {
+          const mdx = mouse.x - n1.x;
+          const mdy = mouse.y - n1.y;
+          const mdist = Math.hypot(mdx, mdy);
+          if (mdist < 160) {
+            const mAlpha = (1 - mdist / 160) * 0.55;
+            ctx.strokeStyle = 'rgba(34, 211, 238,' + mAlpha + ')';
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(n1.x, n1.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Animate & Draw Data Signal Packets
+      for (let pIdx = packets.length - 1; pIdx >= 0; pIdx--) {
+        const p = packets[pIdx];
+        p.progress += p.speed;
+        if (p.progress >= 1) {
+          shockwaves.push({
+            x: p.target.x,
+            y: p.target.y,
+            r: 3,
+            maxR: 26,
+            alpha: 0.75,
+            color: p.color
+          });
+          packets.splice(pIdx, 1);
+          continue;
+        }
+
+        const px = p.source.x + (p.target.x - p.source.x) * p.progress;
+        const py = p.source.y + (p.target.y - p.source.y) * p.progress;
+
+        // Packet glow head
+        ctx.fillStyle = 'rgba(' + p.color + ', 0.95)';
+        ctx.beginPath();
+        ctx.arc(px, py, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Tail trailing glow
+        const trailX = p.source.x + (p.target.x - p.source.x) * Math.max(0, p.progress - 0.08);
+        const trailY = p.source.y + (p.target.y - p.source.y) * Math.max(0, p.progress - 0.08);
+        ctx.strokeStyle = 'rgba(' + p.color + ', 0.45)';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(trailX, trailY);
+        ctx.lineTo(px, py);
+        ctx.stroke();
+      }
+
+      // Animate Shockwaves / Query Ripples
+      for (let sIdx = shockwaves.length - 1; sIdx >= 0; sIdx--) {
+        const sw = shockwaves[sIdx];
+        sw.r += 2.2;
+        sw.alpha *= 0.94;
+        if (sw.r >= sw.maxR || sw.alpha < 0.02) {
+          shockwaves.splice(sIdx, 1);
+          continue;
+        }
+        ctx.strokeStyle = sw.color ? 'rgba(' + sw.color + ',' + sw.alpha + ')' : 'rgba(99, 102, 241,' + sw.alpha + ')';
+        ctx.lineWidth = 1.3;
+        ctx.beginPath();
+        ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Draw Nodes with Aura & Tech Labels
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        const pulse = Math.sin(time * 2.5 + n.pulseOffset);
+        const currentR = n.baseR + pulse * 0.7;
+
+        // Outer soft aura
+        const auraGrad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, currentR * 3.8);
+        auraGrad.addColorStop(0, 'rgba(' + n.theme.color + ', 0.45)');
+        auraGrad.addColorStop(1, 'rgba(' + n.theme.color + ', 0)');
+        ctx.fillStyle = auraGrad;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, currentR * 3.8, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Core sphere
+        ctx.fillStyle = n.theme.hex;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, currentR, 0, Math.PI * 2);
+        ctx.fill();
+
+        // White center spark
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, currentR * 0.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Floating landmark label
+        if (n.label) {
+          const distToMouse = mouse.active ? Math.hypot(mouse.x - n.x, mouse.y - n.y) : 999;
+          const isHovered = distToMouse < 95;
+          const labelAlpha = isHovered ? 0.95 : 0.40;
+
+          ctx.font = '10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace';
+          ctx.fillStyle = isHovered ? '#ffffff' : 'rgba(' + n.theme.color + ',' + labelAlpha + ')';
+          ctx.textAlign = 'center';
+          ctx.fillText(n.label, n.x, n.y + currentR + 13);
+
+          if (isHovered) {
+            const txtWidth = ctx.measureText(n.label).width;
+            ctx.strokeStyle = 'rgba(' + n.theme.color + ', 0.65)';
+            ctx.lineWidth = 0.8;
+            ctx.strokeRect(n.x - txtWidth / 2 - 4, n.y + currentR + 3, txtWidth + 8, 14);
+          }
+        }
+      }
+
+      // Mouse Career Lens Reticle
+      if (mouse.active) {
+        ctx.strokeStyle = 'rgba(99, 102, 241, 0.45)';
+        ctx.lineWidth = 1.0;
+        ctx.setLineDash([3, 4]);
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, 22 + Math.sin(time * 3) * 3, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = 'rgba(34, 211, 238, 0.7)';
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      raf = requestAnimationFrame(frame);
+    }
+
+    size();
+    raf = requestAnimationFrame(frame);
+
+    return function cleanup() {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', size);
+    };
+  })(document.getElementById('bg'));
+  </script>
 
   <!-- ══════════════════════════════════════════════ -->
   <!--       FULL-SCREEN LOGIN / SIGN UP GATE          -->
   <!-- ══════════════════════════════════════════════ -->
-  <div id="auth-gate-screen" class="min-h-screen w-full bg-slate-950 flex flex-col justify-center items-center p-4 sm:p-6 relative overflow-hidden">
+  <div id="auth-gate-screen" class="min-h-screen w-full bg-transparent flex flex-col justify-center items-center p-4 sm:p-6 relative overflow-hidden">
     <!-- Ambient Background Glow Effects -->
     <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -46,6 +393,8 @@
         </button>
       </div>
 
+
+
       <!-- Role Selector -->
       <div>
         <label class="block text-xs font-semibold text-slate-400 mb-1.5">Select Account Role</label>
@@ -63,27 +412,74 @@
       <form onsubmit="handleAuthGateSubmit(event)" class="space-y-4">
         <!-- Sign Up Full Name Field (Hidden in Sign In Mode) -->
         <div id="gate-name-group" class="hidden">
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name <span class="text-rose-500">*</span></label>
           <div class="relative">
             <i data-lucide="user" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
-            <input type="text" id="gate-name" placeholder="John Candidate" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input type="text" id="gate-name" autocomplete="name" placeholder="John Candidate" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition" />
           </div>
+          <p id="gate-name-error" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+            <span id="gate-name-error-text">Full name must be at least 2 characters.</span>
+          </p>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address <span class="text-rose-500">*</span></label>
           <div class="relative">
             <i data-lucide="mail" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
-            <input type="email" id="gate-email" required placeholder="candidate@example.com" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input type="email" id="gate-email" autocomplete="email" required placeholder="candidate@example.com" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition" />
           </div>
+          <p id="gate-email-error" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+            <span id="gate-email-error-text">Please enter a valid email address.</span>
+          </p>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
-          <div class="relative">
-            <i data-lucide="key" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
-            <input type="password" id="gate-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Password <span class="text-rose-500">*</span></label>
+          <div class="relative flex items-center">
+            <i data-lucide="key" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5 pointer-events-none"></i>
+            <input type="password" id="gate-password" autocomplete="new-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-10 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition" />
+            <button type="button" onclick="togglePasswordVisibility('gate-password', this)" class="absolute right-2.5 top-2 p-0.5 text-slate-400 hover:text-slate-200 transition focus:outline-none" title="Show password" aria-label="Show password">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
           </div>
+          <p id="gate-password-error" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+            <span id="gate-password-error-text">Password must be at least 8 characters.</span>
+          </p>
+          <!-- Password Strength Meter Component -->
+          <div id="gate-password-meter" class="mt-2.5 hidden"></div>
+        </div>
+
+        <!-- Server-Side Security CAPTCHA -->
+        <div class="space-y-2 py-1">
+          <div class="flex items-center justify-between text-xs">
+            <label for="gate-captcha-input" class="font-semibold text-slate-300 flex items-center gap-1.5">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-indigo-400"></i>
+              <span>Security CAPTCHA</span>
+            </label>
+            <span class="text-[10px] text-slate-400">Type characters shown</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="flex-1 bg-slate-950 border border-slate-700/80 rounded-xl p-1 flex items-center justify-center overflow-hidden min-h-[52px]">
+              <img id="gate-captcha-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='190' height='54' viewBox='0 0 190 54'><rect width='100%' height='100%' fill='%231e293b' rx='8'/><text x='50%' y='55%' font-family='sans-serif' font-size='12' fill='%2394a3b8' text-anchor='middle' dominant-baseline='middle'>Loading CAPTCHA...</text></svg>" alt="Security CAPTCHA challenge" class="max-h-[48px] w-auto select-none rounded cursor-pointer" onclick="refreshCaptcha('gate')" title="Click to refresh CAPTCHA" />
+            </div>
+            <button type="button" onclick="refreshCaptcha('gate')" title="Refresh CAPTCHA challenge" class="p-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white rounded-xl transition flex items-center justify-center active:scale-95">
+              <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <input type="hidden" id="gate-captcha-id" value="" />
+          <div>
+            <input type="text" id="gate-captcha-input" required maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Enter characters shown" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono tracking-widest text-slate-100 placeholder:font-sans placeholder:tracking-normal focus:border-indigo-500 focus:outline-none uppercase" />
+          </div>
+
+          <p id="gate-captcha-error" class="hidden text-[11px] text-rose-400 font-medium flex items-center gap-1">
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5 flex-shrink-0"></i>
+            <span id="gate-captcha-error-text">Incorrect CAPTCHA characters. Please try again.</span>
+          </p>
         </div>
 
         <button type="submit" id="gate-submit-btn" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold rounded-lg shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
@@ -95,6 +491,208 @@
           <button type="button" onclick="quickAuthGateDemo()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-750 border border-indigo-500/30 text-indigo-300 hover:text-white rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm">
             <i data-lucide="zap" class="w-4 h-4 text-amber-300 animate-pulse"></i> ⚡ One-Click Candidate Sign-In (Demo)
           </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!--    STEP 2: COMPLETE YOUR PROFILE SCREEN        -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div id="complete-profile-screen" class="hidden min-h-screen w-full bg-slate-950 flex flex-col justify-center items-center p-4 sm:p-6 relative overflow-y-auto">
+    <!-- Ambient Background Glow Effects -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-2xl w-full bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative z-10 fade-in my-8">
+      
+      <!-- Header with Step Indicator -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-xl shadow-md shadow-indigo-500/20">
+            <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-white">Complete Your Profile</h2>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Step 2 of 2
+          </span>
+        </div>
+      </div>
+
+      <!-- Info Banner (EXACT TEXT) -->
+      <div class="p-3.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-start gap-3 text-xs text-emerald-300">
+        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5"></i>
+        <span class="font-medium leading-relaxed">Account credentials verified. Complete compulsory details below to launch dashboard.</span>
+      </div>
+
+      <!-- Profile Form -->
+      <form id="complete-profile-form" onsubmit="handleCompleteProfileSubmit(event)" novalidate class="space-y-4">
+        
+        <!-- 1. Full Name (Prefilled, Editable) -->
+        <div>
+          <label for="cp-name" class="block text-xs font-semibold text-slate-300 mb-1">
+            Full Name <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <i data-lucide="user" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
+            <input type="text" id="cp-name" autocomplete="name" required placeholder="John Candidate" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition" />
+          </div>
+          <p id="cp-name-error" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+            <span>Full Name is required (minimum 2 characters).</span>
+          </p>
+        </div>
+
+        <!-- 2. Mobile Number (Compulsory) with Country Code -->
+        <div>
+          <label for="cp-mobile" class="block text-xs font-semibold text-slate-300 mb-1">
+            Mobile Number (10 Digits Compulsory) <span class="text-rose-500">*</span>
+          </label>
+          <div class="flex rounded-lg shadow-sm">
+            <!-- Country Code Selector -->
+            <div class="relative flex items-center">
+              <select id="cp-country-code" aria-label="Country Code" class="h-full bg-slate-950 border border-r-0 border-slate-700 rounded-l-lg pl-2.5 pr-5 py-2 text-xs font-medium text-slate-200 focus:border-indigo-500 focus:outline-none transition cursor-pointer hover:bg-slate-900 appearance-none">
+                <option value="+91" selected>🇮🇳 +91</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+971">🇦🇪 +971</option>
+                <option value="+65">🇸🇬 +65</option>
+                <option value="+61">🇦🇺 +61</option>
+                <option value="+49">🇩🇪 +49</option>
+                <option value="+81">🇯🇵 +81</option>
+                <option value="+33">🇫🇷 +33</option>
+                <option value="+1-ca">🇨🇦 +1</option>
+              </select>
+              <div class="pointer-events-none absolute right-1.5 text-slate-500 text-[10px]">▼</div>
+            </div>
+            <!-- Phone Number Input -->
+            <div class="relative flex-1">
+              <i data-lucide="phone" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
+              <input type="tel" id="cp-mobile" autocomplete="tel" maxlength="10" required placeholder="e.g. 9876543210 (10 Digits)" class="w-full bg-slate-950 border border-slate-700 rounded-r-lg pl-9 pr-3 py-2 text-xs font-mono tracking-wider text-slate-200 focus:border-indigo-500 focus:outline-none transition" />
+            </div>
+          </div>
+          <div class="flex items-center justify-between mt-1">
+            <p id="cp-mobile-error" class="hidden text-[11px] text-rose-400 flex items-center gap-1">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+              <span>Valid 10-digit mobile number starting with 6-9 is required.</span>
+            </p>
+            <span id="cp-mobile-counter" class="text-[11px] text-slate-400 font-mono ml-auto">0/10 digits entered</span>
+          </div>
+        </div>
+
+        <!-- Row: University/College & Degree & Branch -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label for="cp-university" class="block text-xs font-semibold text-slate-300 mb-1">
+              University / College <span class="text-rose-500">*</span>
+            </label>
+            <div class="relative">
+              <i data-lucide="graduation-cap" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
+              <input type="text" id="cp-university" required placeholder="e.g. IIT Bombay / NIT" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition" />
+            </div>
+            <p id="cp-university-error" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+              <span>University / College is required.</span>
+            </p>
+          </div>
+
+          <div>
+            <label for="cp-degree" class="block text-xs font-semibold text-slate-300 mb-1">
+              Degree &amp; Branch <span class="text-rose-500">*</span>
+            </label>
+            <div class="relative">
+              <i data-lucide="award" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
+              <input type="text" id="cp-degree" required placeholder="e.g. B.Tech CS" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition" />
+            </div>
+            <p id="cp-degree-error" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+              <span>Degree &amp; Branch is required.</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Row: Graduation Year & Current City -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label for="cp-grad-year" class="block text-xs font-semibold text-slate-300 mb-1">
+              Graduation Year <span class="text-rose-500">*</span>
+            </label>
+            <div class="relative">
+              <i data-lucide="calendar" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
+              <select id="cp-grad-year" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition">
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026" selected>2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+                <option value="2031">2031</option>
+                <option value="2032">2032</option>
+              </select>
+            </div>
+            <p id="cp-grad-year-error" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+              <span>Graduation year is required.</span>
+            </p>
+          </div>
+
+          <div>
+            <label for="cp-city" class="block text-xs font-semibold text-slate-300 mb-1">
+              Current City <span class="text-rose-500">*</span>
+            </label>
+            <div class="relative">
+              <i data-lucide="map-pin" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
+              <input type="text" id="cp-city" required placeholder="e.g. Bengaluru, India" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition" />
+            </div>
+            <p id="cp-city-error" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+              <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+              <span>Current City is required.</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- 7. Primary Technical Skills -->
+        <div>
+          <label for="cp-skills" class="block text-xs font-semibold text-slate-300 mb-1">
+            Primary Technical Skills (comma-separated) <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative">
+            <i data-lucide="code" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
+            <input type="text" id="cp-skills" required placeholder="e.g. React, Node.js, Python, SQL, Git" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition" />
+          </div>
+          <p id="cp-skills-error" class="hidden text-[11px] text-rose-400 mt-1 flex items-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5 flex-shrink-0"></i>
+            <span>At least 1 technical skill is required.</span>
+          </p>
+        </div>
+
+        <!-- Submission Error Banner -->
+        <p id="cp-form-error" class="hidden text-xs text-rose-400 p-2.5 bg-rose-500/10 border border-rose-500/20 rounded-lg flex items-center gap-2">
+          <i data-lucide="alert-triangle" class="w-4 h-4 flex-shrink-0"></i>
+          <span id="cp-form-error-text">Please resolve the highlighted errors to proceed.</span>
+        </p>
+
+        <!-- Buttons: Back and Complete Profile & Launch Dashboard -->
+        <div class="pt-3 flex flex-col-reverse sm:flex-row items-center gap-3">
+          <button type="button" onclick="handleCompleteProfileBack()" class="w-full sm:w-auto px-5 py-2.5 bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold rounded-lg transition flex items-center justify-center gap-1.5 active:scale-95">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+          </button>
+          <button type="submit" id="cp-submit-btn" class="w-full sm:flex-1 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold rounded-lg shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2 active:scale-95">
+            <span>Complete Profile &amp; Launch Dashboard &rarr;</span>
+          </button>
+        </div>
+
+        <!-- Footer Note with Shield Icon (EXACT TEXT) -->
+        <div class="text-center pt-3 border-t border-slate-800/80">
+          <p class="text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-indigo-400"></i>
+            <span>Bcrypt 10-round salted hashing &amp; JWT session security</span>
+          </p>
         </div>
       </form>
     </div>
@@ -148,6 +746,9 @@
       </button>
       <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn border-b-2 border-transparent text-slate-400 hover:text-slate-200 px-3 py-2.5 flex items-center gap-1.5 transition whitespace-nowrap">
         <i data-lucide="file-text" class="w-4 h-4"></i> Profile & Resume
+      </button>
+      <button onclick="switchTab('career-snapshot')" id="tab-career-snapshot" class="tab-btn border-b-2 border-transparent text-slate-400 hover:text-slate-200 px-3 py-2.5 flex items-center gap-1.5 transition whitespace-nowrap">
+        <i data-lucide="user-check" class="w-4 h-4 text-purple-400"></i> Future Career Snapshot
       </button>
       <button onclick="switchTab('jobs')" id="tab-jobs" class="tab-btn border-b-2 border-transparent text-slate-400 hover:text-slate-200 px-3 py-2.5 flex items-center gap-1.5 transition whitespace-nowrap">
         <i data-lucide="briefcase" class="w-4 h-4"></i> Knowledge Base
@@ -343,14 +944,14 @@
             </button>
           </div>
 
-          <!-- Card 7: Application Tracking Module (M4) -->
+          <!-- Card 7: Application Tracking Module -->
           <div class="p-4 bg-slate-900/90 border border-slate-700 hover:border-amber-500/50 rounded-xl flex flex-col justify-between gap-3 transition group">
             <div>
               <div class="flex items-center justify-between mb-1.5">
                 <span class="text-[10px] font-bold font-mono text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded">TRACKER AGENT</span>
                 <i data-lucide="clipboard-list" class="w-4 h-4 text-amber-400"></i>
               </div>
-              <h3 class="text-sm font-bold text-white group-hover:text-amber-300 transition">Application Tracker (M4)</h3>
+              <h3 class="text-sm font-bold text-white group-hover:text-amber-300 transition">Application Tracker</h3>
               <p class="text-xs text-slate-400 mt-1 line-clamp-2">Track internship lifecycle, status transitions, interview dates, background reminders, and notes.</p>
             </div>
             <button onclick="switchTab('tracker')" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 shadow-md shadow-amber-600/20">
@@ -445,36 +1046,41 @@
 
       <!-- Structured Profile Display / Edit Form -->
       <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-6 space-y-5">
-        <h3 class="text-base font-bold text-white border-b border-slate-700 pb-3 flex items-center gap-2">
-          <i data-lucide="user-check" class="w-5 h-5 text-emerald-400"></i> Extracted Candidate Profile Data Model
-        </h3>
+        <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="user-check" class="w-5 h-5 text-emerald-400"></i> Extracted Candidate Profile Data Model
+          </h3>
+          <span id="prof-extraction-status" class="text-[11px] font-normal px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-400">
+            Awaiting Resume Upload
+          </span>
+        </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1">Full Name</label>
-            <input type="text" id="prof-name" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input type="text" id="prof-name" placeholder="Awaiting resume upload/parse..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none placeholder:text-slate-600" />
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1">Email</label>
-            <input type="text" id="prof-email" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input type="text" id="prof-email" placeholder="Awaiting resume upload/parse..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none placeholder:text-slate-600" />
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1">Phone / Contact</label>
-            <input type="text" id="prof-phone" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <input type="text" id="prof-phone" placeholder="Awaiting resume upload/parse..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none placeholder:text-slate-600" />
           </div>
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1.5">Extracted Technical Skills</label>
           <div id="prof-skills-container" class="flex flex-wrap gap-2 p-3 bg-slate-900 border border-slate-700 rounded-lg min-h-[48px]">
-            <!-- Skill pills rendered here -->
+            <span class="text-xs text-slate-500 italic p-1">No technical skills extracted yet. Upload or paste your resume above and click "Run Resume Parsing Agent".</span>
           </div>
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Academic & Technical Projects</label>
           <div id="prof-projects-container" class="space-y-3">
-            <!-- Project cards rendered here -->
+            <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-lg text-xs text-slate-500 italic">No academic/technical projects extracted yet. Upload or paste your resume above and parse it.</div>
           </div>
         </div>
 
@@ -485,6 +1091,198 @@
         </div>
       </div>
     </section>
+
+    <!-- ══════════════════════════════════════════════ -->
+    <!--     FUTURE CAREER SNAPSHOT / STUDENT PROFILE   -->
+    <!-- ══════════════════════════════════════════════ -->
+    <section id="view-career-snapshot" class="tab-view hidden space-y-6">
+      
+      <!-- Header Banner with Save Button (Matches Screenshot) -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
+            Student Career Profile
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">
+            Maintain your educational background, verified skills, target roles, and project portfolio for optimal AI matching.
+          </p>
+        </div>
+        <div>
+          <button onclick="saveCareerSnapshot()" type="button" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition active:scale-95 whitespace-nowrap">
+            <i data-lucide="save" class="w-4 h-4"></i> Save Profile Changes
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 1: Academic Background & Location -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 space-y-5 shadow-xl">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+          <i data-lucide="graduation-cap" class="w-4 h-4 text-cyan-400"></i>
+          <span>Academic Background &amp; Location</span>
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- College / University -->
+          <div>
+            <label for="snap-university" class="block text-xs font-semibold text-slate-300 mb-1.5">College / University</label>
+            <input type="text" id="snap-university" placeholder="IIT Indore / NIT" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition placeholder:text-slate-600" />
+          </div>
+
+          <!-- Degree & Major -->
+          <div>
+            <label for="snap-degree" class="block text-xs font-semibold text-slate-300 mb-1.5">Degree &amp; Major</label>
+            <input type="text" id="snap-degree" placeholder="B.Tech Computer Science" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition placeholder:text-slate-600" />
+          </div>
+
+          <!-- Expected Graduation Year -->
+          <div>
+            <label for="snap-grad-year" class="block text-xs font-semibold text-slate-300 mb-1.5">Expected Graduation Year</label>
+            <input type="text" id="snap-grad-year" placeholder="2026" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition placeholder:text-slate-600 font-mono" />
+          </div>
+
+          <!-- Contact Phone -->
+          <div>
+            <label for="snap-phone" class="block text-xs font-semibold text-slate-300 mb-1.5">Contact Phone</label>
+            <input type="text" id="snap-phone" placeholder="9999999999" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition placeholder:text-slate-600 font-mono" />
+          </div>
+
+          <!-- Current City -->
+          <div>
+            <label for="snap-city" class="block text-xs font-semibold text-slate-300 mb-1.5">Current City</label>
+            <input type="text" id="snap-city" placeholder="Bengaluru, India" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition placeholder:text-slate-600" />
+          </div>
+
+          <!-- Preferred Internship Location / Work Mode -->
+          <div>
+            <label for="snap-pref-location" class="block text-xs font-semibold text-slate-300 mb-1.5">Preferred Internship Location / Work Mode</label>
+            <input type="text" id="snap-pref-location" placeholder="e.g. Bengaluru / Remote" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition placeholder:text-slate-600" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Target Roles & Verified Skills -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-xl">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+          <i data-lucide="code-2" class="w-4 h-4 text-indigo-400"></i>
+          <span>Target Roles &amp; Verified Skills</span>
+        </h3>
+
+        <!-- 1. Target Internship Roles -->
+        <div class="space-y-2.5">
+          <label class="block text-xs font-semibold text-slate-300">Target Internship Roles</label>
+          <div class="flex gap-2">
+            <input type="text" id="snap-role-input" onkeydown="if(event.key==='Enter'){event.preventDefault();addSnapshotRole();}" placeholder="Type a role (e.g. Full-Stack Developer) and press Add..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition placeholder:text-slate-600" />
+            <button type="button" onclick="addSnapshotRole()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition active:scale-95 whitespace-nowrap">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Role
+            </button>
+          </div>
+          <div id="snap-roles-container" class="flex flex-wrap gap-2 pt-1 min-h-[28px]">
+            <!-- Role chips dynamically rendered here -->
+          </div>
+        </div>
+
+        <!-- 2. Technical Skills & Toolchain -->
+        <div class="space-y-2.5">
+          <label class="block text-xs font-semibold text-slate-300">Technical Skills &amp; Toolchain</label>
+          <div class="flex gap-2">
+            <input type="text" id="snap-tech-skill-input" onkeydown="if(event.key==='Enter'){event.preventDefault();addSnapshotTechSkill();}" placeholder="Type a skill (e.g. React, Python, Docker, PyTorch) and press Add..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition placeholder:text-slate-600" />
+            <button type="button" onclick="addSnapshotTechSkill()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition active:scale-95 whitespace-nowrap">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Skill
+            </button>
+          </div>
+          <div id="snap-tech-skills-container" class="flex flex-wrap gap-2 pt-1 min-h-[28px]">
+            <!-- Tech skill pills dynamically rendered here (matches screenshot purple pill) -->
+          </div>
+        </div>
+
+        <!-- 3. Soft Skills & Methodologies -->
+        <div class="space-y-2.5">
+          <label class="block text-xs font-semibold text-slate-300">Soft Skills &amp; Methodologies</label>
+          <div class="flex gap-2">
+            <input type="text" id="snap-soft-skill-input" onkeydown="if(event.key==='Enter'){event.preventDefault();addSnapshotSoftSkill();}" placeholder="e.g. Agile, Team Leadership, Problem Solving..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none transition placeholder:text-slate-600" />
+            <button type="button" onclick="addSnapshotSoftSkill()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition active:scale-95 whitespace-nowrap">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+            </button>
+          </div>
+          <div id="snap-soft-skills-container" class="flex flex-wrap gap-2 pt-1 min-h-[28px]">
+            <!-- Soft skill chips dynamically rendered here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Key Projects & Experience -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <i data-lucide="folder-git-2" class="w-4 h-4 text-emerald-400"></i>
+            <span>Key Projects &amp; Experience</span>
+          </h3>
+          <button type="button" onclick="openAddProjectModal()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition active:scale-95">
+            <i data-lucide="plus" class="w-3.5 h-3.5 text-emerald-400"></i> Add Project
+          </button>
+        </div>
+
+        <div id="snap-projects-container" class="space-y-3">
+          <!-- Projects dynamically rendered here -->
+          <div class="p-6 text-center text-slate-500 text-xs italic bg-slate-950/40 rounded-xl border border-slate-800/80">
+            No projects added yet. Click &quot;Add Project&quot; above to showcase your portfolio.
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Save Action Button (Matches Screenshot) -->
+      <div class="flex justify-end pt-2 pb-6">
+        <button onclick="saveCareerSnapshot()" type="button" class="px-6 py-3 bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition active:scale-95">
+          <i data-lucide="save" class="w-4 h-4"></i> Save Profile Changes
+        </button>
+      </div>
+
+    </section>
+
+    <!-- Modal: Add Project to Career Snapshot -->
+    <div id="snap-project-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 fade-in">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="folder-plus" class="w-4 h-4 text-emerald-400"></i> Add Project / Portfolio Item
+          </h3>
+          <button type="button" onclick="closeAddProjectModal()" class="text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Project Title <span class="text-rose-500">*</span></label>
+            <input type="text" id="snap-modal-proj-title" placeholder="e.g. Distributed Task Queue & Scheduler" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Tech Stack (comma-separated)</label>
+            <input type="text" id="snap-modal-proj-tech" placeholder="e.g. React, FastAPI, Redis, Docker, PostgreSQL" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Project Description</label>
+            <textarea id="snap-modal-proj-desc" rows="3" placeholder="Engineered a fault-tolerant job queue system with worker heartbeats and retry backoff..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">GitHub / Demo URL (optional)</label>
+            <input type="url" id="snap-modal-proj-link" placeholder="https://github.com/username/project" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="closeAddProjectModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-750 text-slate-300 rounded-xl text-xs font-medium transition">
+            Cancel
+          </button>
+          <button type="button" onclick="submitAddProjectModal()" class="px-5 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-indigo-600/30">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i> Add Project
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- 3. KNOWLEDGE BASE VIEW -->
     <section id="view-jobs" class="tab-view hidden space-y-6">
@@ -705,37 +1503,321 @@
 
     <!-- M3.2 RESUME & COVER LETTER CUSTOMIZATION VIEW -->
     <section id="view-resume-customizer" class="tab-view hidden space-y-6">
-      <div class="bg-gradient-to-r from-slate-800 to-emerald-950/30 border border-emerald-500/30 rounded-xl p-6">
-        <h2 class="text-xl font-bold text-white flex items-center gap-2 mb-2">
-          <i data-lucide="file-edit" class="w-6 h-6 text-emerald-400"></i> Resume & Cover Letter Customization Agent
-        </h2>
-        <p class="text-xs text-slate-300 mb-4">Generate a tailored resume and cover letter for a specific internship using your actual profile data.</p>
+      <!-- Top Hero & Controls -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-950/40 border border-emerald-500/30 rounded-2xl p-6 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-full text-xs font-semibold mb-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>ATS-Friendly Classic Academic / Tech Resume System</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
+              <i data-lucide="file-edit" class="w-6 h-6 text-emerald-400"></i> Tailor Resume & Cover Letter Agent
+            </h2>
+            <p class="text-xs text-slate-300 max-w-2xl mt-1">
+              Generate an ATS-optimized single-column resume tailored to any internship role. Edit sections directly or via form fields, preview live, and download in vector PDF or editable Microsoft Word (.docx).
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="loadDefaultTemplate()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow">
+              <i data-lucide="file-check" class="w-4 h-4 text-emerald-400"></i> Load Template
+            </button>
+          </div>
+        </div>
 
-        <div class="flex flex-wrap items-end gap-4">
-          <div class="flex-1 min-w-[280px]">
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Select Target Internship</label>
-            <select id="resume-job-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none">
-              <option value="">-- Select internship --</option>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 pt-3 border-t border-slate-700/60 items-end">
+          <div class="md:col-span-5">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Target Internship Role</label>
+            <select id="resume-job-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none">
+              <option value="">-- Select internship to tailor resume --</option>
             </select>
           </div>
-          <button onclick="generateTailoredResume()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-lg shadow-lg flex items-center gap-2 transition">
-            <i data-lucide="file-edit" class="w-4 h-4"></i> Generate Tailored Resume
-          </button>
-          <button onclick="runAtsOptimization()" id="btn-ats-optimize" class="px-5 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-semibold text-xs rounded-lg shadow-lg flex items-center gap-2 transition">
-            <i data-lucide="zap" class="w-4 h-4 text-amber-200"></i> Tailor Resume & ATS Optimization
-          </button>
-          <button onclick="generateCoverLetter()" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs rounded-lg shadow-lg flex items-center gap-2 transition">
-            <i data-lucide="mail" class="w-4 h-4"></i> Generate Cover Letter
-          </button>
+          <div class="md:col-span-7 flex flex-wrap gap-2">
+            <button onclick="generateTailoredResume()" class="flex-1 min-w-[150px] py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-1.5 transition">
+              <i data-lucide="sparkles" class="w-4 h-4"></i> Tailor Resume
+            </button>
+            <button onclick="runAtsOptimization()" id="btn-ats-optimize" class="flex-1 min-w-[160px] py-2.5 px-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-amber-600/20 flex items-center justify-center gap-1.5 transition">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-200"></i> ATS Score & Tailor
+            </button>
+            <button onclick="generateCoverLetter()" class="py-2.5 px-4 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-purple-600/20 flex items-center justify-center gap-1.5 transition">
+              <i data-lucide="mail" class="w-4 h-4"></i> Cover Letter
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- ATS Optimization Output Container -->
+      <!-- Resume View Tabs & Global Action Toolbar -->
+      <div id="resume-controls-panel" class="space-y-4">
+        <!-- Sub-tabs navigation -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-800/80 border border-slate-700 rounded-2xl p-2">
+          <div id="resume-subtabs" class="flex flex-wrap gap-1.5">
+            <button onclick="switchResumeSubView('preview')" id="subtab-btn-preview" class="subtab-btn px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-emerald-600 text-white shadow-md">
+              <i data-lucide="eye" class="w-4 h-4"></i> Resume Preview (Direct Edit)
+            </button>
+            <button onclick="switchResumeSubView('editor')" id="subtab-btn-editor" class="subtab-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-700/60 transition flex items-center gap-2">
+              <i data-lucide="sliders" class="w-4 h-4"></i> Section-by-Section Form
+            </button>
+            <button onclick="switchResumeSubView('ats')" id="subtab-btn-ats" class="subtab-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-700/60 transition flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-4 h-4"></i> ATS Analysis
+            </button>
+            <button onclick="switchResumeSubView('cover')" id="subtab-btn-cover" class="subtab-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-700/60 transition flex items-center gap-2">
+              <i data-lucide="mail" class="w-4 h-4"></i> Cover Letter
+            </button>
+          </div>
+
+          <!-- Document Action Buttons -->
+          <div class="flex flex-wrap items-center gap-2 ml-auto">
+            <button onclick="printResumeSheet()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition" title="Print or preview full page">
+              <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print
+            </button>
+            <button onclick="downloadResumePdf()" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-md shadow-rose-600/20 transition">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
+            </button>
+            <button onclick="downloadResumeDocx()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-md shadow-blue-600/20 transition">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Download DOCX
+            </button>
+            <button onclick="copyFormattedResumeText()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg text-xs font-medium flex items-center gap-1.5 transition">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Text
+            </button>
+          </div>
+        </div>
+
+        <!-- Inline edit helper alert -->
+        <div class="flex items-center justify-between text-xs px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-xl">
+          <div class="flex items-center gap-2">
+            <i data-lucide="info" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+            <span><strong>Editable Template:</strong> Click directly anywhere on the paper preview below to modify any text, or use the <em>Section-by-Section Form</em> tab. Your edits are directly exported to PDF and Word DOCX.</span>
+          </div>
+          <button onclick="resetResumeToDefault()" class="text-xs underline text-emerald-400 hover:text-emerald-300 shrink-0 ml-3">Reset to Template</button>
+        </div>
+      </div>
+
+      <!-- VIEW 1: Live Interactive Resume Paper Preview -->
+      <div id="resume-preview-container" class="space-y-4">
+        <!-- Paper Preview Sheet (Clean ATS White Canvas) -->
+        <div class="py-4 overflow-x-auto">
+          <div id="resume-preview-sheet" class="resume-paper" style="min-height: 1050px;">
+            <!-- HEADER -->
+            <div class="text-center mb-3">
+              <div id="sheet-name" contenteditable="true" oninput="syncSheetToState()" class="font-extrabold text-2xl tracking-wide uppercase text-black mb-1">HARSH KUMAR BHADANI</div>
+              <div id="sheet-title" contenteditable="true" oninput="syncSheetToState()" class="font-bold text-xs text-black mb-1">AI/ML &amp; Generative AI Developer | Full-Stack Developer | B.Tech CSE (AI &amp; ML)</div>
+              <div id="sheet-contact" contenteditable="true" oninput="syncSheetToState()" class="text-[10pt] text-black">
+                Koderma, Jharkhand | +91 5765656655 | <a href="mailto:kumarharsh6754@gmail.com">kumarharsh6754@gmail.com</a> | <a href="https://linkedin.com/in/harsh-kumar-bhadani" target="_blank">LinkedIn</a> | <a href="https://github.com/harshbhadani4597" target="_blank">GitHub</a>
+              </div>
+            </div>
+
+            <!-- PROFESSIONAL SUMMARY -->
+            <div>
+              <div class="section-heading">PROFESSIONAL SUMMARY</div>
+              <p id="sheet-summary" contenteditable="true" oninput="syncSheetToState()" class="text-[10pt] text-justify text-black mb-2 leading-relaxed">
+                B.Tech Computer Science and Engineering (AI &amp; ML) student with hands-on experience in Python, Machine Learning, Generative AI, LLMs, RAG, NLP, Computer Vision, and full-stack web development. Built AI agent applications using FastAPI, React.js, LangChain, LangGraph, Gemini API, MongoDB, and ChromaDB during AI internships with Infosys Springboard and Edunet × IBM SkillsBuild. Seeking Software Developer and AI/ML Engineer roles to build practical, scalable, real-world applications.
+              </p>
+            </div>
+
+            <!-- TECHNICAL SKILLS -->
+            <div>
+              <div class="section-heading">TECHNICAL SKILLS</div>
+              <div id="sheet-skills" class="space-y-1 text-[10pt] text-black">
+                <!-- Dynamically populated skills categories -->
+              </div>
+            </div>
+
+            <!-- PROJECTS -->
+            <div>
+              <div class="section-heading">PROJECTS</div>
+              <div id="sheet-projects" class="space-y-2.5 text-[10pt] text-black">
+                <!-- Dynamically populated projects -->
+              </div>
+            </div>
+
+            <!-- INTERNSHIP EXPERIENCE -->
+            <div>
+              <div class="section-heading">INTERNSHIP EXPERIENCE</div>
+              <div id="sheet-experience" class="space-y-2.5 text-[10pt] text-black">
+                <!-- Dynamically populated experiences -->
+              </div>
+            </div>
+
+            <!-- EDUCATION -->
+            <div>
+              <div class="section-heading">EDUCATION</div>
+              <div id="sheet-education" class="space-y-1 text-[10pt] text-black">
+                <!-- Dynamically populated education -->
+              </div>
+            </div>
+
+            <!-- CERTIFICATIONS -->
+            <div>
+              <div class="section-heading">CERTIFICATIONS</div>
+              <p id="sheet-certifications" contenteditable="true" oninput="syncSheetToState()" class="text-[10pt] text-justify text-black mb-2 leading-relaxed">
+                Geo-data Sharing and Cyber Security – ISRO; Journey to Cloud: Envisioning Your Solution – IBM SkillsBuild; SQL (Basic) – HackerRank; Introduction to Generative AI; Innovation, Design and Entrepreneurship (IDE) Bootcamp – Edition 3 Phase 2; Build with AI Bootcamp
+              </p>
+            </div>
+
+            <!-- ACHIEVEMENTS & ACTIVITIES -->
+            <div>
+              <div class="section-heading">ACHIEVEMENTS &amp; ACTIVITIES</div>
+              <ul id="sheet-achievements" class="list-disc pl-5 space-y-0.5 text-[10pt] text-black">
+                <!-- Dynamically populated achievements -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 2: Section-by-Section Form Editor -->
+      <div id="resume-editor-container" class="hidden space-y-4">
+        <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="edit-3" class="w-5 h-5 text-emerald-400"></i> Structured Section Editor
+            </h3>
+            <button onclick="applyFormToPreview()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+              <i data-lucide="check-circle" class="w-4 h-4"></i> Apply Changes to Preview
+            </button>
+          </div>
+
+          <!-- Section 1: Header & Contact -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+              <i data-lucide="user" class="w-4 h-4"></i> 1. Candidate Header &amp; Contact Info
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Full Name</label>
+                <input type="text" id="edit-header-name" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Target Roles / Subtitle</label>
+                <input type="text" id="edit-header-title" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Location</label>
+                <input type="text" id="edit-header-location" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Phone</label>
+                <input type="text" id="edit-header-phone" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Email</label>
+                <input type="email" id="edit-header-email" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">LinkedIn URL</label>
+                <input type="text" id="edit-header-linkedin" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">GitHub URL</label>
+                <input type="text" id="edit-header-github" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Professional Summary -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+              <i data-lucide="align-left" class="w-4 h-4"></i> 2. Professional Summary
+            </h4>
+            <textarea id="edit-summary" rows="4" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none leading-relaxed"></textarea>
+          </div>
+
+          <!-- Section 3: Technical Skills -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+                <i data-lucide="cpu" class="w-4 h-4"></i> 3. Technical Skills (Categorized)
+              </h4>
+              <button onclick="addFormSkillCategory()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-300 rounded text-xs font-semibold flex items-center gap-1 border border-emerald-500/30">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Category
+              </button>
+            </div>
+            <div id="edit-skills-container" class="space-y-2">
+              <!-- Dynamically populated skill categories -->
+            </div>
+          </div>
+
+          <!-- Section 4: Projects -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+                <i data-lucide="folder-git-2" class="w-4 h-4"></i> 4. Technical Projects
+              </h4>
+              <button onclick="addFormProject()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-300 rounded text-xs font-semibold flex items-center gap-1 border border-emerald-500/30">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Project
+              </button>
+            </div>
+            <div id="edit-projects-container" class="space-y-4">
+              <!-- Dynamically populated project forms -->
+            </div>
+          </div>
+
+          <!-- Section 5: Internship Experience -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+                <i data-lucide="briefcase" class="w-4 h-4"></i> 5. Internship Experience
+              </h4>
+              <button onclick="addFormExperience()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-300 rounded text-xs font-semibold flex items-center gap-1 border border-emerald-500/30">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Experience
+              </button>
+            </div>
+            <div id="edit-experience-container" class="space-y-4">
+              <!-- Dynamically populated experience forms -->
+            </div>
+          </div>
+
+          <!-- Section 6: Education -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+              <i data-lucide="graduation-cap" class="w-4 h-4"></i> 6. Education
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="sm:col-span-2">
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Degree / Course</label>
+                <input type="text" id="edit-edu-degree" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Graduation Year</label>
+                <input type="text" id="edit-edu-grad" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none" />
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Institution / University</label>
+                <input type="text" id="edit-edu-inst" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 7: Certifications -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+              <i data-lucide="award" class="w-4 h-4"></i> 7. Certifications (Semicolon-Separated)
+            </h4>
+            <textarea id="edit-certifications" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none leading-relaxed"></textarea>
+          </div>
+
+          <!-- Section 8: Achievements & Activities -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+              <i data-lucide="star" class="w-4 h-4"></i> 8. Achievements &amp; Activities (One per line)
+            </h4>
+            <textarea id="edit-achievements" rows="4" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none leading-relaxed"></textarea>
+          </div>
+
+          <div class="flex justify-end gap-3 pt-2">
+            <button onclick="applyFormToPreview()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-600/30 transition">
+              <i data-lucide="check-circle" class="w-4 h-4"></i> Save &amp; Update Live Resume Sheet
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 3: ATS Optimization Output Container -->
       <div id="ats-output-container" class="hidden space-y-4">
         <div class="bg-slate-800/80 border border-amber-500/30 rounded-xl p-6 space-y-4 shadow-xl">
           <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-700 pb-3">
             <h3 class="text-base font-bold text-white flex items-center gap-2">
-              <i data-lucide="shield-check" class="w-5 h-5 text-amber-400"></i> ATS Compatibility & Keyword Optimization
+              <i data-lucide="shield-check" class="w-5 h-5 text-amber-400"></i> ATS Compatibility &amp; Keyword Optimization
             </h3>
             <div id="ats-score-badge" class="px-4 py-1.5 bg-amber-500/10 border border-amber-500/40 text-amber-300 rounded-full text-xs font-extrabold flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
@@ -771,64 +1853,220 @@
             <ul id="ats-recommendations-list" class="text-xs text-slate-300 list-disc pl-5 space-y-1"></ul>
           </div>
 
-          <!-- ATS Formatted Resume -->
+          <!-- Plain text export -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <h4 class="text-xs font-bold text-slate-200">ATS-Optimized Resume Text:</h4>
+              <h4 class="text-xs font-bold text-slate-200">ATS Plain-Text Export:</h4>
               <button onclick="copyAtsResumeText()" class="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs rounded font-medium transition flex items-center gap-1">
-                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy ATS Resume
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Text
               </button>
             </div>
-            <textarea id="ats-resume-output-text" rows="16" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-4 text-xs text-slate-200 font-mono focus:border-amber-500 focus:outline-none leading-relaxed"></textarea>
+            <textarea id="ats-resume-output-text" rows="12" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-4 text-xs text-slate-200 font-mono focus:border-amber-500 focus:outline-none leading-relaxed"></textarea>
           </div>
         </div>
       </div>
 
-      <!-- Resume Output -->
-      <div id="resume-output-container" class="hidden space-y-4">
-        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-6">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-base font-bold text-white flex items-center gap-2">
-              <i data-lucide="file-text" class="w-5 h-5 text-emerald-400"></i> Tailored Resume
-            </h3>
-            <div class="flex gap-2">
-              <button onclick="copyResumeText()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs rounded-lg font-medium transition flex items-center gap-1">
-                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
-              </button>
-              <button onclick="generateTailoredResume()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs rounded-lg font-medium transition flex items-center gap-1">
-                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Regenerate
-              </button>
-            </div>
-          </div>
-          <textarea id="resume-output-text" rows="20" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-4 text-xs text-slate-200 font-mono focus:border-emerald-500 focus:outline-none leading-relaxed"></textarea>
-        </div>
-      </div>
-
-      <!-- Cover Letter Output -->
+      <!-- VIEW 4: Cover Letter Output Container -->
       <div id="cover-letter-output-container" class="hidden space-y-4">
-        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-6">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-base font-bold text-white flex items-center gap-2">
-              <i data-lucide="mail" class="w-5 h-5 text-purple-400"></i> Cover Letter
-            </h3>
-            <div class="flex gap-2">
-              <button onclick="copyCoverLetter()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs rounded-lg font-medium transition flex items-center gap-1">
-                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
-              </button>
-              <button onclick="generateCoverLetter()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs rounded-lg font-medium transition flex items-center gap-1">
-                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Regenerate
-              </button>
+        <!-- Cover Letter Subtabs & Action Toolbar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-800/80 border border-slate-700 rounded-2xl p-2">
+          <div class="flex flex-wrap gap-1.5">
+            <button onclick="switchCoverSubView('preview')" id="cover-subtab-preview" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-purple-600 text-white shadow-md">
+              <i data-lucide="eye" class="w-4 h-4"></i> Cover Letter Preview (Direct Edit)
+            </button>
+            <button onclick="switchCoverSubView('form')" id="cover-subtab-form" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-700/60 transition flex items-center gap-2">
+              <i data-lucide="edit-3" class="w-4 h-4"></i> Section-by-Section Form
+            </button>
+          </div>
+
+          <!-- Document Action Buttons -->
+          <div class="flex flex-wrap items-center gap-2 ml-auto">
+            <button onclick="printCoverLetterSheet()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition" title="Print or preview full page">
+              <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print
+            </button>
+            <button onclick="downloadCoverLetterPdf()" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-md shadow-rose-600/20 transition">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
+            </button>
+            <button onclick="downloadCoverLetterDocx()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-md shadow-blue-600/20 transition">
+              <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Download DOCX
+            </button>
+            <button onclick="copyCoverLetterText()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg text-xs font-medium flex items-center gap-1.5 transition">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Text
+            </button>
+            <button onclick="resetCoverLetterToDefault()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg text-xs font-medium flex items-center gap-1.5 transition" title="Reset to standard template">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Inline edit helper alert -->
+        <div class="flex items-center justify-between text-xs px-4 py-2 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-xl">
+          <div class="flex items-center gap-2">
+            <i data-lucide="info" class="w-4 h-4 text-purple-400 shrink-0"></i>
+            <span><strong>Editable Cover Letter Template:</strong> Click directly on any paragraph, recipient info, or salutation below to edit. Changes immediately export to PDF and Word DOCX.</span>
+          </div>
+          <button onclick="resetCoverLetterToDefault()" class="text-xs underline text-purple-300 hover:text-purple-200 shrink-0 ml-3">Reset to Default</button>
+        </div>
+
+        <!-- Live Cover Letter Sheet Preview -->
+        <div id="cover-letter-sheet-wrapper" class="py-4 overflow-x-auto">
+          <div id="cover-letter-preview-sheet" class="resume-paper" style="min-height: 1050px;">
+            <!-- HEADER -->
+            <div class="text-center mb-5">
+              <div id="cover-sheet-name" contenteditable="true" oninput="syncCoverSheetToState()" class="font-extrabold text-2xl tracking-wide uppercase text-black mb-1">HARSH KUMAR BHADANI</div>
+              <div id="cover-sheet-contact" contenteditable="true" oninput="syncCoverSheetToState()" class="text-[10pt] text-black pb-2 border-b border-black">
+                Koderma, Jharkhand | +91 5765656655 | <a href="mailto:kumarharsh6754@gmail.com" class="underline text-black">kumarharsh6754@gmail.com</a> | <a href="https://linkedin.com/in/harsh-kumar-bhadani" target="_blank" class="underline text-black">LinkedIn</a> | <a href="https://github.com/harshbhadani4597" target="_blank" class="underline text-black">GitHub</a>
+              </div>
+            </div>
+
+            <!-- DATE & RECIPIENT BLOCK -->
+            <div class="mb-4">
+              <div id="cover-sheet-date" contenteditable="true" oninput="syncCoverSheetToState()" class="text-[10pt] text-black mb-3 font-semibold">October 4, 2026</div>
+              <div id="cover-sheet-recipient-name" contenteditable="true" oninput="syncCoverSheetToState()" class="text-[10pt] text-black font-semibold">Hiring Manager / Hiring Team</div>
+              <div id="cover-sheet-company-name" contenteditable="true" oninput="syncCoverSheetToState()" class="text-[10pt] text-black">Company Name</div>
+              <div id="cover-sheet-company-address" contenteditable="true" oninput="syncCoverSheetToState()" class="text-[10pt] text-black mb-3">Company Address / City</div>
+            </div>
+
+            <!-- SUBJECT LINE -->
+            <div id="cover-sheet-subject" contenteditable="true" oninput="syncCoverSheetToState()" class="font-bold text-[10.5pt] text-black mb-3">
+              Subject: Application for [Job Title] – Harsh Kumar Bhadani
+            </div>
+
+            <!-- SALUTATION -->
+            <div id="cover-sheet-salutation" contenteditable="true" oninput="syncCoverSheetToState()" class="text-[10pt] text-black mb-3 font-medium">
+              Dear Hiring Team,
+            </div>
+
+            <!-- BODY PARAGRAPHS -->
+            <div class="space-y-3.5 text-[10pt] text-black text-justify leading-relaxed">
+              <p id="cover-sheet-p1" contenteditable="true" oninput="syncCoverSheetToState()">
+                I am writing to apply for the [Job Title] position at [Company Name], as advertised on [Job Portal / Company Website]. I am a B.Tech Computer Science and Engineering (AI &amp; ML) student graduating in 2027, with hands-on experience in Python, Machine Learning, Generative AI, LLMs, RAG, and full-stack development. I am excited about the opportunity to contribute to [Company Name]'s work in [mention team, product, or domain].
+              </p>
+              <p id="cover-sheet-p2" contenteditable="true" oninput="syncCoverSheetToState()">
+                During my Infosys Springboard Virtual Internship, I developed the AI Career Companion Agent for Internship Matching and Interview Preparation using Python, FastAPI, React.js, Gemini API, LangChain, LangGraph, ChromaDB, and MongoDB. The platform uses AI agents, RAG, and vector search for job-resume matching, skill gap analysis, resume customization, and interview preparation. The system achieved sub-second latency with 94%+ retrieval precision.
+              </p>
+              <p id="cover-sheet-p3" contenteditable="true" oninput="syncCoverSheetToState()">
+                Through my internship with Edunet Foundation × IBM SkillsBuild × AICTE, I built an AI Trip Planner Agent with IBM Cloud and watsonx.ai, which gave me practical experience in cloud-based generative AI. I also worked as a frontend developer on The Neural Loom, a decentralized AI compute platform built on the MERN stack, as part of Team The Shunya Syndicate at IDE Bootcamp, NIT Patna.
+              </p>
+              <p id="cover-sheet-p4" contenteditable="true" oninput="syncCoverSheetToState()">
+                I am drawn to [Company Name] because of its innovative technical architecture and strong engineering culture. My skills in [2–3 skills from the job description] match the requirements of this role, and I am keen to keep learning while building practical, scalable solutions for your team.
+              </p>
+              <p id="cover-sheet-p5" contenteditable="true" oninput="syncCoverSheetToState()">
+                I have attached my resume for your review. Thank you for your time and consideration. I would welcome the chance to discuss how I can contribute to [Company Name], and I can be reached at +91 5765656655 or kumarharsh6754@gmail.com.
+              </p>
+            </div>
+
+            <!-- SIGN-OFF -->
+            <div class="mt-5 text-[10pt] text-black">
+              <div id="cover-sheet-signoff" contenteditable="true" oninput="syncCoverSheetToState()" class="mb-1">Yours sincerely,</div>
+              <div id="cover-sheet-sig-name" contenteditable="true" oninput="syncCoverSheetToState()" class="font-bold">Harsh Kumar Bhadani</div>
             </div>
           </div>
-          <textarea id="cover-letter-output-text" rows="16" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-4 text-xs text-slate-200 font-mono focus:border-purple-500 focus:outline-none leading-relaxed"></textarea>
         </div>
-      </div>
 
-      <!-- Empty state -->
-      <div id="resume-empty-state" class="p-8 text-center text-slate-400 bg-slate-800/50 rounded-xl border border-slate-700">
-        <i data-lucide="file-edit" class="w-10 h-10 mx-auto text-emerald-400 mb-2 opacity-60"></i>
-        <p class="font-medium text-slate-300">No Customization Yet</p>
-        <p class="text-xs mt-1">Select an internship and click "Generate" to create a tailored resume or cover letter.</p>
+        <!-- Cover Letter Form Editor (Structured Section Form) -->
+        <div id="cover-letter-form-container" class="hidden bg-slate-800/80 border border-slate-700 rounded-2xl p-6 space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="edit-3" class="w-5 h-5 text-purple-400"></i> Cover Letter Section Editor
+            </h3>
+            <button onclick="applyCoverFormToPreview()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+              <i data-lucide="check-circle" class="w-4 h-4"></i> Apply Changes to Preview
+            </button>
+          </div>
+
+          <!-- Section 1: Recipient & Date -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-2">
+              <i data-lucide="calendar" class="w-4 h-4"></i> 1. Date &amp; Recipient Details
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Date</label>
+                <input type="text" id="edit-cover-date" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Hiring Manager / Team</label>
+                <input type="text" id="edit-cover-mgr" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Company Name</label>
+                <input type="text" id="edit-cover-comp" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Company Location / City</label>
+                <input type="text" id="edit-cover-addr" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Subject & Salutation -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-2">
+              <i data-lucide="tag" class="w-4 h-4"></i> 2. Subject Line &amp; Salutation
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Subject Line</label>
+                <input type="text" id="edit-cover-subject" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none font-semibold" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Salutation</label>
+                <input type="text" id="edit-cover-salutation" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Body Paragraphs -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-2">
+              <i data-lucide="file-text" class="w-4 h-4"></i> 3. Letter Paragraphs
+            </h4>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Paragraph 1 (Opening &amp; Role Introduction)</label>
+              <textarea id="edit-cover-p1" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none leading-relaxed"></textarea>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Paragraph 2 (Infosys Internship &amp; AI Career Companion Agent)</label>
+              <textarea id="edit-cover-p2" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none leading-relaxed"></textarea>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Paragraph 3 (Edunet / IBM Cloud &amp; Neural Loom Platform)</label>
+              <textarea id="edit-cover-p3" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none leading-relaxed"></textarea>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Paragraph 4 (Company Alignment &amp; Skills Fit)</label>
+              <textarea id="edit-cover-p4" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none leading-relaxed"></textarea>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Paragraph 5 (Closing Call to Action &amp; Contact Details)</label>
+              <textarea id="edit-cover-p5" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none leading-relaxed"></textarea>
+            </div>
+          </div>
+
+          <!-- Section 4: Sign-off -->
+          <div class="bg-slate-900/90 border border-slate-700 rounded-xl p-4 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-2">
+              <i data-lucide="check" class="w-4 h-4"></i> 4. Sign-off &amp; Signature
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Sign-off Phrase</label>
+                <input type="text" id="edit-cover-signoff" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-400 mb-1">Candidate Signature Name</label>
+                <input type="text" id="edit-cover-sig-name" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:border-purple-500 focus:outline-none font-semibold" />
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end gap-3 pt-2">
+            <button onclick="applyCoverFormToPreview()" class="px-6 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg shadow-purple-600/30 transition">
+              <i data-lucide="check-circle" class="w-4 h-4"></i> Save &amp; Update Live Cover Letter Sheet
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -944,7 +2182,7 @@
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-300 rounded-full text-xs font-semibold mb-2">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-            <span>M4.1 Full-Lifecycle Application Tracker & Reminders</span>
+            <span>Full-Lifecycle Application Tracker & Reminders</span>
           </div>
           <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
             <i data-lucide="clipboard-list" class="w-6 h-6 text-amber-400"></i> Application Tracking & Management Dashboard
@@ -1138,6 +2376,8 @@
         <p class="text-xs text-slate-400">Access personalized internship matching & multi-agent prep</p>
       </div>
 
+
+
       <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1.5">Select Account Role</label>
@@ -1161,10 +2401,45 @@
 
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
-          <div class="relative">
-            <i data-lucide="key" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5"></i>
-            <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+          <div class="relative flex items-center">
+            <i data-lucide="key" class="w-4 h-4 text-slate-500 absolute left-3 top-2.5 pointer-events-none"></i>
+            <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-10 py-2 text-xs text-slate-200 focus:border-indigo-500 focus:outline-none" />
+            <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute right-2.5 top-2 p-0.5 text-slate-400 hover:text-slate-200 transition focus:outline-none" title="Show password" aria-label="Show password">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
           </div>
+          <!-- Password Strength Meter Component for Modal -->
+          <div id="modal-password-meter" class="mt-2.5 hidden"></div>
+        </div>
+
+        <!-- Server-Side Security CAPTCHA in Modal -->
+        <div class="space-y-2 py-1">
+          <div class="flex items-center justify-between text-xs">
+            <label for="modal-captcha-input" class="font-semibold text-slate-300 flex items-center gap-1.5">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-indigo-400"></i>
+              <span>Security CAPTCHA</span>
+            </label>
+            <span class="text-[10px] text-slate-400">Type characters shown</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="flex-1 bg-slate-950 border border-slate-700/80 rounded-xl p-1 flex items-center justify-center overflow-hidden min-h-[52px]">
+              <img id="modal-captcha-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='190' height='54' viewBox='0 0 190 54'><rect width='100%' height='100%' fill='%231e293b' rx='8'/><text x='50%' y='55%' font-family='sans-serif' font-size='12' fill='%2394a3b8' text-anchor='middle' dominant-baseline='middle'>Loading CAPTCHA...</text></svg>" alt="Security CAPTCHA challenge" class="max-h-[48px] w-auto select-none rounded cursor-pointer" onclick="refreshCaptcha('modal')" title="Click to refresh CAPTCHA" />
+            </div>
+            <button type="button" onclick="refreshCaptcha('modal')" title="Refresh CAPTCHA challenge" class="p-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white rounded-xl transition flex items-center justify-center active:scale-95">
+              <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <input type="hidden" id="modal-captcha-id" value="" />
+          <div>
+            <input type="text" id="modal-captcha-input" required maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Enter characters shown" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono tracking-widest text-slate-100 placeholder:font-sans placeholder:tracking-normal focus:border-indigo-500 focus:outline-none uppercase" />
+          </div>
+
+          <p id="modal-captcha-error" class="hidden text-[11px] text-rose-400 font-medium flex items-center gap-1">
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5 flex-shrink-0"></i>
+            <span id="modal-captcha-error-text">Incorrect CAPTCHA characters. Please try again.</span>
+          </p>
         </div>
 
         <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold rounded-lg shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
@@ -1180,6 +2455,16 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=3.5"></script>
+  <!-- ══════════════════════════════════════════════ -->
+  <!--       AUTHENTIC GOOGLE OAUTH MODAL             -->
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- ══════════════════════════════════════════════ -->
+  <!--       AUTHENTIC GOOGLE OAUTH ACCOUNT CHOOSER   -->
+  <!-- ══════════════════════════════════════════════ -->
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="js/password-meter.js"></script>
+  <script src="js/app.js?v=3.8"></script>
 </body>
 </html>
