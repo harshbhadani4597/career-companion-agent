@@ -3,7 +3,8 @@
 **Project Title**: AI Career Companion Agent — Multi-Agent Internship Discovery, Skill Remediation, and Application Tracking System  
 **Author**: Harsh Kumar Bhadani  
 **Framework**: Python 3.11 / Flask / Multi-Agent Hybrid Architecture / Modern Vanilla JS + Tailwind CSS  
-**Evaluation Status**: 100% Pass Rate across all Milestone 1–4 Test Suites (105 Assertions Verified)
+**Evaluation Status**: 100% Pass Rate across all Milestone 1–4 Test Suites (105 Assertions Verified)  
+**Detailed Comprehensive Report**: See [PROJECT_REPORT.md](file:///c:/Users/kumar/OneDrive/Desktop/career-companion-agent/PROJECT_REPORT.md) for full academic dissertation-grade report with mathematical formulations, system diagrams, and testing logs.
 
 ---
 
