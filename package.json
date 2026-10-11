@@ -1,0 +1,25 @@
+{
+  "name": "career-companion-agent",
+  "version": "4.0.0",
+  "description": "AI Career Companion Agent — Multi-agent system for student internship matching, skill gap remediation, anti-hallucination resume customization, and 10-stage application tracking.",
+  "main": "run.py",
+  "scripts": {
+    "start": "python run.py",
+    "dev": "python run.py",
+    "test": "python scripts/run_tests.py",
+    "benchmark": "python scripts/benchmark.py",
+    "seed": "python scripts/seed_database.py"
+  },
+  "keywords": [
+    "ai",
+    "career-companion",
+    "internship-matching",
+    "rag",
+    "multi-agent",
+    "resume-customizer",
+    "interview-coach",
+    "kanban-tracker"
+  ],
+  "author": "Harsh Kumar Bhadani",
+  "license": "MIT"
+}
