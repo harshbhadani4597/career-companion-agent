@@ -363,15 +363,382 @@
   </script>
 
   <!-- ══════════════════════════════════════════════ -->
+  <!--               LANDING PAGE SCREEN              -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div id="landing-screen" class="min-h-screen w-full bg-transparent flex flex-col relative z-10 fade-in">
+    
+    <!-- 1. Sticky Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        
+        <!-- Brand Logo -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+          <div class="p-2 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-xl shadow-md shadow-indigo-500/25">
+            <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <span class="text-base sm:text-lg font-extrabold bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent">
+              AI Career Companion
+            </span>
+            <span class="hidden sm:inline-block ml-2 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              v3.0 Production
+            </span>
+          </div>
+        </div>
+
+        <!-- Center Nav Links -->
+        <nav class="hidden md:flex items-center gap-6 text-xs font-medium text-slate-300">
+          <a href="#landing-features" class="hover:text-white transition">Core Features</a>
+          <a href="#landing-how-it-works" class="hover:text-white transition">How It Works</a>
+          <a href="#landing-agents" class="hover:text-white transition">Multi-Agent System</a>
+          <a href="/docs" target="_blank" class="hover:text-indigo-300 flex items-center gap-1 transition">
+            <i data-lucide="book-open" class="w-3.5 h-3.5"></i> API Docs
+          </a>
+        </nav>
+
+        <!-- Right Action Buttons -->
+        <div class="flex items-center gap-2.5">
+          <button onclick="showAuthGate('login')" type="button" class="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 rounded-xl transition shadow-sm active:scale-95 flex items-center gap-1.5">
+            <i data-lucide="log-in" class="w-3.5 h-3.5"></i> Sign In
+          </button>
+          <button onclick="showAuthGate('register')" type="button" class="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 rounded-xl shadow-lg shadow-indigo-600/25 transition active:scale-95 flex items-center gap-1.5">
+            <span>Get Started Free</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. Hero Section -->
+    <section class="relative pt-12 pb-20 sm:pt-20 sm:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
+      
+      <!-- Pill Announcement -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-semibold mb-6 shadow-sm hover:border-indigo-500/40 transition">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Autonomous Multi-Agent Career Copilot &bull; 180+ Verified Tech Internships</span>
+        <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-70"></i>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl leading-[1.15]">
+        Launch Your Dream Tech Career With
+        <span class="bg-gradient-to-r from-indigo-400 via-purple-300 to-cyan-300 bg-clip-text text-transparent">
+          Autonomous Multi-Agent AI
+        </span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="mt-6 text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
+        Stop blindly submitting resumes into black holes. Experience explainable RAG internship matching, zero-hallucination STAR resume tailoring, 3D voice interview coaching, and automated 10-stage application tracking in one unified platform.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="mt-8 flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto">
+        <button onclick="showAuthGate('register')" type="button" class="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 text-white font-bold text-sm rounded-xl shadow-xl shadow-indigo-600/30 transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>Start Your Career Journey — It's Free</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+        <button onclick="showAuthGate('login')" type="button" class="w-full sm:w-auto px-6 py-3.5 bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold text-sm rounded-xl border border-slate-700/80 shadow-md transition flex items-center justify-center gap-2">
+          <i data-lucide="log-in" class="w-4 h-4 text-indigo-400"></i>
+          <span>Sign In to Dashboard</span>
+        </button>
+      </div>
+
+      <!-- Trust & Key Metrics Bar -->
+      <div class="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full max-w-4xl">
+        <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/80 backdrop-blur-sm text-left space-y-1">
+          <div class="text-2xl sm:text-3xl font-black text-indigo-400">180+</div>
+          <div class="text-xs font-semibold text-white">Curated Internships</div>
+          <div class="text-[11px] text-slate-400">12 Specialized tech domains</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/80 backdrop-blur-sm text-left space-y-1">
+          <div class="text-2xl sm:text-3xl font-black text-emerald-400">100%</div>
+          <div class="text-xs font-semibold text-white">Top-1 RAG Accuracy</div>
+          <div class="text-[11px] text-slate-400">1.000 MRR on benchmark tests</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/80 backdrop-blur-sm text-left space-y-1">
+          <div class="text-2xl sm:text-3xl font-black text-cyan-400">&lt;300ms</div>
+          <div class="text-xs font-semibold text-white">Ultra-Low Latency</div>
+          <div class="text-[11px] text-slate-400">~85ms average response speed</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/80 backdrop-blur-sm text-left space-y-1">
+          <div class="text-2xl sm:text-3xl font-black text-purple-400">0%</div>
+          <div class="text-xs font-semibold text-white">Zero Hallucination</div>
+          <div class="text-[11px] text-slate-400">100% strictly grounded resumes</div>
+        </div>
+      </div>
+
+      <!-- Interactive Platform Mockup Preview -->
+      <div class="mt-16 w-full max-w-5xl rounded-2xl border border-slate-700/80 bg-slate-950/90 shadow-2xl overflow-hidden backdrop-blur-md">
+        <!-- Mockup Browser Bar -->
+        <div class="px-4 py-3 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+            <span class="ml-2 text-xs text-slate-400 font-mono">career-companion.local &bull; Live Multi-Agent Workspace</span>
+          </div>
+          <div class="text-xs text-emerald-400 font-medium flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> 5 Agents Active
+          </div>
+        </div>
+        <!-- Mockup Visual Content -->
+        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+          <!-- Card 1: Job Matcher Preview -->
+          <div class="p-4 bg-slate-900/90 border border-slate-800 rounded-xl space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white">AI/ML Engineering Intern</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs">96% Fit</span>
+            </div>
+            <p class="text-xs text-slate-400">Google Tech Talent &bull; Bengaluru, India</p>
+            <div class="space-y-1.5 pt-1">
+              <div class="flex justify-between text-[11px] text-slate-300">
+                <span>Technical Skills Match</span>
+                <span class="text-indigo-400 font-semibold">94%</span>
+              </div>
+              <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-indigo-500 h-full rounded-full" style="width: 94%"></div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-1 pt-1">
+              <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-300 text-[10px] rounded">Python</span>
+              <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-300 text-[10px] rounded">PyTorch</span>
+              <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-300 text-[10px] rounded">RAG</span>
+            </div>
+          </div>
+
+          <!-- Card 2: ATS Resume Score Optimizer -->
+          <div class="p-4 bg-slate-900/90 border border-slate-800 rounded-xl space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white">ATS Resume Optimization</span>
+              <span class="text-xs text-emerald-400 font-bold">+34% Score</span>
+            </div>
+            <div class="p-3 bg-slate-950 border border-slate-800/80 rounded-lg space-y-2">
+              <div class="flex justify-between text-xs text-slate-400">
+                <span>Before Optimization:</span>
+                <span class="text-amber-400 font-semibold">58%</span>
+              </div>
+              <div class="flex justify-between text-xs text-slate-200">
+                <span>After Anti-Hallucination Tailoring:</span>
+                <span class="text-emerald-400 font-bold">92%</span>
+              </div>
+            </div>
+            <p class="text-[11px] text-slate-400">
+              Generated 4 STAR bullet points grounded strictly in your verified GitHub projects.
+            </p>
+          </div>
+
+          <!-- Card 3: 10-Stage Pipeline Tracker -->
+          <div class="p-4 bg-slate-900/90 border border-slate-800 rounded-xl space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white">10-Stage Kanban Tracker</span>
+              <span class="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[10px] font-bold">Urgent (2d left)</span>
+            </div>
+            <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-lg">
+              <div class="text-xs font-semibold text-slate-200">Microsoft SWE Intern</div>
+              <div class="text-[11px] text-purple-300 mt-0.5">Stage: Interview Scheduled</div>
+              <div class="text-[10px] text-slate-500 mt-1">Interview Date: Oct 15, 2026</div>
+            </div>
+            <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+              <span>Active pipeline: <strong>8 applications</strong></span>
+              <span class="text-indigo-400 font-medium cursor-pointer" onclick="showAuthGate('login')">View Kanban Board &rarr;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Core Features Section -->
+    <section id="landing-features" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/80">
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-400">Everything You Need</h2>
+        <p class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Intelligent AI Features Built For Tech Students
+        </p>
+        <p class="text-xs sm:text-sm text-slate-400">
+          Six specialized capabilities designed to guide you from initial exploration to accepted offer.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Feature 1 -->
+        <div class="p-6 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3.5 hover:border-indigo-500/50 transition">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+            <i data-lucide="sparkles" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">Explainable RAG Matching</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            TF-IDF field-weighted vector retrieval across 720 semantic chunks. Computes a multi-factor compatibility score (Skills 45%, Projects 25%, Domain 20%, Education 10%) with transparent AI reasoning.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="p-6 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3.5 hover:border-purple-500/50 transition">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
+            <i data-lucide="file-check" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">Anti-Hallucination Resume Customizer</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Rewrites resume bullet points using the proven STAR format and drafts targeted cover letters. Strict guardrails ensure zero fabrication of unverified tools, companies, or degrees.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="p-6 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3.5 hover:border-emerald-500/50 transition">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="mic" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">3D AI Mock Interview Coach</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Practice answering 5 categories of interview questions using Web Speech voice input. Algorithmic scoring evaluates your response across Technical Depth, Communication, and Relevance.
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="p-6 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3.5 hover:border-cyan-500/50 transition">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
+            <i data-lucide="compass" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">5-Category Skill Gap Remediation</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Identifies Missing, Partially Demonstrated, Preferred, Verified, and Experience gaps. Generates actionable 3-phase roadmaps with realistic timelines and GitHub starter blueprints.
+          </p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="p-6 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3.5 hover:border-amber-500/50 transition">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+            <i data-lucide="kanban" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">10-Stage Kanban Lifecycle Tracker</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Track applications from Saved to Offer Received. Drag-and-drop board, urgency countdown alerts (&le;3 days urgent red, &le;7 days yellow), and background deadline reminders.
+          </p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="p-6 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3.5 hover:border-pink-500/50 transition">
+          <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center">
+            <i data-lucide="bot" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-base font-bold text-white">Conversational Career Assistant</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            A persistent drawer chat copilot that retains multi-turn context. Classifies intent automatically to compare companies, explain skill roadmaps, and offer proactive guidance.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. How It Works Section -->
+    <section id="landing-how-it-works" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/80">
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-purple-400">Streamlined Process</h2>
+        <p class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          How It Works in 3 Simple Steps
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        <!-- Step 1 -->
+        <div class="p-6 bg-slate-900/90 border border-slate-800 rounded-2xl space-y-4 text-center">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-600/20 text-indigo-400 font-extrabold text-lg flex items-center justify-center mx-auto border border-indigo-500/30">
+            1
+          </div>
+          <h3 class="text-base font-bold text-white">Build Your Profile &amp; Upload Resume</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Sign up with email/password and complete your academic background. Upload your resume for automated entity extraction of technical proficiencies and projects.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="p-6 bg-slate-900/90 border border-slate-800 rounded-2xl space-y-4 text-center">
+          <div class="w-12 h-12 rounded-2xl bg-purple-600/20 text-purple-400 font-extrabold text-lg flex items-center justify-center mx-auto border border-purple-500/30">
+            2
+          </div>
+          <h3 class="text-base font-bold text-white">Get Instant Matches &amp; Remediation</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            The RAG engine retrieves highest-compatibility roles. The Skill Gap Agent diagnoses missing competencies and generates structured 3-phase learning roadmaps.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="p-6 bg-slate-900/90 border border-slate-800 rounded-2xl space-y-4 text-center">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-600/20 text-emerald-400 font-extrabold text-lg flex items-center justify-center mx-auto border border-emerald-500/30">
+            3
+          </div>
+          <h3 class="text-base font-bold text-white">Tailor, Practice &amp; Track Applications</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Export ATS-friendly Word resumes, practice mock interview questions with speech-to-text, and manage every opportunity across the 10-stage Kanban board.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Bottom Call to Action Banner -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      <div class="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-indigo-900/80 via-purple-900/80 to-slate-900/90 border border-indigo-500/30 shadow-2xl text-center space-y-6 relative overflow-hidden">
+        <div class="absolute -top-24 -left-24 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight relative z-10">
+          Ready to Accelerate Your Tech Internship Journey?
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto relative z-10 leading-relaxed">
+          Join thousands of university students discovering high-match tech roles, practicing mock interviews, and closing skill gaps with autonomous AI.
+        </p>
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 relative z-10">
+          <button onclick="showAuthGate('register')" type="button" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-500/30 transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
+            <span>Create Your Free Account</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+          <button onclick="showAuthGate('login')" type="button" class="w-full sm:w-auto px-6 py-3.5 bg-slate-950/80 hover:bg-slate-900 text-slate-300 hover:text-white font-semibold text-sm rounded-xl border border-slate-700 transition">
+            Sign In to Existing Account
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Footer -->
+    <footer class="mt-auto border-t border-slate-800/80 bg-slate-950/80 py-8 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <div class="flex items-center gap-2">
+          <div class="p-1.5 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-lg">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-white"></i>
+          </div>
+          <span class="font-bold text-white">AI Career Companion Agent</span>
+          <span>&copy; 2026 Harsh Kumar Bhadani</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1.5 text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            All 5 Agents Operational
+          </span>
+          <a href="/docs" target="_blank" class="hover:text-indigo-300 transition">API Docs</a>
+          <a href="https://github.com/harshbhadani4597/career-companion-agent" target="_blank" class="hover:text-white transition">GitHub</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
   <!--       FULL-SCREEN LOGIN / SIGN UP GATE          -->
   <!-- ══════════════════════════════════════════════ -->
-  <div id="auth-gate-screen" class="min-h-screen w-full bg-transparent flex flex-col justify-center items-center p-4 sm:p-6 relative overflow-hidden">
+  <div id="auth-gate-screen" class="hidden min-h-screen w-full bg-transparent flex flex-col justify-center items-center p-4 sm:p-6 relative overflow-hidden">
     <!-- Ambient Background Glow Effects -->
     <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="max-w-md w-full bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative z-10 fade-in">
       
+      <!-- Back to Landing Screen Navigation -->
+      <div class="flex items-center justify-between pb-1">
+        <button type="button" onclick="showLandingScreen()" class="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition group">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform"></i>
+          <span>Back to Home</span>
+        </button>
+      </div>
+
       <!-- Brand Header -->
       <div class="text-center space-y-2">
         <div class="inline-flex p-3 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-2xl shadow-xl shadow-indigo-500/30 mb-1">
@@ -721,6 +1088,9 @@
         <a href="/docs" target="_blank" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-indigo-500/40 text-indigo-300 hover:text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow-sm" title="Open Swagger API Docs (OpenAPI 3.0)">
           <i data-lucide="book-open" class="w-4 h-4 text-indigo-400"></i> API Docs
         </a>
+        <button onclick="showLandingScreen()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow-sm" title="View Landing Page">
+          <i data-lucide="home" class="w-4 h-4 text-indigo-400"></i> Landing Page
+        </button>
         <button onclick="clearProfile()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 shadow-sm" title="Clear profile and start fresh">
           <i data-lucide="user-plus" class="w-4 h-4"></i> New Profile
         </button>
@@ -2465,6 +2835,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="js/password-meter.js"></script>
-  <script src="js/app.js?v=3.8"></script>
+  <script src="js/app.js?v=4.0"></script>
 </body>
 </html>

@@ -1695,9 +1695,7 @@ function setAuthGateTab(tab) {
 }
 
 function openLoginModal() {
-  const modal = document.getElementById('login-modal');
-  if (modal) modal.classList.remove('hidden');
-  fetchCaptcha('modal');
+  showAuthGate('login');
 }
 
 function closeLoginModal() {
@@ -2177,11 +2175,13 @@ function showCpFieldError(field, msg) {
 }
 
 function showCompleteProfileScreen(user) {
+  const landing = document.getElementById('landing-screen');
   const gate = document.getElementById('auth-gate-screen');
   const cpScreen = document.getElementById('complete-profile-screen');
   const appHeader = document.getElementById('app-header');
   const appMain = document.getElementById('app-main');
 
+  if (landing) landing.classList.add('hidden');
   if (gate) gate.classList.add('hidden');
   if (appHeader) appHeader.classList.add('hidden');
   if (appMain) appMain.classList.add('hidden');
@@ -2367,6 +2367,58 @@ async function handleCompleteProfileSubmit(e) {
   }
 }
 
+function showLandingScreen() {
+  const landing = document.getElementById("landing-screen");
+  const gate = document.getElementById("auth-gate-screen");
+  const cpScreen = document.getElementById("complete-profile-screen");
+  const appHeader = document.getElementById("app-header");
+  const appMain = document.getElementById("app-main");
+
+  if (landing) landing.classList.remove("hidden");
+  if (gate) gate.classList.add("hidden");
+  if (cpScreen) cpScreen.classList.add("hidden");
+  if (appHeader) appHeader.classList.add("hidden");
+  if (appMain) appMain.classList.add("hidden");
+
+  if (window.history && window.history.pushState) {
+    window.history.pushState({}, '', '/');
+  }
+
+  if (typeof lucide !== 'undefined' && lucide.createIcons) {
+    lucide.createIcons();
+  }
+}
+
+function showAuthGate(mode) {
+  const landing = document.getElementById("landing-screen");
+  const gate = document.getElementById("auth-gate-screen");
+  const cpScreen = document.getElementById("complete-profile-screen");
+  const appHeader = document.getElementById("app-header");
+  const appMain = document.getElementById("app-main");
+
+  if (landing) landing.classList.add("hidden");
+  if (gate) gate.classList.remove("hidden");
+  if (cpScreen) cpScreen.classList.add("hidden");
+  if (appHeader) appHeader.classList.add("hidden");
+  if (appMain) appMain.classList.add("hidden");
+
+  if (typeof setAuthGateTab === 'function') {
+    setAuthGateTab(mode === 'register' ? 'register' : 'login');
+  }
+
+  if (window.history && window.history.pushState) {
+    window.history.pushState({}, '', mode === 'register' ? '/register' : '/login');
+  }
+
+  if (typeof fetchCaptcha === 'function') {
+    fetchCaptcha('gate');
+  }
+
+  if (typeof lucide !== 'undefined' && lucide.createIcons) {
+    lucide.createIcons();
+  }
+}
+
 function revealAuthenticatedApp() {
   // Guard: if user has not completed profile, redirect them to /complete-profile
   if (currentUser && !currentUser.profileCompleted) {
@@ -2374,11 +2426,13 @@ function revealAuthenticatedApp() {
     return;
   }
 
+  const landing = document.getElementById("landing-screen");
   const gate = document.getElementById("auth-gate-screen");
   const cpScreen = document.getElementById("complete-profile-screen");
   const appHeader = document.getElementById("app-header");
   const appMain = document.getElementById("app-main");
 
+  if (landing) landing.classList.add("hidden");
   if (gate) gate.classList.add("hidden");
   if (cpScreen) cpScreen.classList.add("hidden");
   if (appHeader) appHeader.classList.remove("hidden");
@@ -2393,6 +2447,10 @@ function revealAuthenticatedApp() {
   loadCareerSnapshotUI();
   updateWelcomeBanner(currentUser?.fullName || currentUser?.name);
   switchTab("dashboard");
+
+  if (typeof lucide !== 'undefined' && lucide.createIcons) {
+    lucide.createIcons();
+  }
 }
 
 function updateAuthUI(user) {
@@ -2421,22 +2479,8 @@ function logoutUser() {
   renderExtractedResumeUI(null);
   updateCandidateStatsUI();
 
-  const gate = document.getElementById("auth-gate-screen");
-  const cpScreen = document.getElementById("complete-profile-screen");
-  const appHeader = document.getElementById("app-header");
-  const appMain = document.getElementById("app-main");
-
-  if (cpScreen) cpScreen.classList.add("hidden");
-  if (gate) gate.classList.remove("hidden");
-  if (appHeader) appHeader.classList.add("hidden");
-  if (appMain) appMain.classList.add("hidden");
-
-  if (window.history && window.history.pushState) {
-    window.history.pushState({}, '', '/');
-  }
-
+  showLandingScreen();
   updateAuthUI(null);
-  fetchCaptcha('gate');
 }
 
 function checkInitialAuthSession() {
@@ -2458,8 +2502,8 @@ function checkInitialAuthSession() {
       return;
     } catch (e) {}
   }
-  // Not logged in -> show login gate screen
-  logoutUser();
+  // Not logged in -> show Landing Screen
+  showLandingScreen();
 }
 
 
