@@ -8,13 +8,12 @@ career-companion-agent/
 │   └── workflows/
 │       └── ci.yml                      # GitHub Actions automated test & benchmark pipeline
 ├── Internship_artifacts/               # Agile Sprint deliverables & QA artifacts
-│   ├── User_Stories_and_Sprint_Backlog.csv  # 16 User Stories across Sprints 1–4 with MoSCoW
-│   ├── Sprint_Retrospectives.csv      # Retrospective reviews (What went well, improvements, actions)
-│   ├── Daily_Standup_Logs.csv         # Daily standup logs across sprints
-│   ├── Test_Execution_Matrix.csv      # 20 Test Scenarios with pass/fail outcomes
-│   ├── Defect_Tracking_Log.csv        # Defect tracking, remediation, and verification log
-│   ├── Internship_artifacts.csv       # Unified combined artifact CSV
-│   └── README.md                      # Overview of internship artifacts
+│   ├── 1_Agile_Template_Product_Backlog.xlsx  # 16 User Stories across Sprints 1–4 with MoSCoW
+│   ├── 1_Agile_Template_Retrospection.xlsx    # Retrospective reviews (What went well, improvements, actions)
+│   ├── 1_Agile_Template_Standup_Meetings.xlsx # Daily standup logs across sprints
+│   ├── 2_Unit_Test_Plan_UT.xlsx               # 20 Test Scenarios with pass/fail outcomes
+│   ├── 3_Defect_Tracker.xlsx                  # Defect tracking, remediation, and verification log
+│   └── README.md                              # Overview of internship artifacts
 ├── backend/                            # Python Flask backend server and multi-agent core
 │   ├── agents/                         # Milestone 3 & 4 specialized agents
 │   │   ├── __init__.py

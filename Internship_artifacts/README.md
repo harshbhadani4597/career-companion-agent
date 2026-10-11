@@ -1,17 +1,18 @@
 # 🎓 Internship Project Artifacts & Agile Deliverables
 
-This directory contains the complete record of Agile project management, Sprint tracking, Quality Assurance, and Evaluation artifacts for the **AI Career Companion Agent** project.
+This directory contains the official Agile project management, Sprint tracking, Quality Assurance, and Evaluation templates for the **AI Career Companion Agent** project.
 
 ---
 
 ## 📁 Artifact Index
 
-1. [`User_Stories_and_Sprint_Backlog.csv`](User_Stories_and_Sprint_Backlog.csv) — 16 user stories mapped across 4 Sprints using MoSCoW prioritization with dependencies and status.
-2. [`Sprint_Retrospectives.csv`](Sprint_Retrospectives.csv) — Detailed sprint reviews: What Went Well, What Could Be Improved, Action Items & Decisions for Sprints 1–4.
-3. [`Daily_Standup_Logs.csv`](Daily_Standup_Logs.csv) — Daily progress reports tracking accomplishments, next steps, and blocker resolutions.
-4. [`Test_Execution_Matrix.csv`](Test_Execution_Matrix.csv) — 20 system test scenarios covering all 4 milestones with 100% pass verification.
-5. [`Defect_Tracking_Log.csv`](Defect_Tracking_Log.csv) — Defect identification, categorization, remediation, and resolution verification log.
-6. [`Internship_artifacts.csv`](Internship_artifacts.csv) — Unified combined artifact file containing all 5 sections.
+| File Name | Description | Format |
+|---|---|---|
+| [`1_Agile_Template_Product_Backlog.xlsx`](1_Agile_Template_Product_Backlog.xlsx) | Product Backlog with 16 User Stories across Sprints 1–4, MoSCoW prioritization, dependencies, assignees, and 100% completion status. | Microsoft Excel (.xlsx) |
+| [`1_Agile_Template_Retrospection.xlsx`](1_Agile_Template_Retrospection.xlsx) | Sprint Retrospectives detailing What Went Well, What Could Be Improved, Action Items, and architectural decisions. | Microsoft Excel (.xlsx) |
+| [`1_Agile_Template_Standup_Meetings.xlsx`](1_Agile_Template_Standup_Meetings.xlsx) | Daily Standup Logs capturing accomplishments, daily plans, and blocker resolution notes. | Microsoft Excel (.xlsx) |
+| [`2_Unit_Test_Plan_UT.xlsx`](2_Unit_Test_Plan_UT.xlsx) | Master Unit & System Test Execution Matrix covering 20 test procedures across all 4 Milestones with 100% Pass rate. | Microsoft Excel (.xlsx) |
+| [`3_Defect_Tracker.xlsx`](3_Defect_Tracker.xlsx) | Defect Tracking Log detailing 9 identified defects, categories, corrective actions, and verified Closed status. | Microsoft Excel (.xlsx) |
 
 ---
 
